@@ -1,0 +1,5 @@
+{
+  "name": "c-tris",
+  "version-string": "0.1",
+  "dependencies": ["sdl2"]
+}

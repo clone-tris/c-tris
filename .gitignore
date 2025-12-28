@@ -1,0 +1,28 @@
+# CMake build directories
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# MSVC / Windows build artifacts
+*.obj
+*.o
+*.exe
+*.dll
+*.lib
+*.pdb
+
+# vcpkg build artifacts
+/vcpkg_installed/
+/installed/
+/packages/
+/buildtrees/
+/downloads/
+/vcpkg/archives/
+
+# OS junk
+.DS_Store
+Thumbs.db
+*.log
+
