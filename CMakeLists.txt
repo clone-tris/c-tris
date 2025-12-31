@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    CACHE FILEPATH "Vcpkg toolchain file")
+
 project(c-tris
     VERSION 0.1
     LANGUAGES C
