@@ -5,6 +5,11 @@
       "name": "windows",
       "inherits": "vcpkg",
       "generator": "Visual Studio 17 2022"
+    },
+    {
+      "name": "macos",
+      "inherits": "vcpkg",
+      "generator": "Ninja"
     }
   ]
 }
