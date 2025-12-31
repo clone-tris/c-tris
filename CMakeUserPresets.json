@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "windows",
+      "inherits": "vcpkg",
+      "generator": "Visual Studio 17 2022"
+    }
+  ]
+}
