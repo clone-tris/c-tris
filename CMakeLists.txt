@@ -8,6 +8,7 @@ project(c-tris
     LANGUAGES C
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
@@ -20,12 +21,5 @@ add_executable(c-tris
 
 # Link SDL2
 target_link_libraries(c-tris
-    PRIVATE SDL2::SDL2 SDL2::SDL2main
+    PRIVATE SDL2::SDL2main SDL2::SDL2 
 )
-
-# Enable strict warnings
-if(MSVC)
-    target_compile_options(c-tris PRIVATE /W4)
-else()
-    target_compile_options(c-tris PRIVATE -Wall -Wextra -Wpedantic)
-endif()
