@@ -10,10 +10,8 @@
       "installDir": "${sourceDir}/install",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "clang-cl.exe",
-        "CMAKE_CXX_COMPILER": "clang-cl.exe",
-        "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /W3 /GR /EHsc -march=native",
-        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W3",
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W4",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "architecture": {

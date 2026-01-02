@@ -3,9 +3,8 @@
 #include <time.h>
 
 int main(int argc, char* argv[]) {
-    // I don't like the next two lines :-(
-    (void)argc; 
-    (void)argv;
+    (void) argc;
+    (void) argv;
 
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* win = SDL_CreateWindow("Sliding Square", SDL_WINDOWPOS_CENTERED, 
