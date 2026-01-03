@@ -2,27 +2,8 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "clang-linux-debug",
-      "displayName": "Clang-Linux Debug",
-      "generator": "Ninja",
-      "description": "Using compilers: C = clang",
-      "binaryDir": "${sourceDir}/build",
-      "installDir": "${sourceDir}/install",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "clang",
-        "CMAKE_C_FLAGS": "-march=native",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
-      }
-    },
-    {
-      "name": "clang-win-debug",
-      "displayName": "Clang-Win Debug",
+      "name": "windows",
+      "displayName": "Windows, Clang & Ninja",
       "generator": "Ninja",
       "description": "Using compiler: clang-cl.exe",
       "binaryDir": "${sourceDir}/build",
@@ -30,7 +11,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "clang-cl.exe",
-        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W3",
+        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W4",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "architecture": {
@@ -53,8 +34,8 @@
       }
     },
     {
-      "name": "clang-macos-debug",
-      "displayName": "Clang-MacOS Debug",
+      "name": "macos",
+      "displayName": "macOS, Clang & Makefiles",
       "generator": "Unix Makefiles",
       "description": "Using compilers: C = clang",
       "binaryDir": "${sourceDir}/build",
@@ -62,7 +43,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "clang",
-        "CMAKE_C_FLAGS": "-march=native",
+        "CMAKE_C_FLAGS": "-march=native -Wall -Wextra -Wpedantic",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "environment": {
@@ -72,6 +53,25 @@
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "linux",
+      "displayName": "Linux, Clang & makefiles",
+      "generator": "Ninja",
+      "description": "Using compilers: C = clang",
+      "binaryDir": "${sourceDir}/build",
+      "installDir": "${sourceDir}/install",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_C_FLAGS": "-march=native -Wall -Wextra -Wpedantic",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     }
   ]
