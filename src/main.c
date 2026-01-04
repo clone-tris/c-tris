@@ -7,8 +7,14 @@ int main(int argc, char *argv[]) {
   (void)argv;
 
   SDL_Init(SDL_INIT_VIDEO);
-  SDL_Window *win = SDL_CreateWindow("Sliding Square", SDL_WINDOWPOS_CENTERED,
-                                     SDL_WINDOWPOS_CENTERED, 640, 480, 0);
+  SDL_Window *win = SDL_CreateWindow(
+    "Sliding Square",
+    SDL_WINDOWPOS_CENTERED,
+    SDL_WINDOWPOS_CENTERED,
+    640,
+    480,
+    0
+  );
   SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
   srand((unsigned int)time(NULL));
@@ -21,21 +27,26 @@ int main(int argc, char *argv[]) {
 
   while (running) {
     while (SDL_PollEvent(&e)) {
-      if (e.type == SDL_KEYDOWN)
+      if (e.type == SDL_KEYDOWN) {
         running = 0;
+      }
     }
 
     x += dx;
     y += dy;
 
-    if (x > 640)
+    if (x > 640) {
       x = -70;
-    if (x < -70)
+    }
+    if (x < -70) {
       x = 640;
-    if (y > 480)
+    }
+    if (y > 480) {
       y = -70;
-    if (y < -70)
+    }
+    if (y < -70) {
       y = 480;
+    }
 
     SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderClear(ren);
