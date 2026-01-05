@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -7,15 +7,8 @@ int main(int argc, char *argv[]) {
   (void)argv;
 
   SDL_Init(SDL_INIT_VIDEO);
-  SDL_Window *win = SDL_CreateWindow(
-    "Sliding Square",
-    SDL_WINDOWPOS_CENTERED,
-    SDL_WINDOWPOS_CENTERED,
-    640,
-    480,
-    0
-  );
-  SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+  SDL_Window *win = SDL_CreateWindow("Sliding Square", 640, 480, 0);
+  SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
 
   srand((unsigned int)time(NULL));
   float x = 320, y = 240;
@@ -27,7 +20,7 @@ int main(int argc, char *argv[]) {
 
   while (running) {
     while (SDL_PollEvent(&e)) {
-      if (e.type == SDL_KEYDOWN) {
+      if (e.type == SDL_EVENT_KEY_DOWN) {
         running = 0;
       }
     }
@@ -52,7 +45,7 @@ int main(int argc, char *argv[]) {
     SDL_RenderClear(ren);
 
     SDL_SetRenderDrawColor(ren, 69, 69 * 2, 69 * 3, 255);
-    SDL_Rect rect = {(int)x, (int)y, 70, 70};
+    SDL_FRect rect = {x, y, 70, 70};
     SDL_RenderFillRect(ren, &rect);
 
     SDL_RenderPresent(ren);
