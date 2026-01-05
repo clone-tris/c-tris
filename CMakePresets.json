@@ -26,7 +26,7 @@
     },
     {
       "name": "windows",
-      "generator": "Ninja",
+      "inherits": "base",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang-cl.exe",
         "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W4"
@@ -44,6 +44,7 @@
     },
     {
       "name": "macos",
+      "inherits": "base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -52,6 +53,7 @@
     },
     {
       "name": "linux",
+      "inherits": "base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
