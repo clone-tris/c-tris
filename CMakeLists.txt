@@ -14,8 +14,6 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 find_package(SDL3 CONFIG REQUIRED)
 
-# Create the executable
 add_executable(${PROJECT_NAME} src/main.c)
 
-# Link SDL2
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
