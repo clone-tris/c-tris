@@ -15,9 +15,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 find_package(SDL3 CONFIG REQUIRED)
 
 # Create the executable
-add_executable(c-tris
-    src/main.c
-)
+add_executable(${PROJECT_NAME} src/main.c)
 
 # Link SDL2
-target_link_libraries(c-tris PRIVATE SDL3::SDL3)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
