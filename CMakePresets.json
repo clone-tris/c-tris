@@ -2,16 +2,14 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "windows",
-      "displayName": "Windows, Clang & Ninja",
+      "name": "base",
       "generator": "Ninja",
-      "description": "Using compiler: clang-cl.exe",
       "binaryDir": "${sourceDir}/build",
       "installDir": "${sourceDir}/install",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "clang-cl.exe",
-        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W4",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_C_FLAGS": "-march=native -Wall -Wextra -Wpedantic",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "architecture": {
@@ -24,6 +22,14 @@
       },
       "environment": {
         "CMAKE_BUILD_PARALLEL_LEVEL": "8"
+      },
+    },
+    {
+      "name": "windows",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl.exe",
+        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W4",
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -38,20 +44,6 @@
     },
     {
       "name": "macos",
-      "displayName": "macOS, Clang & Ninja",
-      "generator": "Ninja",
-      "description": "Using compilers: C = clang",
-      "binaryDir": "${sourceDir}/build",
-      "installDir": "${sourceDir}/install",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "clang",
-        "CMAKE_C_FLAGS": "-march=native -Wall -Wextra -Wpedantic",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-      },
-      "environment": {
-        "CMAKE_BUILD_PARALLEL_LEVEL": "8"
-      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -60,20 +52,6 @@
     },
     {
       "name": "linux",
-      "displayName": "Linux, Clang & Ninja",
-      "generator": "Ninja",
-      "description": "Using compilers: C = clang",
-      "binaryDir": "${sourceDir}/build",
-      "installDir": "${sourceDir}/install",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "clang",
-        "CMAKE_C_FLAGS": "-march=native -Wall -Wextra -Wpedantic",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-      },
-      "environment": {
-        "CMAKE_BUILD_PARALLEL_LEVEL": "8"
-      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
