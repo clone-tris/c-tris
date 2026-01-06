@@ -9,12 +9,14 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 include(FetchContent)
+set(FETCHCONTENT_QUIET FALSE)
 
 FetchContent_Declare(
     SDL3
     GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
     GIT_TAG main
     GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
 )
 
 # set(SDL_SHARED ON CACHE BOOL "Build SDL3 as shared library")
