@@ -11,6 +11,11 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
+set(SDL_INSTALL OFF CACHE BOOL "" FORCE)
+set(SDL_SHARED ON CACHE BOOL "" FORCE)
+set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+set(SDL_TESTS OFF CACHE BOOL "" FORCE)
+
 FetchContent_Declare(
     SDL3
     GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
@@ -19,13 +24,8 @@ FetchContent_Declare(
     GIT_PROGRESS TRUE
 )
 
-# set(SDL_SHARED ON CACHE BOOL "Build SDL3 as shared library")
-# set(SDL_STATIC OFF CACHE BOOL "Build SDL3 as shared library")
-set(SDL_TESTS OFF CACHE BOOL "Disable SDL3 tests")
-set(SDL_EXAMPLES OFF CACHE BOOL "Disable SDL3 tests")
-
-
 FetchContent_MakeAvailable(SDL3)
+set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
