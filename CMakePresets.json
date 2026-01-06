@@ -2,7 +2,7 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "base",
+      "name": "clang",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
       "installDir": "${sourceDir}/install",
@@ -12,52 +12,8 @@
         "CMAKE_C_FLAGS": "-march=native -Wall -Wextra -Wpedantic",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
-      "architecture": {
-        "value": "x64",
-        "strategy": "external"
-      },
-      "toolset": {
-        "value": "host=x64",
-        "strategy": "external"
-      },
       "environment": {
         "CMAKE_BUILD_PARALLEL_LEVEL": "8"
-      }
-    },
-    {
-      "name": "windows",
-      "inherits": "base",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-cl.exe",
-        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W4"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "intelliSenseMode": "windows-clang-x64"
-        }
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
-    },
-    {
-      "name": "macos",
-      "inherits": "base",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      }
-    },
-    {
-      "name": "linux",
-      "inherits": "base",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
       }
     }
   ]
