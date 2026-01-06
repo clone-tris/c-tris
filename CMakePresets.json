@@ -5,7 +5,6 @@
       "name": "clang",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
-      "installDir": "${sourceDir}/install",
       "cacheVariables": {
         "CMAKE_RC_COMPILER": "llvm-rc",
         "CMAKE_BUILD_TYPE": "Debug",
