@@ -10,10 +10,11 @@ int main(int argc, char *argv[]) {
   SDL_Window *win = SDL_CreateWindow("Sliding Square", 640, 480, 0);
   SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
 
-  srand((unsigned int)time(NULL));
+  srand(time(NULL));
   float x = 320, y = 240;
   float dx = (float)(rand() % 3 + 1) * (rand() % 2 ? 1 : -1);
   float dy = (float)(rand() % 3 + 1) * (rand() % 2 ? 1 : -1);
+  int BaseColor = 69;
 
   SDL_Event e;
   int running = 1;
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]) {
     SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderClear(ren);
 
-    SDL_SetRenderDrawColor(ren, 69, 69 * 2, 69 * 3, 255);
+    SDL_SetRenderDrawColor(ren, BaseColor, BaseColor * 2, BaseColor * 3, 255);
     SDL_FRect rect = {x, y, 70, 70};
     SDL_RenderFillRect(ren, &rect);
 
