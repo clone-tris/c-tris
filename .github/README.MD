@@ -17,3 +17,9 @@ cmake --preset=clang
 ```sh
 cmake --build build
 ```
+
+## Run
+
+```sh
+./build/c-tris
+```
