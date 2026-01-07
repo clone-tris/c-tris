@@ -11,9 +11,10 @@ int main(int argc, char *argv[]) {
   SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
 
   srand(time(NULL));
-  float x = 320, y = 240;
-  float dx = (float)(rand() % 3 + 1) * (rand() % 2 ? 1 : -1);
-  float dy = (float)(rand() % 3 + 1) * (rand() % 2 ? 1 : -1);
+  float x = 320;
+  float y = 240;
+  float dx = (float)((rand() % 3) + 1) * (rand() % 2 ? 1 : -1);
+  float dy = (float)((rand() % 3) + 1) * (rand() % 2 ? 1 : -1);
   int BaseColor = 69;
 
   SDL_Event e;
