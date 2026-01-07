@@ -13,8 +13,8 @@ int main(int argc, char *argv[]) {
   srand(time(NULL));
   float x = 320;
   float y = 240;
-  float dx = (float)((rand() % 3) + 1) * (rand() % 2 ? 1 : -1);
-  float dy = (float)((rand() % 3) + 1) * (rand() % 2 ? 1 : -1);
+  float dx = (float)((rand() % 3) + 1) * (float)(rand() % 2 ? 1 : -1);
+  float dy = (float)((rand() % 3) + 1) * (float)(rand() % 2 ? 1 : -1);
   int BaseColor = 69;
 
   SDL_Event e;
