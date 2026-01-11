@@ -22,7 +22,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  if (!SDL_CreateWindowAndRenderer("c-tris", 640, 480, 0, &window, &renderer)) {
+  _Bool createdWindow = SDL_CreateWindowAndRenderer(
+    "c-tris", CANVAS_WIDTH, CANVAS_HEIGHT, 0, &window, &renderer
+  );
+
+  if (!createdWindow) {
     SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
     return SDL_APP_FAILURE;
   }
