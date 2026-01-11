@@ -1,5 +1,4 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#pragma once
 
 #include <stdint.h>
 typedef struct Square {
@@ -7,4 +6,3 @@ typedef struct Square {
   int32_t column;
 } Square;
 
-#endif // SQUARE_H

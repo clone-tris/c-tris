@@ -1,3 +1,4 @@
+#include "config.h"
 #include "screens/game_screen/components/square.h"
 #include <SDL3/SDL.h>
 #include <stdlib.h>
@@ -30,7 +31,10 @@ int main(int argc, char *argv[]) {
 
     SDL_SetRenderDrawColor(ren, BaseColor, BaseColor * 2, BaseColor * 3, 255);
     SDL_FRect rect = {
-      (float)square.column * 24, (float)square.row * 24, 24, 24
+      (float)square.column * (float)SQUARE_WIDTH,
+      (float)square.row * (float)SQUARE_WIDTH,
+      (float)SQUARE_WIDTH,
+      (float)SQUARE_WIDTH
     };
     SDL_RenderFillRect(ren, &rect);
 
