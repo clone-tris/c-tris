@@ -9,7 +9,9 @@ int main(int argc, char *argv[]) {
   (void)argv;
 
   SDL_Init(SDL_INIT_VIDEO);
-  SDL_Window *win = SDL_CreateWindow("Sliding Square", 640, 480, 0);
+  SDL_Window *win = SDL_CreateWindow(
+    "Sliding Square", CANVAS_WIDTH, CANVAS_HEIGHT, 0
+  );
   SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
 
   srand(time(NULL));
