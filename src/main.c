@@ -1,3 +1,4 @@
+#include "screens/game_screen/components/square.h"
 #include <SDL3/SDL.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,10 +12,7 @@ int main(int argc, char *argv[]) {
   SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
 
   srand(time(NULL));
-  float x = 320;
-  float y = 240;
-  float dx = (float)((rand() % 3) + 1) * (float)(rand() % 2 ? 1 : -1);
-  float dy = (float)((rand() % 3) + 1) * (float)(rand() % 2 ? 1 : -1);
+  Square square = {.row = 1, .column = 1};
   int BaseColor = 69;
 
   SDL_Event e;
@@ -27,27 +25,13 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    x += dx;
-    y += dy;
-
-    if (x > 640) {
-      x = -70;
-    }
-    if (x < -70) {
-      x = 640;
-    }
-    if (y > 480) {
-      y = -70;
-    }
-    if (y < -70) {
-      y = 480;
-    }
-
     SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderClear(ren);
 
     SDL_SetRenderDrawColor(ren, BaseColor, BaseColor * 2, BaseColor * 3, 255);
-    SDL_FRect rect = {x, y, 70, 70};
+    SDL_FRect rect = {
+      (float)square.column * 24, (float)square.row * 24, 24, 24
+    };
     SDL_RenderFillRect(ren, &rect);
 
     SDL_RenderPresent(ren);

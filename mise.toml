@@ -1,0 +1,4 @@
+[tasks.build]
+env = {}
+quiet = true
+run = "cmake --build build && ./build/c-tris"
