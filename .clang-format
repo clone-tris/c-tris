@@ -1,23 +1,25 @@
----
-BasedOnStyle: LLVM
-AlignAfterOpenBracket: BlockIndent
-AlignConsecutiveMacros: false
-AlignEscapedNewlines: DontAlign
-AlignOperands: false
-AlignTrailingComments: false
-AllowAllParametersOfDeclarationOnNextLine: true
+BasedOnStyle: LLVM 
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Always
+AllowAllParametersOfDeclarationOnNextLine: true
+AlignConsecutiveMacros: false
+AlignEscapedNewlines: DontAlign
+AlignAfterOpenBracket: BlockIndent
+AlignOperands: false
+AlignTrailingComments: false
 BinPackArguments: false
 BinPackParameters: false
-BreakConstructorInitializers: AfterColon
 BreakStringLiterals: false
+BreakConstructorInitializers: AfterColon
 ColumnLimit: 80
-ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2
+ConstructorInitializerIndentWidth: 2
 Cpp11BracedListStyle: true
 FixNamespaceComments: false
-IncludeBlocks: merge
+IndentWidth: 2
+IndentCaseLabels: true
+IncludeBlocks: Merge
+IndentPPDirectives: BeforeHash
 IncludeCategories:
   - Regex: '"[[:alnum:]._-]+"'
     Priority: 1
@@ -28,13 +30,10 @@ IncludeCategories:
   - Regex: "<[[:alnum:]._-]+>"
     Priority: 3
     SortPriority: 3
-IndentCaseLabels: true
-IndentPPDirectives: BeforeHash
-IndentWidth: 2
 InsertBraces: true
 NamespaceIndentation: All
-PenaltyBreakAssignment: 200
 PenaltyReturnTypeOnItsOwnLine: 200
+PenaltyBreakAssignment: 200
 ReflowComments: false
 SortIncludes: true
 SortUsingDeclarations: false
