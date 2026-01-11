@@ -1,9 +1,10 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include <stdint.h>
 typedef struct Square {
-  unsigned int row;
-  unsigned int column;
+  int32_t row;
+  int32_t column;
 } Square;
 
 #endif // SQUARE_H
