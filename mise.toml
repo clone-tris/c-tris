@@ -1,4 +1,21 @@
+[tasks.config.env]
+CC = "clang"
+CMAKE_GENERATOR = "Ninja"
+CMAKE_RC_COMPILER = "llvm-rc"
+CMAKE_BUILD_TYPE = "Debug"
+CMAKE_C_COMPILER = "clang"
+CMAKE_C_FLAGS = "-march=native -Wall -Wextra -Wpedantic"
+CMAKE_EXPORT_COMPILE_COMMANDS = "ON"
+CMAKE_BUILD_PARALLEL_LEVEL = "8"
+
+[tasks.config]
+run = "cmake -B build"
+
 [tasks.build]
-env = {}
 quiet = true
-run = "cmake --build build && ./build/c-tris"
+run = "cmake --build build"
+depends_post = ["run"]
+
+[tasks.run]
+run = "./build/c-tris"
+
