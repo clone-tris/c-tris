@@ -1,185 +1,83 @@
-#pragma once
-
-#include <SDL3/SDL.h>
-
-typedef struct Screen Screen;
-
-// Vtable: function pointers for polymorphic behavior
-typedef struct ScreenVTable {
-  void (*update)(Screen *self, float dt);
-  void (*draw)(Screen *self, SDL_Renderer *renderer);
-  void (*cleanup)(Screen *self);
-} ScreenVTable;
-
-// Base screen structure
-struct Screen {
-  const ScreenVTable *vtable; // Pointer to vtable (the "type")
-  void *data; // Screen-specific data
-};
-
-// menu_screen.h
-typedef struct MenuData {
-  int selected_option;
-} MenuData;
-
-Screen *menu_screen_create(void);
-
-// menu_screen.c
+#include <stdio.h>
 #include <stdlib.h>
 
-static void menu_update(Screen *self, float dt) {
-  (void)dt;
-  MenuData *data = (MenuData *)self->data;
-  // Menu update logic...
-  (void)data;
-}
+struct Screen;
 
-static void menu_draw(Screen *self, SDL_Renderer *renderer) {
-  (void)renderer;
-  MenuData *data = (MenuData *)self->data;
-  // Menu draw logic...
-  (void)data;
-}
-
-static void menu_cleanup(Screen *self) {
-  free(self->data);
-  free(self);
-}
-
-// The vtable for menu - defines its "type"
-static const ScreenVTable menu_vtable = {
-  .update = menu_update, .draw = menu_draw, .cleanup = menu_cleanup
+struct ScreenVTable {
+  void (*draw)(struct Screen *self);
+  void (*cleanup)(struct Screen *self);
 };
 
-Screen *menu_screen_create(void) {
-  Screen *screen = malloc(sizeof(Screen));
-  screen->vtable = &menu_vtable; // Connect to vtable
+struct Screen {
+  const struct ScreenVTable *vtable;
+};
 
-  MenuData *data = malloc(sizeof(MenuData));
-  data->selected_option = 0;
-  screen->data = data;
+struct MenuScreen {
+  struct Screen screen;
+  char *title;
+};
 
-  return screen;
-}
-
-typedef struct GameData {
+struct GameScreen {
+  struct Screen screen;
   int score;
-} GameData;
-
-static void game_update(Screen *self, float dt) {
-  (void)dt;
-  GameData *data = (GameData *)self->data;
-  // Game update logic...
-  (void)data;
-}
-
-static void game_draw(Screen *self, SDL_Renderer *renderer) {
-  (void)renderer;
-  GameData *data = (GameData *)self->data;
-  // Game draw logic...
-  (void)data;
-}
-
-static void game_cleanup(Screen *self) {
-  free(self->data);
-  free(self);
-}
-
-// The vtable for game
-static const ScreenVTable game_vtable = {
-  .update = game_update, .draw = game_draw, .cleanup = game_cleanup
 };
 
-Screen *game_screen_create(void) {
-  Screen *screen = malloc(sizeof(Screen));
-  screen->vtable = &game_vtable; // Different vtable!
-
-  GameData *data = malloc(sizeof(GameData));
-  data->score = 0;
-  screen->data = data;
-
-  return screen;
+static void MenuScreen_draw(struct Screen *self) {
+  struct MenuScreen *menu = (struct MenuScreen *)self;
+  printf("MenuScreen: %s\n", menu->title);
 }
 
-typedef struct OverData {
-  int final_score;
-} OverData;
-
-static void over_update(Screen *self, float dt) {
-  (void)dt;
-  OverData *data = (OverData *)self->data;
-  (void)data;
-  // Over update logic...
+static void MenuScreen_cleanup(struct Screen *self) {
+  struct MenuScreen *menu = (struct MenuScreen *)self;
+  printf("Cleaning up MenuScreen\n");
+  free(menu);
 }
 
-static void over_draw(Screen *self, SDL_Renderer *renderer) {
-  (void)renderer;
-  OverData *data = (OverData *)self->data;
-  (void)data;
-  // Over draw logic...
-}
-
-static void over_cleanup(Screen *self) {
-  free(self->data);
-  free(self);
-}
-
-// The vtable for over
-static const ScreenVTable over_vtable = {
-  .update = over_update, .draw = over_draw, .cleanup = over_cleanup
+static const struct ScreenVTable MenuScreen_vtable = {
+  .draw = MenuScreen_draw,
+  .cleanup = MenuScreen_cleanup,
 };
 
-Screen *over_screen_create(int score) {
-  Screen *screen = malloc(sizeof(Screen));
-  screen->vtable = &over_vtable;
-
-  OverData *data = malloc(sizeof(OverData));
-  data->final_score = score;
-  screen->data = data;
-
-  return screen;
+struct Screen *MenuScreen_create(void) {
+  struct MenuScreen *menu = malloc(sizeof(struct MenuScreen));
+  menu->screen.vtable = &MenuScreen_vtable;
+  menu->title = "Main Menu";
+  return (struct Screen *)menu;
 }
 
-int main(int argc, char *argv[]) {
-  (void)argc;
-  (void)argv;
-  SDL_Init(SDL_INIT_VIDEO);
-  SDL_Window *window = SDL_CreateWindow("Clonetris", 640, 480, 0);
-  SDL_Renderer *renderer = SDL_CreateRenderer(window, NULL);
+static void GameScreen_draw(struct Screen *self) {
+  struct GameScreen *game = (struct GameScreen *)self;
+  printf("GameScreen: Score = %d\n", game->score);
+}
 
-  // Single pointer to current screen - could be any type!
-  Screen *current_screen = menu_screen_create();
+static void GameScreen_cleanup(struct Screen *self) {
+  struct GameScreen *game = (struct GameScreen *)self;
+  printf("Cleaning up GameScreen\n");
+  free(game);
+}
 
-  bool running = true;
-  Uint64 last_time = SDL_GetTicks();
+static const struct ScreenVTable GameScreen_vtable = {
+  .draw = GameScreen_draw,
+  .cleanup = GameScreen_cleanup,
+};
 
-  while (running) {
-    Uint64 current_time = SDL_GetTicks();
-    float dt = (float)(current_time - last_time) / 1000.0F;
-    last_time = current_time;
+struct Screen *GameScreen_create(void) {
+  struct GameScreen *game = malloc(sizeof(struct GameScreen));
+  game->screen.vtable = &GameScreen_vtable;
+  game->score = 42;
+  return (struct Screen *)game;
+}
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-      if (event.type == SDL_EVENT_QUIT) {
-        running = false;
-      }
-    }
+int main(void) {
+  struct Screen *screen;
 
-    // Polymorphic calls - same code works for ANY screen!
-    current_screen->vtable->update(current_screen, dt);
-    current_screen->vtable->draw(current_screen, renderer);
+  screen = MenuScreen_create();
+  screen->vtable->draw(screen);
+  screen->vtable->cleanup(screen);
 
-    SDL_RenderPresent(renderer);
-
-    // Switch screens (example)
-    // screen_cleanup(current_screen);
-    // current_screen = game_screen_create();
-  }
-
-  current_screen->vtable->cleanup(current_screen);
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
+  screen = GameScreen_create();
+  screen->vtable->draw(screen);
+  screen->vtable->cleanup(screen);
 
   return 0;
 }
