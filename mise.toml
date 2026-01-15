@@ -14,3 +14,7 @@ depends_post = ["run"]
 [tasks.run]
 run = "./build/c-tris"
 
+[tasks.tidy]
+description = "Run ClangTidy on all source files"
+run = "run-clang-tidy -quiet -p build -header-filter='/c-tris/src/.*' '/c-tris/src/.*\\.c$'"
+
