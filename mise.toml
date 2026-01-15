@@ -4,7 +4,7 @@ CMAKE_GENERATOR = "Ninja"
 CMAKE_RC_COMPILER = "llvm-rc"
 
 [tasks.config]
-run = 'cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_C_FLAGS="-march=native -Wall -Wextra -Wpedantic" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+run = 'cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_C_FLAGS="-std=c23 -march=native -Wall -Wextra -Wpedantic" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 
 [tasks.build]
 quiet = true
