@@ -7,12 +7,14 @@ struct MenuScreen {
   char *title;
 };
 
-static void MenuScreen_draw(struct Screen *self) {
+static void MenuScreen_draw(struct Screen *self, AppState *as) {
+  (void)as;
   struct MenuScreen *menu = (struct MenuScreen *)self;
   printf("MenuScreen: %s\n", menu->title);
 }
 
-static void MenuScreen_cleanup(struct Screen *self) {
+static void MenuScreen_cleanup(struct Screen *self, AppState *as) {
+  (void)as;
   struct MenuScreen *menu = (struct MenuScreen *)self;
   printf("Cleaning up MenuScreen\n");
   free(menu);

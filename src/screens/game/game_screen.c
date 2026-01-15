@@ -7,12 +7,14 @@ struct GameScreen {
   int score;
 };
 
-static void GameScreen_draw(struct Screen *self) {
+static void GameScreen_draw(struct Screen *self, AppState *as) {
+  (void)as;
   struct GameScreen *game = (struct GameScreen *)self;
   printf("GameScreen: Score = %d\n", game->score);
 }
 
-static void GameScreen_cleanup(struct Screen *self) {
+static void GameScreen_cleanup(struct Screen *self, AppState *as) {
+  (void)as;
   struct GameScreen *game = (struct GameScreen *)self;
   printf("Cleaning up GameScreen\n");
   free(game);

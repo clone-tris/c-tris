@@ -70,7 +70,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   if (event->type == SDL_EVENT_KEY_DOWN &&
       event->key.scancode == SDL_SCANCODE_P) {
 
-    as->screen->vtable->draw(as->screen);
+    as->screen->vtable->draw(as->screen, as);
 
     return SDL_APP_CONTINUE;
   }
@@ -78,7 +78,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   if (event->type == SDL_EVENT_KEY_DOWN &&
       event->key.scancode == SDL_SCANCODE_G) {
 
-    as->screen->vtable->cleanup(as->screen);
+    as->screen->vtable->cleanup(as->screen, as);
     as->screen = GameScreen_create();
 
     return SDL_APP_CONTINUE;
@@ -87,7 +87,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   if (event->type == SDL_EVENT_KEY_DOWN &&
       event->key.scancode == SDL_SCANCODE_M) {
 
-    as->screen->vtable->cleanup(as->screen);
+    as->screen->vtable->cleanup(as->screen, as);
     as->screen = MenuScreen_create();
 
     return SDL_APP_CONTINUE;
@@ -103,7 +103,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   (void)result;
   AppState *as = (AppState *)appstate;
-  as->screen->vtable->cleanup(as->screen);
+  as->screen->vtable->cleanup(as->screen, as);
   SDL_DestroyRenderer(as->renderer);
   SDL_DestroyWindow(as->window);
   SDL_free(as);
