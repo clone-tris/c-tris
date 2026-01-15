@@ -1,4 +1,5 @@
 #include "SDL3/SDL_render.h"
+#include "SDL3/SDL_scancode.h"
 #include "SDL3/SDL_video.h"
 #include <stdio.h>
 #define SDL_MAIN_USE_CALLBACKS 1
@@ -55,8 +56,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
   SDL_SetRenderDrawColor(as->renderer, 0, 0, 0, 255);
   SDL_RenderClear(as->renderer);
 
-  as->screen->vtable->draw(as->screen);
-
   SDL_SetRenderDrawColor(as->renderer, 69, 69 * 2, 69 * 3, 255);
   SDL_FRect rect = {
     (float)2 * (float)SQUARE_WIDTH,
@@ -72,8 +71,36 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 }
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
-  (void)appstate;
-  if (event->type == SDL_EVENT_QUIT || event->type == SDL_EVENT_KEY_DOWN) {
+  AppState *as = (AppState *)appstate;
+
+  if (event->type == SDL_EVENT_KEY_DOWN &&
+      event->key.scancode == SDL_SCANCODE_P) {
+
+    as->screen->vtable->draw(as->screen);
+
+    return SDL_APP_CONTINUE;
+  }
+
+  if (event->type == SDL_EVENT_KEY_DOWN &&
+      event->key.scancode == SDL_SCANCODE_G) {
+
+    as->screen->vtable->cleanup(as->screen);
+    as->screen = GameScreen_create();
+
+    return SDL_APP_CONTINUE;
+  }
+
+  if (event->type == SDL_EVENT_KEY_DOWN &&
+      event->key.scancode == SDL_SCANCODE_M) {
+
+    as->screen->vtable->cleanup(as->screen);
+    as->screen = MenuScreen_create();
+
+    return SDL_APP_CONTINUE;
+  }
+
+  if (event->type == SDL_EVENT_KEY_DOWN &&
+      event->key.scancode == SDL_SCANCODE_Q) {
     return SDL_APP_SUCCESS;
   }
   return SDL_APP_CONTINUE;
