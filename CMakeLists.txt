@@ -29,7 +29,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL3)
 set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
-add_executable(${PROJECT_NAME} src/main.c)
+add_executable(${PROJECT_NAME}
+    src/main.c
+    src/screens/game/game_screen.c
+    src/screens/menu/menu_screen.c
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)

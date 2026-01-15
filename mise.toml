@@ -1,15 +1,10 @@
-[tasks.config.env]
+[env]
 CC = "clang"
 CMAKE_GENERATOR = "Ninja"
 CMAKE_RC_COMPILER = "llvm-rc"
-CMAKE_BUILD_TYPE = "Debug"
-CMAKE_C_COMPILER = "clang"
-CMAKE_C_FLAGS = "-march=native -Wall -Wextra -Wpedantic"
-CMAKE_EXPORT_COMPILE_COMMANDS = "ON"
-CMAKE_BUILD_PARALLEL_LEVEL = "8"
 
 [tasks.config]
-run = "cmake -B build"
+run = 'cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_C_FLAGS="-march=native -Wall -Wextra -Wpedantic" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 
 [tasks.build]
 quiet = true
