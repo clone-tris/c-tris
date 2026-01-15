@@ -1,23 +1,17 @@
-#include "SDL3/SDL_render.h"
-#include "SDL3/SDL_scancode.h"
-#include "SDL3/SDL_video.h"
-#include <stdio.h>
 #define SDL_MAIN_USE_CALLBACKS 1
+//
 #include "config.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
+#include "SDL3/SDL_render.h"
+#include "SDL3/SDL_scancode.h"
+#include "SDL3/SDL_video.h"
+#include "engine/app.h"
 #include "engine/screen.h"
 #include "screens/game/game_screen.h"
 #include "screens/menu/menu_screen.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <time.h>
-
-typedef struct AppState {
-  SDL_Window *window;
-  SDL_Renderer *renderer;
-  struct Screen *screen;
-} AppState;
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
   (void)argc;
