@@ -1,4 +1,5 @@
 #include "game_screen.h"
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,8 +10,21 @@ struct GameScreen {
 
 static void GameScreen_draw(struct Screen *self, AppState *as) {
   (void)as;
-  struct GameScreen *game = (struct GameScreen *)self;
-  printf("GameScreen: Score = %d\n", game->score);
+  (void)self;
+
+  SDL_SetRenderDrawColor(as->renderer, 0, 0, 0, 255);
+  SDL_RenderClear(as->renderer);
+
+  SDL_SetRenderDrawColor(as->renderer, 69 * 1, 69 * 3, 69 * 1, 255);
+  SDL_FRect rect = {
+    (float)5 * (float)SQUARE_WIDTH,
+    (float)6 * (float)SQUARE_WIDTH,
+    (float)SQUARE_WIDTH * 3,
+    (float)SQUARE_WIDTH * 2
+  };
+  SDL_RenderFillRect(as->renderer, &rect);
+
+  SDL_RenderPresent(as->renderer);
 }
 
 static void GameScreen_cleanup(struct Screen *self, AppState *as) {

@@ -47,19 +47,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
   AppState *as = (AppState *)appstate;
 
-  SDL_SetRenderDrawColor(as->renderer, 0, 0, 0, 255);
-  SDL_RenderClear(as->renderer);
-
-  SDL_SetRenderDrawColor(as->renderer, 69, 69 * 2, 69 * 3, 255);
-  SDL_FRect rect = {
-    (float)2 * (float)SQUARE_WIDTH,
-    (float)2 * (float)SQUARE_WIDTH,
-    (float)SQUARE_WIDTH,
-    (float)SQUARE_WIDTH
-  };
-  SDL_RenderFillRect(as->renderer, &rect);
-
-  SDL_RenderPresent(as->renderer);
+  as->screen->vtable->draw(as->screen, as);
 
   return SDL_APP_CONTINUE;
 }
