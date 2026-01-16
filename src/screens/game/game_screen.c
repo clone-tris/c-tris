@@ -1,9 +1,7 @@
 #include "game_screen.h"
-#include "colors.h"
 #include "config.h"
-#include "SDL3/SDL_render.h"
 #include "SDL3/SDL_stdinc.h"
-#include "engine/app.h"
+#include "engine/painter.h"
 #include "engine/screen.h"
 #include <stdio.h>
 
@@ -14,11 +12,6 @@ static const SDL_FRect PLAYFIELD_RECT = {
 struct GameScreen {
   struct Screen screen;
 };
-
-void drawGuide(const SDL_FRect *rect) {
-  App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
-  SDL_RenderFillRect(App_renderer, rect);
-}
 
 static void GameScreen_draw(struct Screen *self) {
   (void)self;
