@@ -22,7 +22,7 @@ typedef struct GameScreen {
 static void GameScreen_draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   drawGuide(&PLAYFIELD_RECT);
-  drawSquares(&self->player, &PLAYFIELD_REF);
+  drawShape(&self->player, &PLAYFIELD_REF);
 }
 
 static void GameScreen_cleanup(Screen *self) {

@@ -24,13 +24,13 @@ void drawGuide(const SDL_FRect *rect) {
   }
 }
 
-void drawSquares(const Shape *shape, const SDL_Point *ref) {
-  for (int i = 0; i < 4; i++) {
-    Square s = shape->squares[i];
-    App_SetRenderDrawColor(App_renderer, s.color);
+void drawSquares(const Square *squares, int size, const SDL_Point *ref) {
+  for (int i = 0; i < size; i++) {
+    Square square = squares[i];
+    App_SetRenderDrawColor(App_renderer, square.color);
 
-    const int x = ref->x + ((shape->column + s.column) * SQUARE_WIDTH);
-    const int y = ref->y + ((shape->row + s.row) * SQUARE_WIDTH);
+    const int x = ref->x + (square.column * SQUARE_WIDTH);
+    const int y = ref->y + (square.row * SQUARE_WIDTH);
 
     SDL_RenderFillRect(
       App_renderer,
@@ -42,4 +42,17 @@ void drawSquares(const Shape *shape, const SDL_Point *ref) {
       }
     );
   }
+}
+
+void drawShape(const Shape *shape, const SDL_Point *ref) {
+  // clang-format off
+  drawSquares(
+    shape->squares,
+    4,
+    &(SDL_Point){
+      .x = ref->x + (shape->column * SQUARE_WIDTH),
+      .y = ref->y + (shape->row * SQUARE_WIDTH),
+    }
+  );
+  // clang-format on
 }
