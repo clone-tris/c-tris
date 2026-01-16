@@ -7,6 +7,7 @@
 #include "SDL3/SDL_stdinc.h"
 #include "engine/painter.h"
 #include "engine/screen.h"
+#include "screens/game/components/shape.h"
 #include "screens/game/components/square.h"
 #include <stdio.h>
 
@@ -18,22 +19,34 @@ static const SDL_Point PLAYFIELD_REF = {.x = SIDEBAR_WIDTH, .y = 0};
 
 typedef struct GameScreen {
   Screen screen;
-  Square s;
+  Shape player;
 } GameScreen;
+
+void drawShape(Shape *shape) {
+  for (int i = 0; i < 4; i++) {
+    Square s = shape->squares[i];
+    App_SetRenderDrawColor(App_renderer, s.color);
+
+    const int x = PLAYFIELD_REF.x + ((shape->column + s.column) * SQUARE_WIDTH);
+    const int y = PLAYFIELD_REF.y + ((shape->row + s.row) * SQUARE_WIDTH);
+
+    SDL_RenderFillRect(
+      App_renderer,
+      &(SDL_FRect){
+        .w = (float)SQUARE_WIDTH,
+        .h = (float)SQUARE_WIDTH,
+        .x = (float)x,
+        .y = (float)y,
+      }
+    );
+  }
+}
 
 static void GameScreen_draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   drawGuide(&PLAYFIELD_RECT);
 
-  App_SetRenderDrawColor(App_renderer, self->s.color);
-  const SDL_FRect squareRect = (SDL_FRect){
-    .w = (float)SQUARE_WIDTH,
-    .h = (float)SQUARE_WIDTH,
-    .x = (float)((self->s.column * SQUARE_WIDTH) + PLAYFIELD_REF.x),
-    .y = (float)((self->s.row * SQUARE_WIDTH) + PLAYFIELD_REF.y),
-  };
-
-  SDL_RenderFillRect(App_renderer, &squareRect);
+  drawShape(&self->player);
 }
 
 static void GameScreen_cleanup(Screen *self) {
@@ -52,8 +65,20 @@ static const ScreenVTable GameScreen_vtable = {
 
 Screen *GameScreen_create(void) {
   GameScreen *game = SDL_calloc(1, sizeof(GameScreen));
-
-  game->s = (Square){.row = 4, .column = 7, .color = TETROMINO_ORANGE};
+  // clang-format off
+  game->player = (Shape){
+    .row = 2,
+    .column = 2,
+    .width = 0,
+    .height = 0,
+    .squares = {
+      {.row = 0, .column = 0, .color = TETROMINO_CYAN},
+      {.row = 0, .column = 1, .color = TETROMINO_ORANGE},
+      {.row = 1, .column = 0, .color = TETROMINO_GREEN},
+      {.row = 1, .column = 1, .color = TETROMINO_BLUE},
+    }
+  };
+  // clang-format on
 
   game->screen.vtable = &GameScreen_vtable;
   return (Screen *)game;
