@@ -1,3 +1,4 @@
+#include <stdio.h>
 #define SDL_MAIN_USE_CALLBACKS 1
 //
 #include "config.h"
@@ -52,42 +53,40 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
   as->screen->vtable->draw(as->screen);
 
+  SDL_RenderPresent(App_renderer);
+
   return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   AppState *as = (AppState *)appstate;
+  // TODO: check screen implements key_down
+  // TODO: delegate key down event to screen
 
-  if (event->type == SDL_EVENT_KEY_DOWN &&
-      event->key.scancode == SDL_SCANCODE_P) {
+  if (event->type == SDL_EVENT_KEY_DOWN) {
+    if (as->screen->vtable->key_down) {
+      as->screen->vtable->key_down(as->screen, event->key.scancode);
+    }
 
-    as->screen->vtable->draw(as->screen);
+    switch (event->key.scancode) {
+      case SDL_SCANCODE_G:
+        as->screen->vtable->cleanup(as->screen);
+        as->screen = GameScreen_create();
+        return SDL_APP_CONTINUE;
 
-    return SDL_APP_CONTINUE;
+      case SDL_SCANCODE_M:
+        as->screen->vtable->cleanup(as->screen);
+        as->screen = MenuScreen_create();
+        return SDL_APP_CONTINUE;
+
+      case SDL_SCANCODE_Q:
+        return SDL_APP_SUCCESS;
+
+      default:
+        break;
+    }
   }
 
-  if (event->type == SDL_EVENT_KEY_DOWN &&
-      event->key.scancode == SDL_SCANCODE_G) {
-
-    as->screen->vtable->cleanup(as->screen);
-    as->screen = GameScreen_create();
-
-    return SDL_APP_CONTINUE;
-  }
-
-  if (event->type == SDL_EVENT_KEY_DOWN &&
-      event->key.scancode == SDL_SCANCODE_M) {
-
-    as->screen->vtable->cleanup(as->screen);
-    as->screen = MenuScreen_create();
-
-    return SDL_APP_CONTINUE;
-  }
-
-  if (event->type == SDL_EVENT_KEY_DOWN &&
-      event->key.scancode == SDL_SCANCODE_Q) {
-    return SDL_APP_SUCCESS;
-  }
   return SDL_APP_CONTINUE;
 }
 

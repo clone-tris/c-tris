@@ -1,10 +1,10 @@
 #include "game_screen.h"
 #include "config.h"
 #include "SDL3/SDL_render.h"
+#include "SDL3/SDL_stdinc.h"
 #include "engine/app.h"
 #include "engine/screen.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 struct GameScreen {
   struct Screen screen;
@@ -25,23 +25,24 @@ static void GameScreen_draw(struct Screen *self) {
     (float)SQUARE_WIDTH * 2
   };
   SDL_RenderFillRect(App_renderer, &rect);
-
-  SDL_RenderPresent(App_renderer);
 }
 
 static void GameScreen_cleanup(struct Screen *self) {
   struct GameScreen *game = (struct GameScreen *)self;
   printf("Cleaning up GameScreen\n");
-  free(game);
+  SDL_free(game);
 }
 
 static const struct ScreenVTable GameScreen_vtable = {
   .draw = GameScreen_draw,
+  .update = nullptr,
+  .key_down = nullptr,
+  .mouse_button_up = nullptr,
   .cleanup = GameScreen_cleanup,
 };
 
 struct Screen *GameScreen_create(void) {
-  struct GameScreen *game = malloc(sizeof(struct GameScreen));
+  struct GameScreen *game = SDL_calloc(1, sizeof(struct GameScreen));
   game->screen.vtable = &GameScreen_vtable;
   game->score = 42;
   return (struct Screen *)game;
