@@ -2,4 +2,4 @@
 
 #include "engine/screen.h"
 
-struct Screen *GameScreen_create(void);
+Screen *GameScreen_create(void);

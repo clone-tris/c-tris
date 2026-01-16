@@ -6,14 +6,14 @@
 #include "engine/screen.h"
 #include <stdio.h>
 
-struct MenuScreen {
-  struct Screen screen;
+typedef struct MenuScreen {
+  Screen screen;
   int x;
   int y;
-};
+} MenuScreen;
 
-static void MenuScreen_draw(struct Screen *screen) {
-  struct MenuScreen *self = (struct MenuScreen *)screen;
+static void MenuScreen_draw(Screen *screen) {
+  MenuScreen *self = (MenuScreen *)screen;
 
   SDL_SetRenderDrawColor(App_renderer, 0, 0, 0, 255);
   SDL_RenderClear(App_renderer);
@@ -28,8 +28,8 @@ static void MenuScreen_draw(struct Screen *screen) {
   SDL_RenderFillRect(App_renderer, &rect);
 }
 
-static void keyDown(struct Screen *screen, SDL_Scancode scancode) {
-  struct MenuScreen *self = (struct MenuScreen *)screen;
+static void keyDown(Screen *screen, SDL_Scancode scancode) {
+  MenuScreen *self = (MenuScreen *)screen;
   switch (scancode) {
     case SDL_SCANCODE_D:
       self->x += 1;
@@ -48,13 +48,13 @@ static void keyDown(struct Screen *screen, SDL_Scancode scancode) {
   }
 }
 
-static void MenuScreen_cleanup(struct Screen *screen) {
-  struct MenuScreen *self = (struct MenuScreen *)screen;
+static void MenuScreen_cleanup(Screen *screen) {
+  MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
   SDL_free(self);
 }
 
-static const struct ScreenVTable MenuScreen_vtable = {
+static const ScreenVTable MenuScreen_vtable = {
   .draw = MenuScreen_draw,
   .update = nullptr,
   .keyDown = keyDown,
@@ -62,10 +62,10 @@ static const struct ScreenVTable MenuScreen_vtable = {
   .cleanup = MenuScreen_cleanup,
 };
 
-struct Screen *MenuScreen_create(void) {
-  struct MenuScreen *self = SDL_calloc(1, sizeof(struct MenuScreen));
+Screen *MenuScreen_create(void) {
+  MenuScreen *self = SDL_calloc(1, sizeof(MenuScreen));
   self->screen.vtable = &MenuScreen_vtable;
   self->x = 0;
   self->y = 0;
-  return (struct Screen *)self;
+  return (Screen *)self;
 }
