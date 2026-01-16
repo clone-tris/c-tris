@@ -9,8 +9,8 @@ void drawGuide(const SDL_FRect *rect) {
 
   App_SetRenderDrawColor(App_renderer, UI_GUIDE);
 
-  const auto rows = (int)(rect->h / (float)SQUARE_WIDTH);
-  const auto columns = (int)(rect->w / (float)SQUARE_WIDTH);
+  const int rows = (int)(rect->h / (float)SQUARE_WIDTH);
+  const int columns = (int)(rect->w / (float)SQUARE_WIDTH);
 
   for (int i = 0; i < rows + 1; i++) {
     const auto lineY = rect->y + (float)(i * SQUARE_WIDTH);
