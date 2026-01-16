@@ -1,4 +1,5 @@
 #include "game_screen.h"
+#include "colors.h"
 #include "config.h"
 #include "SDL3/SDL_render.h"
 #include "SDL3/SDL_stdinc.h"
@@ -6,24 +7,23 @@
 #include "engine/screen.h"
 #include <stdio.h>
 
+static const SDL_FRect PLAYFIELD_RECT = {
+  (float)SIDEBAR_WIDTH, (float)0, (float)WAR_ZONE_WIDTH, (float)CANVAS_HEIGHT
+};
+
 struct GameScreen {
   struct Screen screen;
 };
 
+void drawGuide(const SDL_FRect *rect) {
+  App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
+  SDL_RenderFillRect(App_renderer, rect);
+}
+
 static void GameScreen_draw(struct Screen *self) {
   (void)self;
 
-  SDL_SetRenderDrawColor(App_renderer, 0, 0, 0, 255);
-  SDL_RenderClear(App_renderer);
-
-  SDL_SetRenderDrawColor(App_renderer, 69 * 1, 69 * 3, 69 * 1, 255);
-  SDL_FRect rect = {
-    (float)5 * (float)SQUARE_WIDTH,
-    (float)6 * (float)SQUARE_WIDTH,
-    (float)SQUARE_WIDTH * 3,
-    (float)SQUARE_WIDTH * 2
-  };
-  SDL_RenderFillRect(App_renderer, &rect);
+  drawGuide(&PLAYFIELD_RECT);
 }
 
 static void GameScreen_cleanup(struct Screen *self) {

@@ -30,5 +30,5 @@ typedef enum UiColor {
   UI_BUTTON_TEXT = 0x212121FF,
 } UiColor;
 
-void Color_SetRenderDrawColor(SDL_Renderer*, Uint32);
+void App_SetRenderDrawColor(SDL_Renderer*, Uint32);
 

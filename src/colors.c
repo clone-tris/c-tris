@@ -1,6 +1,6 @@
 #include "colors.h"
 
-void Color_SetRenderDrawColor(SDL_Renderer *renderer, Uint32 color) {
+void App_SetRenderDrawColor(SDL_Renderer *renderer, Uint32 color) {
   Uint8 r = (color >> 24) & 0xFF;
   Uint8 g = (color >> 16) & 0xFF;
   Uint8 b = (color >> 8) & 0xFF;
