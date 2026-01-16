@@ -5,8 +5,8 @@
 struct Screen;
 
 struct ScreenVTable {
-  void (*draw)(struct Screen *self, AppState* as);
-  void (*cleanup)(struct Screen *self, AppState* as);
+  void (*draw)(struct Screen *self);
+  void (*cleanup)(struct Screen *self);
 };
 
 struct Screen {

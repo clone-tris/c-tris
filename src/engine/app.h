@@ -3,7 +3,8 @@
 #include "SDL3/SDL_video.h"
 
 typedef struct AppState {
-  SDL_Window *window;
-  SDL_Renderer *renderer;
   struct Screen *screen;
 } AppState;
+
+extern SDL_Window *App_window;
+extern SDL_Renderer *App_renderer;
