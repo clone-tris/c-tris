@@ -1,3 +1,4 @@
+#pragma once
 
 #include "screens/game/components/square.h"
 #include <stdint.h>

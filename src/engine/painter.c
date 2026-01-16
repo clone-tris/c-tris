@@ -2,6 +2,7 @@
 #include "colors.h"
 #include "config.h"
 #include "SDL3/SDL_rect.h"
+#include "screens/game/components/shape.h"
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
@@ -20,5 +21,25 @@ void drawGuide(const SDL_FRect *rect) {
   for (int i = 0; i < columns + 1; i++) {
     const auto lineX = rect->x + (float)(i * SQUARE_WIDTH);
     SDL_RenderLine(App_renderer, lineX, rect->y, lineX, rect->y + rect->h);
+  }
+}
+
+void drawSquares(const Shape *shape, const SDL_Point *ref) {
+  for (int i = 0; i < 4; i++) {
+    Square s = shape->squares[i];
+    App_SetRenderDrawColor(App_renderer, s.color);
+
+    const int x = ref->x + ((shape->column + s.column) * SQUARE_WIDTH);
+    const int y = ref->y + ((shape->row + s.row) * SQUARE_WIDTH);
+
+    SDL_RenderFillRect(
+      App_renderer,
+      &(SDL_FRect){
+        .w = (float)SQUARE_WIDTH,
+        .h = (float)SQUARE_WIDTH,
+        .x = (float)x,
+        .y = (float)y,
+      }
+    );
   }
 }

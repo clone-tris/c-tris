@@ -1,14 +1,11 @@
 #include "game_screen.h"
-#include "app.h"
 #include "colors.h"
 #include "config.h"
 #include "SDL3/SDL_rect.h"
-#include "SDL3/SDL_render.h"
 #include "SDL3/SDL_stdinc.h"
 #include "engine/painter.h"
 #include "engine/screen.h"
 #include "screens/game/components/shape.h"
-#include "screens/game/components/square.h"
 #include <stdio.h>
 
 static const SDL_FRect PLAYFIELD_RECT = {
@@ -22,31 +19,10 @@ typedef struct GameScreen {
   Shape player;
 } GameScreen;
 
-void drawShape(Shape *shape) {
-  for (int i = 0; i < 4; i++) {
-    Square s = shape->squares[i];
-    App_SetRenderDrawColor(App_renderer, s.color);
-
-    const int x = PLAYFIELD_REF.x + ((shape->column + s.column) * SQUARE_WIDTH);
-    const int y = PLAYFIELD_REF.y + ((shape->row + s.row) * SQUARE_WIDTH);
-
-    SDL_RenderFillRect(
-      App_renderer,
-      &(SDL_FRect){
-        .w = (float)SQUARE_WIDTH,
-        .h = (float)SQUARE_WIDTH,
-        .x = (float)x,
-        .y = (float)y,
-      }
-    );
-  }
-}
-
 static void GameScreen_draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   drawGuide(&PLAYFIELD_RECT);
-
-  drawShape(&self->player);
+  drawSquares(&self->player, &PLAYFIELD_REF);
 }
 
 static void GameScreen_cleanup(Screen *self) {
