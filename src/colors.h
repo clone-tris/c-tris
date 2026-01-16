@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-typedef enum {
+typedef enum TetrominoColor{
   TETROMINO_CYAN = 0x00F0F0FF,
   TETROMINO_BLUE = 0x0000F0FF,
   TETROMINO_ORANGE = 0xF0A000FF,
@@ -12,7 +12,7 @@ typedef enum {
   TETROMINO_RED = 0xF00000FF,
 } TetrominoColor;
 
-typedef enum {
+typedef enum SquareColor {
   SQUARE_DEFAULT = 0xCC8081FF,
   SQUARE_BORDER_TOP = 0xFFFFFF99,
   SQUARE_BORDER_BOTTOM = 0x00000080,
@@ -30,5 +30,5 @@ typedef enum UiColor {
   UI_BUTTON_TEXT = 0x212121FF,
 } UiColor;
 
-void Color_SetRenderDrawColor(SDL_Renderer *renderer, Uint32 color);
+void Color_SetRenderDrawColor(SDL_Renderer*, Uint32);
 
