@@ -31,6 +31,7 @@ set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
 add_executable(${PROJECT_NAME}
     src/main.c
+    src/colors.c
     src/screens/game/game_screen.c
     src/screens/menu/menu_screen.c
 )
