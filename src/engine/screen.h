@@ -1,7 +1,5 @@
 #pragma once
 
-#include "app.h"
-
 struct Screen;
 
 struct ScreenVTable {
@@ -12,4 +10,3 @@ struct ScreenVTable {
 struct Screen {
   const struct ScreenVTable *vtable;
 };
-
