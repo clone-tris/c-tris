@@ -5,4 +5,3 @@ typedef struct Square {
   int32_t row;
   int32_t column;
 } Square;
-

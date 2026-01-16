@@ -1,4 +1,3 @@
-#include <stdio.h>
 #define SDL_MAIN_USE_CALLBACKS 1
 //
 #include "config.h"
