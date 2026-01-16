@@ -35,7 +35,7 @@ static void GameScreen_cleanup(struct Screen *self) {
 static const struct ScreenVTable GameScreen_vtable = {
   .draw = GameScreen_draw,
   .update = nullptr,
-  .key_down = nullptr,
+  .keyDown = nullptr,
   .mouse_button_up = nullptr,
   .cleanup = GameScreen_cleanup,
 };

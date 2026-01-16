@@ -6,7 +6,7 @@ struct Screen;
 struct ScreenVTable {
   void (*draw)(struct Screen *);
   void (*update)(struct Screen *);
-  void (*key_down)(struct Screen *, SDL_Scancode);
+  void (*keyDown)(struct Screen *, SDL_Scancode);
   void (*mouse_button_up)(struct Screen *);
   void (*cleanup)(struct Screen *);
 };

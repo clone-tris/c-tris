@@ -61,8 +61,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   AppState *as = (AppState *)appstate;
   if (event->type == SDL_EVENT_KEY_DOWN) {
-    if (as->screen->vtable->key_down) {
-      as->screen->vtable->key_down(as->screen, event->key.scancode);
+    if (as->screen->vtable->keyDown) {
+      as->screen->vtable->keyDown(as->screen, event->key.scancode);
     }
 
     switch (event->key.scancode) {

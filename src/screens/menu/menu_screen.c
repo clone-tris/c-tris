@@ -28,7 +28,7 @@ static void MenuScreen_draw(struct Screen *screen) {
   SDL_RenderFillRect(App_renderer, &rect);
 }
 
-static void key_down(struct Screen *screen, SDL_Scancode scancode) {
+static void keyDown(struct Screen *screen, SDL_Scancode scancode) {
   struct MenuScreen *self = (struct MenuScreen *)screen;
   switch (scancode) {
     case SDL_SCANCODE_D:
@@ -57,7 +57,7 @@ static void MenuScreen_cleanup(struct Screen *screen) {
 static const struct ScreenVTable MenuScreen_vtable = {
   .draw = MenuScreen_draw,
   .update = nullptr,
-  .key_down = key_down,
+  .keyDown = keyDown,
   .mouse_button_up = nullptr,
   .cleanup = MenuScreen_cleanup,
 };
