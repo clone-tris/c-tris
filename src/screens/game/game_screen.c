@@ -8,7 +8,6 @@
 
 struct GameScreen {
   struct Screen screen;
-  int score;
 };
 
 static void GameScreen_draw(struct Screen *self) {
@@ -44,6 +43,5 @@ static const struct ScreenVTable GameScreen_vtable = {
 struct Screen *GameScreen_create(void) {
   struct GameScreen *game = SDL_calloc(1, sizeof(struct GameScreen));
   game->screen.vtable = &GameScreen_vtable;
-  game->score = 42;
   return (struct Screen *)game;
 }

@@ -43,7 +43,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  as->screen = MenuScreen_create();
+  as->screen = GameScreen_create();
 
   return SDL_APP_CONTINUE;
 }
@@ -60,9 +60,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   AppState *as = (AppState *)appstate;
-  // TODO: check screen implements key_down
-  // TODO: delegate key down event to screen
-
   if (event->type == SDL_EVENT_KEY_DOWN) {
     if (as->screen->vtable->key_down) {
       as->screen->vtable->key_down(as->screen, event->key.scancode);
