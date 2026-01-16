@@ -1,5 +1,6 @@
 BasedOnStyle: LLVM 
 AllowShortFunctionsOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Always
 AllowAllParametersOfDeclarationOnNextLine: true
 AlignConsecutiveMacros: false
@@ -7,6 +8,7 @@ AlignEscapedNewlines: DontAlign
 AlignAfterOpenBracket: BlockIndent
 AlignOperands: false
 AlignTrailingComments: false
+AlignArrayOfStructures: None
 BinPackArguments: false
 BinPackParameters: false
 BreakStringLiterals: false

@@ -9,3 +9,8 @@ typedef struct AppState {
 
 extern SDL_Window *App_window;
 extern SDL_Renderer *App_renderer;
+
+typedef struct Cell {
+  int row;
+  int column;
+} Cell;

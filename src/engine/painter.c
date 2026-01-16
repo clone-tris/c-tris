@@ -1,7 +1,7 @@
+#include "app.h"
 #include "colors.h"
 #include "config.h"
 #include "SDL3/SDL_rect.h"
-#include "engine/app.h"
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
