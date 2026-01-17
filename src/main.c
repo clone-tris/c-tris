@@ -1,7 +1,9 @@
+#define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //
 #include "app.h"
 #include "config.h"
+#include "stb_ds.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"

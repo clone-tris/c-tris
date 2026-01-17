@@ -1,6 +1,8 @@
+//
 #include "game_screen.h"
 #include "colors.h"
 #include "config.h"
+#include "stb_ds.h"
 #include "SDL3/SDL_rect.h"
 #include "SDL3/SDL_stdinc.h"
 #include "engine/painter.h"
@@ -30,15 +32,27 @@ Screen *GameScreen_create(void) {
     .row = 2,
     .column = 2,
     .width = 0,
-    .height = 0,
-    .squares = {
-      {.row = 0, .column = 0, .color = TETROMINO_CYAN},
-      {.row = 0, .column = 1, .color = TETROMINO_ORANGE},
-      {.row = 1, .column = 0, .color = TETROMINO_GREEN},
-      {.row = 1, .column = 1, .color = TETROMINO_BLUE},
-    }
+    .height = 0, 
   };
   // clang-format on
+
+  arrput(
+    game->player.squares,
+    ((Square){.row = 1, .column = 1, .color = TETROMINO_BLUE})
+  );
+
+  arrput(
+    game->player.squares,
+    ((Square){.row = 0, .column = 1, .color = TETROMINO_CYAN})
+  );
+  arrput(
+    game->player.squares,
+    ((Square){.row = 1, .column = 0, .color = TETROMINO_PURPLE})
+  );
+  arrput(
+    game->player.squares,
+    ((Square){.row = 0, .column = 0, .color = TETROMINO_ORANGE})
+  );
 
   game->screen.vtable = &GameScreen_vtable;
   return (Screen *)game;

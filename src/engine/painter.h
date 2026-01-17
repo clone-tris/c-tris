@@ -6,4 +6,4 @@
 
 void drawGuide(const SDL_FRect *);
 void drawShape(const Shape *, const SDL_Point *);
-void drawSquares(const Square *, int, const SDL_Point *);
+void drawSquares(const Square *, const SDL_Point *);

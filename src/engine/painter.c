@@ -1,6 +1,7 @@
 #include "app.h"
 #include "colors.h"
 #include "config.h"
+#include "stb_ds.h"
 #include "SDL3/SDL_rect.h"
 #include "screens/game/components/shape.h"
 
@@ -24,8 +25,8 @@ void drawGuide(const SDL_FRect *rect) {
   }
 }
 
-void drawSquares(const Square *squares, int size, const SDL_Point *ref) {
-  for (int i = 0; i < size; i++) {
+void drawSquares(const Square *squares, const SDL_Point *ref) {
+  for (int i = 0; i < arrlen(squares); i++) {
     Square square = squares[i];
     App_SetRenderDrawColor(App_renderer, square.color);
 
@@ -48,7 +49,6 @@ void drawShape(const Shape *shape, const SDL_Point *ref) {
   // clang-format off
   drawSquares(
     shape->squares,
-    4,
     &(SDL_Point){
       .x = ref->x + (shape->column * SQUARE_WIDTH),
       .y = ref->y + (shape->row * SQUARE_WIDTH),
