@@ -1,4 +1,3 @@
-//
 #include "game_screen.h"
 #include "colors.h"
 #include "config.h"
