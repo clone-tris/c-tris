@@ -1,5 +1,4 @@
 #include "game_screen.h"
-#include "colors.h"
 #include "config.h"
 #include "stb_ds.h"
 #include "SDL3/SDL_rect.h"
@@ -7,6 +6,7 @@
 #include "engine/painter.h"
 #include "engine/screen.h"
 #include "screens/game/components/shape.h"
+#include "screens/game/components/tetromino.h"
 #include <stdio.h>
 
 static void GameScreen_draw(Screen *screen);
@@ -26,33 +26,7 @@ typedef struct GameScreen {
 
 Screen *GameScreen_create(void) {
   GameScreen *game = SDL_calloc(1, sizeof(GameScreen));
-  // clang-format off
-  game->player = (Shape){
-    .row = 2,
-    .column = 2,
-    .width = 0,
-    .height = 0, 
-  };
-  // clang-format on
-
-  arrput(
-    game->player.squares,
-    ((Square){.row = 1, .column = 1, .color = TETROMINO_BLUE})
-  );
-
-  arrput(
-    game->player.squares,
-    ((Square){.row = 0, .column = 1, .color = TETROMINO_CYAN})
-  );
-  arrput(
-    game->player.squares,
-    ((Square){.row = 1, .column = 0, .color = TETROMINO_PURPLE})
-  );
-  arrput(
-    game->player.squares,
-    ((Square){.row = 0, .column = 0, .color = TETROMINO_ORANGE})
-  );
-
+  game->player = Tetromino_random();
   game->screen.vtable = &GameScreen_vtable;
   return (Screen *)game;
 }
@@ -66,6 +40,7 @@ static void GameScreen_draw(Screen *screen) {
 static void GameScreen_cleanup(Screen *self) {
   GameScreen *game = (GameScreen *)self;
   printf("Cleaning up GameScreen\n");
+  arrfree(game->player.squares);
   SDL_free(game);
 }
 

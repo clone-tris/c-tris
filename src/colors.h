@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <stdint.h>
 
-typedef enum TetrominoColor {
+typedef enum TetrominoColor : uint32_t {
   TETROMINO_CYAN = 0x00F0F0FF,
   TETROMINO_BLUE = 0x0000F0FF,
   TETROMINO_ORANGE = 0xF0A000FF,
@@ -12,14 +13,14 @@ typedef enum TetrominoColor {
   TETROMINO_RED = 0xF00000FF,
 } TetrominoColor;
 
-typedef enum SquareColor {
+typedef enum SquareColor : uint32_t {
   SQUARE_DEFAULT = 0xCC8081FF,
   SQUARE_BORDER_TOP = 0xFFFFFF99,
   SQUARE_BORDER_BOTTOM = 0x00000080,
   SQUARE_BORDER_SIDE = 0x0000001A,
 } SquareColor;
 
-typedef enum UiColor {
+typedef enum UiColor : uint32_t {
   UI_BACKGROUND = 0x333333FF,
   UI_SIDEBAR_BACKGROUND = 0x545454FF,
   UI_POPUP_BACKGROUND = 0x212121FF,
@@ -30,4 +31,4 @@ typedef enum UiColor {
   UI_BUTTON_TEXT = 0x212121FF,
 } UiColor;
 
-void App_SetRenderDrawColor(SDL_Renderer *, Uint32);
+void App_SetRenderDrawColor(SDL_Renderer *, uint32_t);

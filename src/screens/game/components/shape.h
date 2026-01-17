@@ -1,5 +1,6 @@
 #pragma once
 
+#include "app.h"
 #include "screens/game/components/square.h"
 #include <stdint.h>
 
@@ -10,3 +11,5 @@ typedef struct Shape {
   int32_t height;
   Square *squares;
 } Shape;
+
+Shape Shape_create(Cell, Square *);

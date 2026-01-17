@@ -45,9 +45,12 @@ FetchContent_MakeAvailable(stb)
  
 add_executable(${PROJECT_NAME}
     src/main.c
+    src/helpers.c
     src/colors.c
     src/engine/painter.c
     src/screens/game/game_screen.c
+    src/screens/game/components/shape.c
+    src/screens/game/components/square.c
     src/screens/game/components/tetromino.c
     src/screens/menu/menu_screen.c
 )

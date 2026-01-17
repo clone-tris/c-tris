@@ -14,6 +14,7 @@
 #include "screens/menu/menu_screen.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <time.h>
 
 SDL_Window *App_window = nullptr;
 SDL_Renderer *App_renderer = nullptr;
@@ -21,6 +22,8 @@ SDL_Renderer *App_renderer = nullptr;
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
   (void)argc;
   (void)argv;
+
+  srand(time(nullptr));
 
   SDL_SetAppMetadata("C-tris", "1.0", "com.clone-tris.c-tris");
 
