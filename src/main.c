@@ -1,3 +1,5 @@
+#include "helpers.h"
+#include "SDL3/SDL_stdinc.h"
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //
@@ -22,8 +24,7 @@ SDL_Renderer *App_renderer = nullptr;
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
   (void)argc;
   (void)argv;
-
-  srand(time(nullptr));
+  SDL_srand((Uint64)time(nullptr));
 
   SDL_SetAppMetadata("C-tris", "1.0", "com.clone-tris.c-tris");
 
