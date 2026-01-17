@@ -6,11 +6,23 @@
 #include "engine/screen.h"
 #include <stdio.h>
 
+static void MenuScreen_draw(Screen *screen);
+static void MenuScreen_cleanup(Screen *screen);
+static const ScreenVTable MenuScreen_vtable;
+
 typedef struct MenuScreen {
   Screen screen;
   int x;
   int y;
 } MenuScreen;
+
+Screen *MenuScreen_create(void) {
+  MenuScreen *self = SDL_calloc(1, sizeof(MenuScreen));
+  self->screen.vtable = &MenuScreen_vtable;
+  self->x = 0;
+  self->y = 0;
+  return (Screen *)self;
+}
 
 static void MenuScreen_draw(Screen *screen) {
   MenuScreen *self = (MenuScreen *)screen;
@@ -61,11 +73,3 @@ static const ScreenVTable MenuScreen_vtable = {
   .mouse_button_up = nullptr,
   .cleanup = MenuScreen_cleanup,
 };
-
-Screen *MenuScreen_create(void) {
-  MenuScreen *self = SDL_calloc(1, sizeof(MenuScreen));
-  self->screen.vtable = &MenuScreen_vtable;
-  self->x = 0;
-  self->y = 0;
-  return (Screen *)self;
-}

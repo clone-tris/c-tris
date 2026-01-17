@@ -8,6 +8,10 @@
 #include "screens/game/components/shape.h"
 #include <stdio.h>
 
+static void GameScreen_draw(Screen *screen);
+static void GameScreen_cleanup(Screen *self);
+static ScreenVTable GameScreen_vtable;
+
 static const SDL_FRect PLAYFIELD_RECT = {
   (float)SIDEBAR_WIDTH, (float)0, (float)WAR_ZONE_WIDTH, (float)CANVAS_HEIGHT
 };
@@ -18,26 +22,6 @@ typedef struct GameScreen {
   Screen screen;
   Shape player;
 } GameScreen;
-
-static void GameScreen_draw(Screen *screen) {
-  GameScreen *self = (GameScreen *)screen;
-  drawGuide(&PLAYFIELD_RECT);
-  drawShape(&self->player, &PLAYFIELD_REF);
-}
-
-static void GameScreen_cleanup(Screen *self) {
-  GameScreen *game = (GameScreen *)self;
-  printf("Cleaning up GameScreen\n");
-  SDL_free(game);
-}
-
-static const ScreenVTable GameScreen_vtable = {
-  .draw = GameScreen_draw,
-  .update = nullptr,
-  .keyDown = nullptr,
-  .mouse_button_up = nullptr,
-  .cleanup = GameScreen_cleanup,
-};
 
 Screen *GameScreen_create(void) {
   GameScreen *game = SDL_calloc(1, sizeof(GameScreen));
@@ -59,3 +43,23 @@ Screen *GameScreen_create(void) {
   game->screen.vtable = &GameScreen_vtable;
   return (Screen *)game;
 }
+
+static void GameScreen_draw(Screen *screen) {
+  GameScreen *self = (GameScreen *)screen;
+  drawGuide(&PLAYFIELD_RECT);
+  drawShape(&self->player, &PLAYFIELD_REF);
+}
+
+static void GameScreen_cleanup(Screen *self) {
+  GameScreen *game = (GameScreen *)self;
+  printf("Cleaning up GameScreen\n");
+  SDL_free(game);
+}
+
+static ScreenVTable GameScreen_vtable = {
+  .draw = GameScreen_draw,
+  .update = nullptr,
+  .keyDown = nullptr,
+  .mouse_button_up = nullptr,
+  .cleanup = GameScreen_cleanup,
+};
