@@ -1,75 +1,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Screen;
+typedef struct Screen Screen;
 
-struct ScreenVTable {
-  void (*draw)(struct Screen *self);
-  void (*cleanup)(struct Screen *self);
-};
+typedef struct ScreenVTable {
+  void (*draw)(Screen *);
+  void (*cleanup)(Screen *);
+} ScreenVTable;
 
 struct Screen {
-  const struct ScreenVTable *vtable;
+  const ScreenVTable *vtable;
 };
 
-struct MenuScreen {
-  struct Screen screen;
+static const ScreenVTable MenuScreen_vtable;
+
+typedef struct MenuScreen {
+  Screen screen;
   char *title;
-};
+} MenuScreen;
 
-struct GameScreen {
-  struct Screen screen;
-  int score;
-};
-
-static void MenuScreen_draw(struct Screen *self) {
-  struct MenuScreen *menu = (struct MenuScreen *)self;
-  printf("MenuScreen: %s\n", menu->title);
+Screen *MenuScreen_create(void) {
+  MenuScreen *self = calloc(1, sizeof(*self));
+  self->screen.vtable = &MenuScreen_vtable;
+  self->title = "Main Menu";
+  return (Screen *)self;
 }
 
-static void MenuScreen_cleanup(struct Screen *self) {
-  struct MenuScreen *menu = (struct MenuScreen *)self;
+static void MenuScreen_draw(Screen *screen) {
+  MenuScreen *self = (MenuScreen *)screen;
+  printf("MenuScreen: %s\n", self->title);
+}
+
+static void MenuScreen_cleanup(Screen *screen) {
+  MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
-  free(menu);
+  free(self);
 }
 
-static const struct ScreenVTable MenuScreen_vtable = {
+static const ScreenVTable MenuScreen_vtable = {
   .draw = MenuScreen_draw,
   .cleanup = MenuScreen_cleanup,
 };
 
-struct Screen *MenuScreen_create(void) {
-  struct MenuScreen *menu = malloc(sizeof(struct MenuScreen));
-  menu->screen.vtable = &MenuScreen_vtable;
-  menu->title = "Main Menu";
-  return (struct Screen *)menu;
+static const ScreenVTable GameScreen_vtable;
+
+typedef struct GameScreen {
+  Screen screen;
+  int score;
+} GameScreen;
+
+Screen *GameScreen_create(void) {
+  GameScreen *self = calloc(1, sizeof(*self));
+  self->screen.vtable = &GameScreen_vtable;
+  self->score = 42;
+  return (Screen *)self;
 }
 
-static void GameScreen_draw(struct Screen *self) {
-  struct GameScreen *game = (struct GameScreen *)self;
+static void GameScreen_draw(Screen *screen) {
+  GameScreen *game = (GameScreen *)screen;
   printf("GameScreen: Score = %d\n", game->score);
 }
 
-static void GameScreen_cleanup(struct Screen *self) {
-  struct GameScreen *game = (struct GameScreen *)self;
+static void GameScreen_cleanup(Screen *screen) {
+  GameScreen *self = (GameScreen *)screen;
   printf("Cleaning up GameScreen\n");
-  free(game);
+  free(self);
 }
 
-static const struct ScreenVTable GameScreen_vtable = {
+static const ScreenVTable GameScreen_vtable = {
   .draw = GameScreen_draw,
   .cleanup = GameScreen_cleanup,
 };
 
-struct Screen *GameScreen_create(void) {
-  struct GameScreen *game = malloc(sizeof(struct GameScreen));
-  game->screen.vtable = &GameScreen_vtable;
-  game->score = 42;
-  return (struct Screen *)game;
-}
-
 int main(void) {
-  struct Screen *screen;
+  Screen *screen;
 
   screen = MenuScreen_create();
   screen->vtable->draw(screen);
