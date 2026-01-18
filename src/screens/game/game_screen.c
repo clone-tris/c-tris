@@ -9,9 +9,7 @@
 #include "screens/game/components/tetromino.h"
 #include <stdio.h>
 
-static void GameScreen_draw(Screen *screen);
-static void GameScreen_cleanup(Screen *self);
-static ScreenVTable GameScreen_vtable;
+static const ScreenVTable GameScreen_vtable;
 
 static const SDL_FRect PLAYFIELD_RECT = {
   (float)SIDEBAR_WIDTH, (float)0, (float)WAR_ZONE_WIDTH, (float)CANVAS_HEIGHT
@@ -25,10 +23,10 @@ typedef struct GameScreen {
 } GameScreen;
 
 Screen *GameScreen_create(void) {
-  GameScreen *game = SDL_calloc(1, sizeof(GameScreen));
-  game->player = Tetromino_random();
-  game->screen.vtable = &GameScreen_vtable;
-  return (Screen *)game;
+  GameScreen *self = SDL_calloc(1, sizeof(*self));
+  self->player = Tetromino_random();
+  self->screen.vtable = &GameScreen_vtable;
+  return (Screen *)self;
 }
 
 static void GameScreen_draw(Screen *screen) {
@@ -37,14 +35,14 @@ static void GameScreen_draw(Screen *screen) {
   drawShape(&self->player, &PLAYFIELD_REF);
 }
 
-static void GameScreen_cleanup(Screen *self) {
-  GameScreen *game = (GameScreen *)self;
+static void GameScreen_cleanup(Screen *screen) {
+  GameScreen *game = (GameScreen *)screen;
   printf("Cleaning up GameScreen\n");
   arrfree(game->player.squares);
   SDL_free(game);
 }
 
-static ScreenVTable GameScreen_vtable = {
+static const ScreenVTable GameScreen_vtable = {
   .draw = GameScreen_draw,
   .update = nullptr,
   .keyDown = nullptr,

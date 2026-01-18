@@ -17,7 +17,7 @@ typedef struct MenuScreen {
 } MenuScreen;
 
 Screen *MenuScreen_create(void) {
-  MenuScreen *self = SDL_calloc(1, sizeof(MenuScreen));
+  MenuScreen *self = SDL_calloc(1, sizeof(*self));
   self->screen.vtable = &MenuScreen_vtable;
   self->x = 0;
   self->y = 0;

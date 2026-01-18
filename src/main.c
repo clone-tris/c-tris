@@ -33,7 +33,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  AppState *as = (AppState *)SDL_calloc(1, sizeof(AppState));
+  AppState *as = (AppState *)SDL_calloc(1, sizeof(*as));
   if (!as) {
     SDL_Log("Couldn't allocate space for AppState");
     return SDL_APP_FAILURE;
