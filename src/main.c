@@ -69,6 +69,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 
     switch (event->key.scancode) {
       case SDL_SCANCODE_G:
+        // TODO: Should it be the screen destroying itself? or the orchestrator?
         Screen_destroy(as->screen);
         as->screen = GameScreen_create();
         return SDL_APP_CONTINUE;
