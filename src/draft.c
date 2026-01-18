@@ -1,3 +1,4 @@
+#include "SDL3/SDL_log.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,6 +12,19 @@ typedef struct ScreenVTable {
 struct Screen {
   const ScreenVTable *vtable;
 };
+
+void Screen_draw(Screen *screen) {
+  if (screen->vtable->draw) {
+    screen->vtable->draw(screen);
+  }
+}
+
+void Screen_destroy(Screen *screen) {
+  if (screen->vtable->cleanup) {
+    screen->vtable->cleanup(screen);
+  }
+  free(screen);
+}
 
 static const ScreenVTable MenuScreen_vtable;
 
@@ -74,14 +88,14 @@ static const ScreenVTable GameScreen_vtable = {
 
 int main(void) {
   Screen *screen;
-
+  // simulation of polymorphism
   screen = MenuScreen_create();
-  screen->vtable->draw(screen);
-  screen->vtable->cleanup(screen);
+  Screen_draw(screen);
+  Screen_destroy(screen);
 
   screen = GameScreen_create();
-  screen->vtable->draw(screen);
-  screen->vtable->cleanup(screen);
+  Screen_draw(screen);
+  Screen_destroy(screen);
 
   return 0;
 }

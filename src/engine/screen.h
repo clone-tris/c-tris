@@ -9,7 +9,7 @@ typedef struct ScreenVTable {
   void (*update)(Screen *);
   void (*keyDown)(Screen *, SDL_Scancode);
   void (*mouseButtonUp)(Screen *);
-  void (*destroy)(Screen *);
+  void (*cleanup)(Screen *);
 } ScreenVTable;
 
 typedef struct Screen {
