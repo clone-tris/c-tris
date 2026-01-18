@@ -35,7 +35,7 @@ static void GameScreen_draw(Screen *screen) {
   drawShape(&self->player, &PLAYFIELD_REF);
 }
 
-static void GameScreen_cleanup(Screen *screen) {
+static void GameScreen_destroy(Screen *screen) {
   GameScreen *game = (GameScreen *)screen;
   printf("Cleaning up GameScreen\n");
   arrfree(game->player.squares);
@@ -46,6 +46,6 @@ static const ScreenVTable GameScreen_vtable = {
   .draw = GameScreen_draw,
   .update = nullptr,
   .keyDown = nullptr,
-  .mouse_button_up = nullptr,
-  .cleanup = GameScreen_cleanup,
+  .mouseButtonUp = nullptr,
+  .destroy = GameScreen_destroy,
 };

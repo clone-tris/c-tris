@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 static void MenuScreen_draw(Screen *screen);
-static void MenuScreen_cleanup(Screen *screen);
+static void MenuScreen_destroy(Screen *screen);
 static const ScreenVTable MenuScreen_vtable;
 
 typedef struct MenuScreen {
@@ -40,7 +40,7 @@ static void MenuScreen_draw(Screen *screen) {
   SDL_RenderFillRect(App_renderer, &rect);
 }
 
-static void keyDown(Screen *screen, SDL_Scancode scancode) {
+static void MenuScreen_keyDown(Screen *screen, SDL_Scancode scancode) {
   MenuScreen *self = (MenuScreen *)screen;
   switch (scancode) {
     case SDL_SCANCODE_D:
@@ -60,7 +60,7 @@ static void keyDown(Screen *screen, SDL_Scancode scancode) {
   }
 }
 
-static void MenuScreen_cleanup(Screen *screen) {
+static void MenuScreen_destroy(Screen *screen) {
   MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
   SDL_free(self);
@@ -69,7 +69,7 @@ static void MenuScreen_cleanup(Screen *screen) {
 static const ScreenVTable MenuScreen_vtable = {
   .draw = MenuScreen_draw,
   .update = nullptr,
-  .keyDown = keyDown,
-  .mouse_button_up = nullptr,
-  .cleanup = MenuScreen_cleanup,
+  .keyDown = MenuScreen_keyDown,
+  .mouseButtonUp = nullptr,
+  .destroy = MenuScreen_destroy,
 };

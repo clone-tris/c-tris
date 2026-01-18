@@ -47,6 +47,7 @@ add_executable(${PROJECT_NAME}
     src/main.c
     src/helpers.c
     src/colors.c
+    src/engine/screen.c
     src/engine/painter.c
     src/screens/game/game_screen.c
     src/screens/game/components/shape.c
