@@ -2,4 +2,4 @@
 
 #include "engine/screen.h"
 
-Screen *GameScreen_create(void);
+bool GameScreen_create(Screen **);

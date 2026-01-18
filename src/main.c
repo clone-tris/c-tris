@@ -20,6 +20,15 @@
 SDL_Window *App_window = nullptr;
 SDL_Renderer *App_renderer = nullptr;
 
+bool switchScreen(AppState *as, bool (*create)(Screen **)) {
+  Screen_destroy(as->screen);
+  if (!create(&as->screen)) {
+    SDL_Log("Couldn't alloate and switch to Screen");
+    return false;
+  }
+  return true;
+}
+
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
   (void)argc;
   (void)argv;
@@ -47,18 +56,18 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  as->screen = GameScreen_create();
+  if (!GameScreen_create(&as->screen)) {
+    SDL_Log("Couldn't create Initial Screen");
+    return SDL_APP_FAILURE;
+  }
 
   return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
   AppState *as = (AppState *)appstate;
-
   Screen_draw(as->screen);
-
   SDL_RenderPresent(App_renderer);
-
   return SDL_APP_CONTINUE;
 }
 
@@ -66,24 +75,21 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   AppState *as = (AppState *)appstate;
   if (event->type == SDL_EVENT_KEY_DOWN) {
     Screen_keyDown(as->screen, event->key.scancode);
-
     switch (event->key.scancode) {
-      case SDL_SCANCODE_G:
-        // TODO: Should it be the screen destroying itself? or the orchestrator?
-        Screen_destroy(as->screen);
-        as->screen = GameScreen_create();
-        return SDL_APP_CONTINUE;
-
-      case SDL_SCANCODE_M:
-        Screen_destroy(as->screen);
-        as->screen = MenuScreen_create();
-        return SDL_APP_CONTINUE;
-
       case SDL_SCANCODE_Q:
         return SDL_APP_SUCCESS;
-
-      default:
+      case SDL_SCANCODE_G:
+        if (!switchScreen(as, GameScreen_create)) {
+          return SDL_APP_FAILURE;
+        }
         break;
+      case SDL_SCANCODE_M:
+        if (!switchScreen(as, MenuScreen_create)) {
+          return SDL_APP_FAILURE;
+        }
+        break;
+      default:
+        return SDL_APP_CONTINUE;
     }
   }
 

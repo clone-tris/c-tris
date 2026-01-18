@@ -16,12 +16,16 @@ typedef struct MenuScreen {
   int y;
 } MenuScreen;
 
-Screen *MenuScreen_create(void) {
+bool MenuScreen_create(Screen **screen) {
   MenuScreen *self = SDL_calloc(1, sizeof(*self));
+  if (!self) {
+    return false;
+  }
   self->screen.vtable = &MenuScreen_vtable;
   self->x = 0;
   self->y = 0;
-  return (Screen *)self;
+  *screen = (Screen *)self;
+  return true;
 }
 
 static void MenuScreen_draw(Screen *screen) {

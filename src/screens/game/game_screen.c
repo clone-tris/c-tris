@@ -22,11 +22,15 @@ typedef struct GameScreen {
   Shape player;
 } GameScreen;
 
-Screen *GameScreen_create(void) {
+bool GameScreen_create(Screen **screen) {
   GameScreen *self = SDL_calloc(1, sizeof(*self));
+  if (!self) {
+    return false;
+  }
   self->player = Tetromino_random();
   self->screen.vtable = &GameScreen_vtable;
-  return (Screen *)self;
+  *screen = (Screen *)self;
+  return true;
 }
 
 static void GameScreen_draw(Screen *screen) {

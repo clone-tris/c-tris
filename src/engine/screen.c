@@ -1,6 +1,5 @@
 #include "engine/screen.h"
 #include "assert.h"
-#include <stdlib.h>
 
 void Screen_draw(Screen *screen) {
   assert(screen);
