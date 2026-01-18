@@ -40,5 +40,5 @@ void Screen_destroy(Screen *screen) {
   if (screen->vtable->cleanup) {
     screen->vtable->cleanup(screen);
   }
-  free(screen);
+  SDL_free(screen);
 }

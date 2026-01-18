@@ -61,9 +61,8 @@ static void MenuScreen_keyDown(Screen *screen, SDL_Scancode scancode) {
 }
 
 static void MenuScreen_cleanup(Screen *screen) {
-  MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
-  SDL_free(self);
+  (void)screen;
 }
 
 static const ScreenVTable MenuScreen_vtable = {

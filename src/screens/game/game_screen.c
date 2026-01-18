@@ -36,10 +36,9 @@ static void GameScreen_draw(Screen *screen) {
 }
 
 static void GameScreen_cleanup(Screen *screen) {
-  GameScreen *game = (GameScreen *)screen;
   printf("Cleaning up GameScreen\n");
+  GameScreen *game = (GameScreen *)screen;
   arrfree(game->player.squares);
-  SDL_free(game);
 }
 
 static const ScreenVTable GameScreen_vtable = {

@@ -1,4 +1,4 @@
-#include "SDL3/SDL_log.h"
+#include "SDL3/SDL_stdinc.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,7 +23,7 @@ void Screen_destroy(Screen *screen) {
   if (screen->vtable->cleanup) {
     screen->vtable->cleanup(screen);
   }
-  free(screen);
+  SDL_free(screen);
 }
 
 static const ScreenVTable MenuScreen_vtable;
@@ -46,9 +46,8 @@ static void MenuScreen_draw(Screen *screen) {
 }
 
 static void MenuScreen_cleanup(Screen *screen) {
-  MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
-  free(self);
+  (void)screen;
 }
 
 static const ScreenVTable MenuScreen_vtable = {
@@ -76,9 +75,8 @@ static void GameScreen_draw(Screen *screen) {
 }
 
 static void GameScreen_cleanup(Screen *screen) {
-  GameScreen *self = (GameScreen *)screen;
   printf("Cleaning up GameScreen\n");
-  free(self);
+  (void)screen;
 }
 
 static const ScreenVTable GameScreen_vtable = {
