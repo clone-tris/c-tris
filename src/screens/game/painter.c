@@ -10,7 +10,7 @@ void drawPlayfield(Shape *player) {
     .x = (float)origin.x,
     .y = (float)origin.y,
     .w = (float)WAR_ZONE_WIDTH,
-    .h = (float)CANVAS_HEIGHT
+    .h = (float)CANVAS_HEIGHT,
   };
 
   drawGuide(&rect);
@@ -18,10 +18,18 @@ void drawPlayfield(Shape *player) {
 }
 
 void drawSidebar() {
-  static const SDL_FRect rect = {
+  static const SDL_FRect backgroundRect = {
     .x = 0, .y = 0, .w = (float)SIDEBAR_WIDTH, .h = (float)CANVAS_HEIGHT
   };
 
   App_SetRenderDrawColor(App_renderer, UI_SIDEBAR_BACKGROUND);
-  SDL_RenderFillRect(App_renderer, &rect);
+  SDL_RenderFillRect(App_renderer, &backgroundRect);
+
+  static const SDL_FRect nextPlayerGuideRect = {
+    .x = (float)SQUARE_WIDTH,
+    .y = (float)SQUARE_WIDTH,
+    .w = (float)(SQUARE_WIDTH * 4),
+    .h = (float)(SQUARE_WIDTH * 2),
+  };
+  drawGuide(&nextPlayerGuideRect);
 }
