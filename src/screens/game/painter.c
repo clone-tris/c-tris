@@ -17,7 +17,7 @@ void drawPlayfield(Shape *player) {
   drawShape(player, &origin);
 }
 
-void drawSidebar(Shape *nextPlayer) {
+void drawSidebar(Shape *nextPlayer, Score *score) {
   static const SDL_FRect backgroundRect = {
     .x = 0, .y = 0, .w = (float)SIDEBAR_WIDTH, .h = (float)CANVAS_HEIGHT
   };
