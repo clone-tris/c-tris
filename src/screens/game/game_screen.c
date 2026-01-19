@@ -1,21 +1,14 @@
 #include "game_screen.h"
-#include "config.h"
-#include "engine/painter.h"
 #include "engine/screen.h"
 #include "screens/game/components/shape.h"
 #include "screens/game/components/tetromino.h"
+#include "screens/game/painter.h"
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_stdinc.h>
 #include <stb_ds.h>
 #include <stdio.h>
 
 static const ScreenVTable GameScreen_vtable;
-
-static const SDL_FRect PLAYFIELD_RECT = {
-  (float)SIDEBAR_WIDTH, (float)0, (float)WAR_ZONE_WIDTH, (float)CANVAS_HEIGHT
-};
-
-static const SDL_Point PLAYFIELD_REF = {.x = SIDEBAR_WIDTH, .y = 0};
 
 typedef struct GameScreen {
   Screen screen;
@@ -35,8 +28,7 @@ bool GameScreen_create(Screen **screen) {
 
 static void GameScreen_draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
-  drawGuide(&PLAYFIELD_RECT);
-  drawShape(&self->player, &PLAYFIELD_REF);
+  drawPlayfield(&self->player);
 }
 
 static void GameScreen_cleanup(Screen *screen) {
