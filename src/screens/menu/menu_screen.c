@@ -19,6 +19,7 @@ typedef struct MenuScreen {
 bool MenuScreen_create(Screen **screen) {
   MenuScreen *self = SDL_calloc(1, sizeof(*self));
   if (!self) {
+    self = nullptr;
     return false;
   }
   self->screen.vtable = &MenuScreen_vtable;

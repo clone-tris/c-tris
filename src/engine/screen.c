@@ -33,11 +33,15 @@ void Screen_mouseButtonUp(Screen *screen) {
   }
 }
 
-void Screen_destroy(Screen *screen) {
-  assert(screen);
-  assert(screen->vtable);
-  if (screen->vtable->cleanup) {
-    screen->vtable->cleanup(screen);
+void Screen_destroy(Screen **screen) {
+  if (!screen || !*screen) {
+    return;
   }
-  SDL_free(screen);
+
+  if ((*screen)->vtable && (*screen)->vtable->cleanup) {
+    (*screen)->vtable->cleanup(*screen);
+  }
+
+  SDL_free(*screen);
+  *screen = nullptr;
 }

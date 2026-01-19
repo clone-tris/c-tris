@@ -21,7 +21,7 @@ SDL_Window *App_window = nullptr;
 SDL_Renderer *App_renderer = nullptr;
 
 bool switchScreen(AppState *as, bool (*create)(Screen **)) {
-  Screen_destroy(as->screen);
+  Screen_destroy(&as->screen);
   if (!create(&as->screen)) {
     SDL_Log("Couldn't alloate and switch to Screen");
     return false;
@@ -99,7 +99,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   (void)result;
   AppState *as = (AppState *)appstate;
-  Screen_destroy(as->screen);
+  Screen_destroy(&as->screen);
   SDL_DestroyRenderer(App_renderer);
   SDL_DestroyWindow(App_window);
   SDL_free(as);
