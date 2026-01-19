@@ -32,3 +32,4 @@ typedef enum UiColor : uint32_t {
 } UiColor;
 
 void App_SetRenderDrawColor(SDL_Renderer *, uint32_t);
+SDL_Color App_Color(uint32_t);

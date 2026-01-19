@@ -1,4 +1,7 @@
-#include <stdio.h>
+#include "colors.h"
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_surface.h>
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //
@@ -58,10 +61,21 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  as->font = TTF_OpenFont("jetbrainsmono.ttf", 24);
-
+  as->font = TTF_OpenFont("jetbrainsmono.ttf", 14);
   if (!as->font) {
-    SDL_Log("Couldn't initialize SDL_ttf: %s\n", SDL_GetError());
+    SDL_Log("Couldn't open font: %s\n", SDL_GetError());
+    return SDL_APP_FAILURE;
+  }
+
+  SDL_Surface *text = TTF_RenderText_Blended_Wrapped(
+    as->font, "Level\n4", 0, App_Color(UI_WHITE_TEXT), 0
+  );
+  if (text) {
+    as->texture = SDL_CreateTextureFromSurface(App_renderer, text);
+    SDL_DestroySurface(text);
+  }
+  if (!as->texture) {
+    SDL_Log("Couldn't create text: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;
   }
 
@@ -76,6 +90,21 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
   AppState *as = (AppState *)appstate;
   Screen_draw(as->screen);
+
+  // clang-format off
+  SDL_RenderTexture(
+    App_renderer,
+    as->texture,
+    nullptr,
+    &(SDL_FRect){
+      .w = (float)as->texture->w,
+      .h = (float)as->texture->h,
+      .x = (float)(SQUARE_WIDTH / 3.0),
+      .y = (float)(SQUARE_WIDTH * 4)
+    }
+  );
+  // clang-format on
+
   SDL_RenderPresent(App_renderer);
   return SDL_APP_CONTINUE;
 }
@@ -108,11 +137,19 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   (void)result;
   AppState *as = (AppState *)appstate;
+
   Screen_destroy(&as->screen);
 
-  TTF_CloseFont(as->font);
+  if (as->texture) {
+    SDL_DestroyTexture(as->texture);
+  }
+  if (as->font) {
+    TTF_CloseFont(as->font);
+  }
+
   TTF_Quit();
+
+  SDL_free(as);
   SDL_DestroyRenderer(App_renderer);
   SDL_DestroyWindow(App_window);
-  SDL_free(as);
 }
