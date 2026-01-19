@@ -1,5 +1,6 @@
 #include "game_screen.h"
 #include "engine/screen.h"
+#include "screens/game/components/score.h"
 #include "screens/game/components/shape.h"
 #include "screens/game/components/tetromino.h"
 #include "screens/game/painter.h"
@@ -14,6 +15,7 @@ typedef struct GameScreen {
   Screen screen;
   Shape player;
   Shape nextPlayer;
+  Score score;
 } GameScreen;
 
 bool GameScreen_create(Screen **screen) {
@@ -21,9 +23,12 @@ bool GameScreen_create(Screen **screen) {
   if (!self) {
     return false;
   }
+
+  self->score = Score_create();
   self->player = Tetromino_random();
   self->nextPlayer = Tetromino_random();
   self->screen.vtable = &GameScreen_vtable;
+
   *screen = (Screen *)self;
   return true;
 }

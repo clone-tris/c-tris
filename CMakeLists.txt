@@ -54,6 +54,7 @@ add_executable(${PROJECT_NAME}
     src/screens/game/components/shape.c
     src/screens/game/components/square.c
     src/screens/game/components/tetromino.c
+    src/screens/game/components/score.c
     src/screens/menu/menu_screen.c
 )
 
