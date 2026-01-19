@@ -13,6 +13,7 @@ static const ScreenVTable GameScreen_vtable;
 typedef struct GameScreen {
   Screen screen;
   Shape player;
+  Shape nextPlayer;
 } GameScreen;
 
 bool GameScreen_create(Screen **screen) {
@@ -21,6 +22,7 @@ bool GameScreen_create(Screen **screen) {
     return false;
   }
   self->player = Tetromino_random();
+  self->nextPlayer = Tetromino_random();
   self->screen.vtable = &GameScreen_vtable;
   *screen = (Screen *)self;
   return true;
@@ -29,13 +31,14 @@ bool GameScreen_create(Screen **screen) {
 static void GameScreen_draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   drawPlayfield(&self->player);
-  drawSidebar(&self->player);
+  drawSidebar(&self->nextPlayer);
 }
 
 static void GameScreen_cleanup(Screen *screen) {
   printf("Cleaning up GameScreen\n");
   GameScreen *game = (GameScreen *)screen;
   arrfree(game->player.squares);
+  arrfree(game->nextPlayer.squares);
 }
 
 static const ScreenVTable GameScreen_vtable = {
