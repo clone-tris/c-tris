@@ -17,7 +17,7 @@ void drawPlayfield(Shape *player) {
   drawShape(player, &origin);
 }
 
-void drawSidebar() {
+void drawSidebar(Shape *nextPlayer) {
   static const SDL_FRect backgroundRect = {
     .x = 0, .y = 0, .w = (float)SIDEBAR_WIDTH, .h = (float)CANVAS_HEIGHT
   };
@@ -25,11 +25,18 @@ void drawSidebar() {
   App_SetRenderDrawColor(App_renderer, UI_SIDEBAR_BACKGROUND);
   SDL_RenderFillRect(App_renderer, &backgroundRect);
 
+  static const SDL_Point nextPlayerOrigin = {
+    .x = SQUARE_WIDTH,
+    .y = SQUARE_WIDTH,
+  };
+
   static const SDL_FRect nextPlayerGuideRect = {
-    .x = (float)SQUARE_WIDTH,
-    .y = (float)SQUARE_WIDTH,
+    .x = (float)nextPlayerOrigin.x,
+    .y = (float)nextPlayerOrigin.y,
     .w = (float)(SQUARE_WIDTH * 4),
     .h = (float)(SQUARE_WIDTH * 2),
   };
+
   drawGuide(&nextPlayerGuideRect);
+  drawShape(nextPlayer, &nextPlayerOrigin);
 }

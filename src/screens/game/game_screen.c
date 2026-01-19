@@ -29,7 +29,7 @@ bool GameScreen_create(Screen **screen) {
 static void GameScreen_draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   drawPlayfield(&self->player);
-  drawSidebar();
+  drawSidebar(&self->player);
 }
 
 static void GameScreen_cleanup(Screen *screen) {
