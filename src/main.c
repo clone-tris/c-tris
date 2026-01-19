@@ -1,3 +1,4 @@
+#include <stdio.h>
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //
@@ -9,6 +10,7 @@
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <stb_ds.h>
 #include <time.h>
 
@@ -48,6 +50,18 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
         "c-tris", CANVAS_WIDTH, CANVAS_HEIGHT, 0, &App_window, &App_renderer
       )) {
     SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+    return SDL_APP_FAILURE;
+  }
+
+  if (!TTF_Init()) {
+    SDL_Log("Couldn't initialize SDL_ttf: %s\n", SDL_GetError());
+    return SDL_APP_FAILURE;
+  }
+
+  as->font = TTF_OpenFont("jetbrainsmono.ttf", 24);
+
+  if (!as->font) {
+    SDL_Log("Couldn't initialize SDL_ttf: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;
   }
 
@@ -95,6 +109,9 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   (void)result;
   AppState *as = (AppState *)appstate;
   Screen_destroy(&as->screen);
+
+  TTF_CloseFont(as->font);
+  TTF_Quit();
   SDL_DestroyRenderer(App_renderer);
   SDL_DestroyWindow(App_window);
   SDL_free(as);

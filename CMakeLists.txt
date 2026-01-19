@@ -81,3 +81,12 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
     $<TARGET_PROPERTY:SDL3_ttf::SDL3_ttf,INTERFACE_INCLUDE_DIRECTORIES>
     ${stb_SOURCE_DIR}
 )
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/jetbrainsmono.ttf
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/jetbrainsmono.ttf
+    COMMENT "Copying font to build directory"
+)

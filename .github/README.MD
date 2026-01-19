@@ -27,5 +27,5 @@ or
 
 ```sh
 cmake --build build
-./build/c-tris
+./build/Debug/c-tris
 ```
