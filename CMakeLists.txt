@@ -31,6 +31,17 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL3)
 set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
+# SDL_ttf
+FetchContent_Declare(
+    SDL3_ttf
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+    GIT_TAG release-3.2.2
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(SDL3_ttf)
+set_property(DIRECTORY "${sdl3_ttf_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+
 # STB
 FetchContent_Declare(
     stb
@@ -58,11 +69,15 @@ add_executable(${PROJECT_NAME}
     src/screens/menu/menu_screen.c
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    SDL3::SDL3
+    SDL3_ttf::SDL3_ttf
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
     $<TARGET_PROPERTY:SDL3::SDL3,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:SDL3_ttf::SDL3_ttf,INTERFACE_INCLUDE_DIRECTORIES>
     ${stb_SOURCE_DIR}
 )
