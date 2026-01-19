@@ -67,6 +67,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
+  // TODO: extract this part to my font-drawing bit snippet
   SDL_Surface *text = TTF_RenderText_Blended_Wrapped(
     as->font, "Level\n4", 0, App_Color(UI_WHITE_TEXT), 0
   );
@@ -74,6 +75,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     as->texture = SDL_CreateTextureFromSurface(App_renderer, text);
     SDL_DestroySurface(text);
   }
+  // end of snippet
+
   if (!as->texture) {
     SDL_Log("Couldn't create text: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;
@@ -147,9 +150,8 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
     TTF_CloseFont(as->font);
   }
 
-  TTF_Quit();
-
   SDL_free(as);
   SDL_DestroyRenderer(App_renderer);
   SDL_DestroyWindow(App_window);
+  TTF_Quit();
 }
