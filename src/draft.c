@@ -19,11 +19,17 @@ void Screen_draw(Screen *screen) {
   }
 }
 
-void Screen_destroy(Screen *screen) {
-  if (screen->vtable->cleanup) {
-    screen->vtable->cleanup(screen);
+void Screen_destroy(Screen **screen) {
+  if (!screen || !*screen) {
+    return;
   }
-  SDL_free(screen);
+
+  if ((*screen)->vtable && (*screen)->vtable->cleanup) {
+    (*screen)->vtable->cleanup(*screen);
+  }
+
+  SDL_free(*screen);
+  *screen = nullptr;
 }
 
 static const ScreenVTable MenuScreen_vtable;
@@ -89,11 +95,11 @@ int main(void) {
   // simulation of polymorphism
   screen = MenuScreen_create();
   Screen_draw(screen);
-  Screen_destroy(screen);
+  Screen_destroy(&screen);
 
   screen = GameScreen_create();
   Screen_draw(screen);
-  Screen_destroy(screen);
+  Screen_destroy(&screen);
 
   return 0;
 }
