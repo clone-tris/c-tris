@@ -2,8 +2,8 @@
 #include "colors.h"
 #include "config.h"
 #include "stb_ds.h"
-#include "SDL3/SDL_rect.h"
 #include "screens/game/components/shape.h"
+#include <SDL3/SDL_rect.h>
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);

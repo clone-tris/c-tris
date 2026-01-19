@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SDL3/SDL_scancode.h"
+#include <SDL3/SDL_scancode.h>
 
 typedef struct Screen Screen;
 

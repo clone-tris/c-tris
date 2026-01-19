@@ -1,12 +1,12 @@
 #include "game_screen.h"
 #include "config.h"
-#include "stb_ds.h"
-#include "SDL3/SDL_rect.h"
-#include "SDL3/SDL_stdinc.h"
 #include "engine/painter.h"
 #include "engine/screen.h"
 #include "screens/game/components/shape.h"
 #include "screens/game/components/tetromino.h"
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_stdinc.h>
+#include <stb_ds.h>
 #include <stdio.h>
 
 static const ScreenVTable GameScreen_vtable;

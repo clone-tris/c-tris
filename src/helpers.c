@@ -1,5 +1,5 @@
 #include "helpers.h"
-#include "SDL3/SDL_stdinc.h"
+#include <SDL3/SDL_stdinc.h>
 
 int32_t randomInRange(Range range) {
   int rangeSize = range.end - range.start + 1;

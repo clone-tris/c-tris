@@ -3,18 +3,13 @@
 //
 #include "app.h"
 #include "config.h"
-#include "stb_ds.h"
-#include "SDL3/SDL_events.h"
-#include "SDL3/SDL_init.h"
-#include "SDL3/SDL_render.h"
-#include "SDL3/SDL_scancode.h"
-#include "SDL3/SDL_stdinc.h"
-#include "SDL3/SDL_video.h"
 #include "engine/screen.h"
 #include "screens/game/game_screen.h"
 #include "screens/menu/menu_screen.h"
-#include <SDL3/SDL.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_main.h>
+#include <stb_ds.h>
 #include <time.h>
 
 SDL_Window *App_window = nullptr;

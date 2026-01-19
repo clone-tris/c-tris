@@ -1,7 +1,7 @@
 #include "screens/game/components/shape.h"
 #include "app.h"
-#include "stb_ds.h"
 #include "screens/game/components/square.h"
+#include <stb_ds.h>
 #include <stdint.h>
 
 Shape Shape_create(Cell cell, Square *squares) {
