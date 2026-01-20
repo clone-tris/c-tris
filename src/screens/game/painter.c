@@ -69,7 +69,7 @@ void drawSidebar(Shape *nextPlayer, Score *score) {
   if (score->total != lastTotal) {
     sprintf(totalText, totalFormat, score->total);
     makeFontTexture(totalText, &totalTexture);
-    lastLevel = score->total;
+    lastTotal = score->total;
   }
 
   // clang-format off
