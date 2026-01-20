@@ -8,6 +8,6 @@ typedef struct Score {
   int32_t linesCleared;
 } Score;
 
-static const int POINTS[] = {0, 40, 100, 300, 1200};
+static const int32_t POINTS[] = {0, 40, 100, 300, 1200};
 
 Score Score_create();
