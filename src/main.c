@@ -146,12 +146,14 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   if (as->texture) {
     SDL_DestroyTexture(as->texture);
   }
+
   if (as->font) {
     TTF_CloseFont(as->font);
   }
 
+  TTF_Quit();
+
   SDL_free(as);
   SDL_DestroyRenderer(App_renderer);
   SDL_DestroyWindow(App_window);
-  TTF_Quit();
 }
