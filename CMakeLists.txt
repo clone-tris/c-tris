@@ -15,6 +15,17 @@ set(FETCHCONTENT_QUIET FALSE)
 
 # Dependencies -------------------------
 
+# # RayLib
+# FetchContent_Declare(
+#     raylib
+#     GIT_REPOSITORY https://github.com/raysan5/raylib.git
+#     GIT_TAG 5.5
+#     GIT_SHALLOW TRUE
+#     GIT_PROGRESS TRUE
+# )
+# FetchContent_MakeAvailable(raylib)
+# set_property(DIRECTORY "${raylib_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+
 # SDL 
 set(SDL_INSTALL OFF CACHE BOOL "" FORCE)
 set(SDL_SHARED ON CACHE BOOL "" FORCE)
@@ -71,6 +82,7 @@ add_executable(${PROJECT_NAME}
     src/screens/game/components/score.c
     src/screens/menu/menu_screen.c
 )
+
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SDL3::SDL3
