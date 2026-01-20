@@ -7,6 +7,7 @@
 #include "screens/game/painter.h"
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_stdinc.h>
+#include <SDL3/SDL_timer.h>
 #include <stb_ds.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -19,8 +20,14 @@ typedef struct GameScreen {
   Screen screen;
   Shape player;
   Shape nextPlayer;
+  Shape opponent;
   Score score;
+  bool isPlayerFalling;
+  uint32_t nextFall;
   uint32_t fallRate;
+  uint32_t endOfLock;
+  bool isMoppingFloor;
+  uint32_t timeRemainingAfterPaused;
 } GameScreen;
 
 bool GameScreen_create(Screen **screen) {
@@ -32,7 +39,15 @@ bool GameScreen_create(Screen **screen) {
   self->score = Score_create();
   self->player = Tetromino_random();
   self->nextPlayer = Tetromino_random();
+  self->opponent = Shape_create((Cell){.row = 0, .column = 0}, nullptr);
+  self->opponent.width = PUZZLE_WIDTH;
+  self->opponent.height = PUZZLE_HEIGHT;
+  self->isPlayerFalling = false;
+  self->nextFall = SDL_GetTicks();
   self->fallRate = INITIAL_FALL_RATE;
+  self->endOfLock = 0;
+  self->isMoppingFloor = false;
+  self->timeRemainingAfterPaused = 0;
   //
   self->screen.vtable = &GameScreen_vtable;
   *screen = (Screen *)self;
