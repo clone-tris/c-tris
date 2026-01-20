@@ -30,7 +30,7 @@ void drawGuide(const SDL_FRect *rect) {
 void drawSquares(const Square *squares, const SDL_Point *ref) {
   assert(squares);
   for (int i = 0; i < arrlen(squares); i++) {
-    Square square = squares[i];
+    const Square square = squares[i];
     App_SetRenderDrawColor(App_renderer, square.color);
 
     const int x = ref->x + (square.column * SQUARE_WIDTH);
