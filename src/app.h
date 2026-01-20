@@ -7,7 +7,8 @@
 
 typedef struct AppState {
   struct Screen *screen;
-  TTF_Font *font;
+  TTF_Font *smallFont;
+  TTF_Font *largeFont;
   SDL_Texture *texture;
 } AppState;
 

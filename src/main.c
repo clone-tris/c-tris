@@ -61,15 +61,16 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  as->font = TTF_OpenFont("jetbrainsmono.ttf", 14);
-  if (!as->font) {
+  as->smallFont = TTF_OpenFont("jetbrainsmono.ttf", 14);
+  as->largeFont = TTF_OpenFont("jetbrainsmono.ttf", 34);
+  if (!as->smallFont || !as->largeFont) {
     SDL_Log("Couldn't open font: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;
   }
 
   // TODO: extract this part to my font-drawing bit snippet
   SDL_Surface *text = TTF_RenderText_Blended_Wrapped(
-    as->font, "Level\n4", 0, App_Color(UI_WHITE_TEXT), 0
+    as->smallFont, "Level\n4", 0, App_Color(UI_WHITE_TEXT), 0
   );
   if (text) {
     as->texture = SDL_CreateTextureFromSurface(App_renderer, text);
@@ -147,8 +148,11 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
     SDL_DestroyTexture(as->texture);
   }
 
-  if (as->font) {
-    TTF_CloseFont(as->font);
+  if (as->smallFont) {
+    TTF_CloseFont(as->smallFont);
+  }
+  if (as->largeFont) {
+    TTF_CloseFont(as->largeFont);
   }
 
   TTF_Quit();
