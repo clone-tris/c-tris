@@ -46,3 +46,14 @@ void computeSize(Shape *shape) {
   shape->height = maxRow - minRow + 1;
   shape->width = maxColumn - minColumn + 1;
 }
+
+Shape Shape_copy(Shape shape) {
+  Shape copy = shape;
+
+  copy.squares = nullptr;
+  for (int i = 0; i < arrlen(shape.squares); i++) {
+    arrput(copy.squares, shape.squares[i]);
+  }
+
+  return copy;
+}
