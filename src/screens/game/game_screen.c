@@ -62,11 +62,27 @@ static void GameScreen_draw(Screen *screen) {
 
 static void GameScreen_keydown(Screen *screen, SDL_Scancode scancode) {
   GameScreen *self = (GameScreen *)screen;
-  if (scancode == SDL_SCANCODE_K) {
-    updateScore(screen, 3);
-  }
-  if (scancode == SDL_SCANCODE_J) {
-    updateScore(screen, 1);
+  switch (scancode) {
+    case SDL_SCANCODE_K:
+      updateScore(screen, 3);
+      break;
+    case SDL_SCANCODE_J:
+      updateScore(screen, 1);
+      break;
+    case SDL_SCANCODE_W:
+      Shape_rotate(&self->player);
+      break;
+    case SDL_SCANCODE_A:
+      Shape_translate(&self->player, (Cell){.row = 0, .column = -1});
+      break;
+    case SDL_SCANCODE_S:
+      Shape_translate(&self->player, (Cell){.row = 1, .column = 0});
+      break;
+    case SDL_SCANCODE_D:
+      Shape_translate(&self->player, (Cell){.row = 0, .column = 1});
+      break;
+    default:
+      break;
   }
 }
 

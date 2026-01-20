@@ -13,3 +13,5 @@ typedef struct Shape {
 } Shape;
 
 Shape Shape_create(Cell, Square *);
+void Shape_translate(Shape *, Cell);
+void Shape_rotate(Shape *);

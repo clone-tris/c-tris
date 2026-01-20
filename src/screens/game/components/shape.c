@@ -51,17 +51,39 @@ Shape Shape_copy(const Shape *shape) {
   Shape copy = *shape;
 
   copy.squares = nullptr;
-  for (int i = 0; i < arrlen((*shape).squares); i++) {
-    arrput(copy.squares, (*shape).squares[i]);
+  for (int i = 0; i < arrlen(shape->squares); i++) {
+    arrput(copy.squares, shape->squares[i]);
   }
 
   return copy;
 }
 
-void squaresToAbsolute(
+void absoluteSquares(
   Cell origin, int32_t size, Square *relative, Square *absolute
 ) {
   for (int i = 0; i < size; i++) {
     absolute[i] = Square_relativeCopy(relative[i], origin);
   }
+}
+
+void Shape_translate(Shape *shape, Cell cell) {
+  shape->row += cell.row;
+  shape->column += cell.column;
+}
+
+void Shape_rotate(Shape *shape) {
+  Square *squares = nullptr;
+
+  for (int i = 0; i < arrlen(shape->squares); i++) {
+    Square square = (*shape).squares[i];
+    Square rotated = {
+      .row = square.column,
+      .column = shape->height - square.row - 1,
+      .color = square.color
+    };
+    arrput(squares, rotated);
+  }
+  arrfree(shape->squares);
+  shape->squares = squares;
+  computeSize(shape);
 }
