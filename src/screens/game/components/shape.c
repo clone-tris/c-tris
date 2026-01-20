@@ -47,13 +47,21 @@ void computeSize(Shape *shape) {
   shape->width = maxColumn - minColumn + 1;
 }
 
-Shape Shape_copy(Shape shape) {
-  Shape copy = shape;
+Shape Shape_copy(const Shape *shape) {
+  Shape copy = *shape;
 
   copy.squares = nullptr;
-  for (int i = 0; i < arrlen(shape.squares); i++) {
-    arrput(copy.squares, shape.squares[i]);
+  for (int i = 0; i < arrlen((*shape).squares); i++) {
+    arrput(copy.squares, (*shape).squares[i]);
   }
 
   return copy;
+}
+
+void squaresToAbsolute(
+  Cell origin, int32_t size, Square *relative, Square *absolute
+) {
+  for (int i = 0; i < size; i++) {
+    absolute[i] = Square_relativeCopy(relative[i], origin);
+  }
 }
