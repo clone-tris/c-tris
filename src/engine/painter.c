@@ -4,6 +4,7 @@
 #include "stb_ds.h"
 #include "screens/game/components/shape.h"
 #include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
@@ -55,4 +56,24 @@ void drawShape(const Shape *shape, const SDL_Point *ref) {
     }
   );
   // clang-format on
+}
+
+bool makeFontTexture(char *text, SDL_Texture **texture) {
+  SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(
+    smallFont, text, 0, App_Color(UI_WHITE_TEXT), 0
+  );
+  if (!text) {
+    SDL_Log("Couldn't create text: %s\n", SDL_GetError());
+    return false;
+  }
+
+  *texture = SDL_CreateTextureFromSurface(App_renderer, surface);
+  SDL_DestroySurface(surface);
+
+  if (!*texture) {
+    SDL_Log("Couldn't create text: %s\n", SDL_GetError());
+    return false;
+  }
+
+  return true;
 }

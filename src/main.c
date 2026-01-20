@@ -1,4 +1,3 @@
-#include "colors.h"
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
@@ -19,6 +18,9 @@
 
 SDL_Window *App_window = nullptr;
 SDL_Renderer *App_renderer = nullptr;
+
+TTF_Font *smallFont;
+TTF_Font *largeFont;
 
 bool switchScreen(AppState *as, bool (*create)(Screen **)) {
   Screen_destroy(&as->screen);
@@ -61,25 +63,10 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  as->smallFont = TTF_OpenFont("jetbrainsmono.ttf", 14);
-  as->largeFont = TTF_OpenFont("jetbrainsmono.ttf", 34);
-  if (!as->smallFont || !as->largeFont) {
+  smallFont = TTF_OpenFont("jetbrainsmono.ttf", 14);
+  largeFont = TTF_OpenFont("jetbrainsmono.ttf", 34);
+  if (!smallFont || !largeFont) {
     SDL_Log("Couldn't open font: %s\n", SDL_GetError());
-    return SDL_APP_FAILURE;
-  }
-
-  // TODO: extract this part to my font-drawing bit snippet
-  SDL_Surface *text = TTF_RenderText_Blended_Wrapped(
-    as->smallFont, "Level\n4", 0, App_Color(UI_WHITE_TEXT), 0
-  );
-  if (text) {
-    as->texture = SDL_CreateTextureFromSurface(App_renderer, text);
-    SDL_DestroySurface(text);
-  }
-  // end of snippet
-
-  if (!as->texture) {
-    SDL_Log("Couldn't create text: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;
   }
 
@@ -94,21 +81,6 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
   AppState *as = (AppState *)appstate;
   Screen_draw(as->screen);
-
-  // clang-format off
-  SDL_RenderTexture(
-    App_renderer,
-    as->texture,
-    nullptr,
-    &(SDL_FRect){
-      .w = (float)as->texture->w,
-      .h = (float)as->texture->h,
-      .x = (float)(SQUARE_WIDTH / 3.0),
-      .y = (float)(SQUARE_WIDTH * 4)
-    }
-  );
-  // clang-format on
-
   SDL_RenderPresent(App_renderer);
   return SDL_APP_CONTINUE;
 }
@@ -144,15 +116,11 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
 
   Screen_destroy(&as->screen);
 
-  if (as->texture) {
-    SDL_DestroyTexture(as->texture);
+  if (smallFont) {
+    TTF_CloseFont(smallFont);
   }
-
-  if (as->smallFont) {
-    TTF_CloseFont(as->smallFont);
-  }
-  if (as->largeFont) {
-    TTF_CloseFont(as->largeFont);
+  if (largeFont) {
+    TTF_CloseFont(largeFont);
   }
 
   TTF_Quit();

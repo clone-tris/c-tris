@@ -7,3 +7,4 @@
 void drawGuide(const SDL_FRect *);
 void drawShape(const Shape *, const SDL_Point *);
 void drawSquares(const Square *, const SDL_Point *);
+bool makeFontTexture(char *text, SDL_Texture **texture);

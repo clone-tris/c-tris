@@ -7,13 +7,13 @@
 
 typedef struct AppState {
   struct Screen *screen;
-  TTF_Font *smallFont;
-  TTF_Font *largeFont;
-  SDL_Texture *texture;
 } AppState;
 
 extern SDL_Window *App_window;
 extern SDL_Renderer *App_renderer;
+
+extern TTF_Font *smallFont;
+extern TTF_Font *largeFont;
 
 typedef struct Cell {
   int row;
