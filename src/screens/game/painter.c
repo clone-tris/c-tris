@@ -108,3 +108,12 @@ void drawSidebar(Shape *nextPlayer, Score *score) {
   );
   // clang-format on
 }
+
+void cleanGameBrushes() {
+  SDL_DestroyTexture(levelTexture);
+  SDL_DestroyTexture(totalTexture);
+  SDL_DestroyTexture(linesClearedTexture);
+  lastLevel = -1;
+  lastLinesCleared = -1;
+  lastTotal = -1;
+}

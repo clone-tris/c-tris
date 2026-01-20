@@ -81,9 +81,7 @@ static void GameScreen_cleanup(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   arrfree(self->player.squares);
   arrfree(self->nextPlayer.squares);
-  SDL_DestroyTexture(levelTexture);
-  SDL_DestroyTexture(totalTexture);
-  SDL_DestroyTexture(linesClearedTexture);
+  cleanGameBrushes();
 }
 
 static const ScreenVTable GameScreen_vtable = {
