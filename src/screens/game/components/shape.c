@@ -1,11 +1,18 @@
 #include "screens/game/components/shape.h"
 #include "app.h"
+#include "config.h"
+#include "helpers.h"
 #include "screens/game/components/square.h"
 #include <assert.h>
+#include <stb_ds.h>
+#include <stdint.h>
+
+void computeSize(Shape *shape);
 
 Shape Shape_create(const Cell cell, Square *squares) {
   assert(squares);
-  const Shape shape = {
+
+  Shape shape = {
     .row = cell.row,
     .column = cell.column,
     .width = 0,
@@ -13,5 +20,28 @@ Shape Shape_create(const Cell cell, Square *squares) {
     .squares = squares
   };
 
+  if (arrlen(shape.squares) > 0) {
+    computeSize(&shape);
+  }
+
   return shape;
+}
+
+void computeSize(Shape *shape) {
+  assert(shape);
+  assert(shape->squares);
+  int32_t minRow = PUZZLE_HEIGHT;
+  int32_t maxRow = 0;
+  int32_t minColumn = PUZZLE_WIDTH;
+  int32_t maxColumn = 0;
+
+  for (int i = 0; i < arrlen(shape->squares); i++) {
+    Square square = shape->squares[i];
+    maxRow = max(square.row, maxRow);
+    minRow = min(square.row, minRow);
+    maxColumn = max(square.column, maxColumn);
+    minColumn = min(square.column, minColumn);
+    shape->height = maxRow - minRow + 1;
+    shape->width = maxColumn - minColumn + 1;
+  }
 }
