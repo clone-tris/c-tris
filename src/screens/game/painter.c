@@ -9,15 +9,17 @@
 int32_t lastLevel = -1;
 int32_t lastLinesCleared = -1;
 int32_t lastTotal = -1;
+
 SDL_Texture *levelTexture = nullptr;
 SDL_Texture *totalTexture = nullptr;
 SDL_Texture *linesClearedTexture = nullptr;
 
 static char levelText[20];
-static char levelFormat[] = "Level\n%d";
 static char linesClearedText[20];
-static char linesClearedFormat[] = "Cleared\n%d";
 static char totalText[20];
+
+static char levelFormat[] = "Level\n%d";
+static char linesClearedFormat[] = "Cleared\n%d";
 static char totalFormat[] = "Total\n%d";
 
 void drawPlayfield(const Shape *player) {
