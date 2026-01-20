@@ -1,6 +1,7 @@
 #include "colors.h"
 #include "helpers.h"
 #include "screens/game/components/shape.h"
+#include <assert.h>
 #include <stb_ds.h>
 
 typedef enum Type {
@@ -13,7 +14,7 @@ typedef enum Type {
   I,
 } Type;
 
-uint32_t color(Type type) {
+uint32_t color(const Type type) {
   switch (type) {
     case T:
       return TETROMINO_PURPLE;
@@ -29,6 +30,9 @@ uint32_t color(Type type) {
       return TETROMINO_YELLOW;
     case I:
       return TETROMINO_CYAN;
+    default:
+      assert(type);
+      return SQUARE_DEFAULT;
   }
 }
 
