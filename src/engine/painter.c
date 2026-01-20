@@ -5,6 +5,7 @@
 #include "screens/game/components/shape.h"
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
+#include <assert.h>
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
@@ -27,6 +28,7 @@ void drawGuide(const SDL_FRect *rect) {
 }
 
 void drawSquares(const Square *squares, const SDL_Point *ref) {
+  assert(squares);
   for (int i = 0; i < arrlen(squares); i++) {
     Square square = squares[i];
     App_SetRenderDrawColor(App_renderer, square.color);
