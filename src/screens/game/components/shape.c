@@ -1,11 +1,11 @@
 #include "screens/game/components/shape.h"
 #include "app.h"
 #include "screens/game/components/square.h"
-#include <stb_ds.h>
-#include <stdint.h>
+#include <assert.h>
 
-Shape Shape_create(Cell cell, Square *squares) {
-  Shape shape = {
+Shape Shape_create(const Cell cell, Square *squares) {
+  assert(squares);
+  const Shape shape = {
     .row = cell.row,
     .column = cell.column,
     .width = 0,
