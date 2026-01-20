@@ -1,8 +1,8 @@
 #include "colors.h"
 #include <SDL3/SDL_pixels.h>
 
-void App_SetRenderDrawColor(SDL_Renderer *renderer, uint32_t color) {
-  SDL_Color c = App_Color(color);
+void App_SetRenderDrawColor(SDL_Renderer *renderer, const uint32_t color) {
+  const SDL_Color c = App_Color(color);
 
   SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 }
