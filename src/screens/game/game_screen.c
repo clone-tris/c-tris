@@ -5,8 +5,6 @@
 #include "screens/game/components/shape.h"
 #include "screens/game/components/tetromino.h"
 #include "screens/game/painter.h"
-#include <SDL3/SDL_rect.h>
-#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_stdinc.h>
 #include <stb_ds.h>
