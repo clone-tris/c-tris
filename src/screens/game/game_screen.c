@@ -148,6 +148,15 @@ static void draw(Screen *screen) {
   drawSidebar(&self->nextPlayer, &self->score);
 }
 
+void debugFullRows(GameScreen *self) {
+  int32_t *fullRows = findFullRows(self->opponent);
+  for (int i = 0; i < arrlen(fullRows); i++) {
+    printf("%d ", fullRows[i]);
+  }
+  printf("\n");
+  arrfree(fullRows);
+}
+
 // NOLINTBEGIN(readability-function-cognitive-complexity)
 static void keydown(Screen *screen, SDL_Scancode scancode) {
   GameScreen *self = (GameScreen *)screen;
@@ -189,6 +198,10 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
         arrput(self->commandQueue, COMMAND_MOVE_DOWN);
       }
       break;
+    case SDL_SCANCODE_L:
+      debugFullRows(self);
+      break;
+
     default:
       break;
   }
