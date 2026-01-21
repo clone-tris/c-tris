@@ -403,7 +403,8 @@ int32_t *findFullRows(const Square *opponent) {
 
   for (int i = 0; i < arrlen(opponent); i++) {
     const int32_t squareRow = opponent[i].row;
-    hmput(population, squareRow, hmget(population, squareRow) + 1);
+    const int32_t value = hmget(population, squareRow) + 1;
+    hmput(population, squareRow, value);
   }
 
   for (int i = 0; i < hmlen(population); i++) {
