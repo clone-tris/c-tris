@@ -14,8 +14,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-void updateScore(Screen *screen, int32_t linesRemoved);
-bool movePlayer(Screen *screen, Cell direction);
+typedef struct GameScreen GameScreen;
+void updateScore(GameScreen *self, int32_t linesRemoved);
+bool movePlayer(GameScreen *self, Cell direction);
+void rotatePlayer(GameScreen *self);
 
 static const ScreenVTable GameScreen_vtable;
 
@@ -68,31 +70,32 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
   GameScreen *self = (GameScreen *)screen;
   switch (scancode) {
     case SDL_SCANCODE_K:
-      updateScore(screen, 3);
+      updateScore(self, 3);
       break;
     case SDL_SCANCODE_J:
-      updateScore(screen, 1);
+      updateScore(self, 1);
+      break;
+    case SDL_SCANCODE_R:
+      rotatePlayer(self);
       break;
     case SDL_SCANCODE_W:
-      Shape_rotate(&self->player);
+      movePlayer(self, (Cell){.row = -1, .column = 0});
       break;
     case SDL_SCANCODE_A:
-      movePlayer(screen, (Cell){.row = 0, .column = -1});
+      movePlayer(self, (Cell){.row = 0, .column = -1});
       break;
     case SDL_SCANCODE_S:
-      movePlayer(screen, (Cell){.row = 1, .column = 0});
+      movePlayer(self, (Cell){.row = 1, .column = 0});
       break;
     case SDL_SCANCODE_D:
-      movePlayer(screen, (Cell){.row = 0, .column = 1});
+      movePlayer(self, (Cell){.row = 0, .column = 1});
       break;
     default:
       break;
   }
 }
 
-void updateScore(Screen *screen, int32_t linesRemoved) {
-  GameScreen *self = (GameScreen *)screen;
-
+void updateScore(GameScreen *self, int32_t linesRemoved) {
   int32_t currentLevel = self->score.level;
   int32_t basePoints = POINTS[linesRemoved];
   int32_t linesCleared = self->score.linesCleared + linesRemoved;
@@ -109,17 +112,26 @@ void updateScore(Screen *screen, int32_t linesRemoved) {
   self->score.total = total;
 }
 
-bool movePlayer(Screen *screen, const Cell direction) {
-  GameScreen *self = (GameScreen *)screen;
+void rotatePlayer(GameScreen *self) {
+  Shape foreshadow = Shape_copy(&self->player);
+  Shape_rotate(&foreshadow);
+
+  bool ableToMove = (bool)(!Shape_overlapsSquares(&foreshadow, self->opponent));
+
+  if (ableToMove) {
+    arrfree(self->player.squares);
+    self->player = foreshadow;
+  } else {
+    arrfree(foreshadow.squares);
+  }
+}
+
+bool movePlayer(GameScreen *self, const Cell direction) {
   Shape foreshadow = Shape_copy(&self->player);
   Shape_translate(&foreshadow, direction);
-  Square *absolutes = nullptr;
-  arraddnptr(absolutes, 4);
-  Shape_absoluteSquares(&foreshadow, absolutes);
 
   // TODO: add within bounds
-  bool ableToMove = (bool)(!squaresCollide((SquaresPair){.a = absolutes,
-                                                         .b = self->opponent}));
+  bool ableToMove = (bool)(!Shape_overlapsSquares(&foreshadow, self->opponent));
 
   if (ableToMove) {
     arrfree(self->player.squares);

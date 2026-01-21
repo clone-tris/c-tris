@@ -19,7 +19,7 @@ typedef struct Shape {
 
 Shape Shape_create(Cell, Square *);
 Shape Shape_copy(const Shape *);
-void Shape_absoluteSquares(Shape *, Square *);
+Square *Shape_absoluteSquares(Shape *);
 void Shape_translate(Shape *, Cell);
 void Shape_rotate(Shape *);
-bool squaresCollide(SquaresPair p);
+bool Shape_overlapsSquares(Shape *, Square *);
