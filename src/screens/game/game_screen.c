@@ -1,6 +1,6 @@
 #include "game_screen.h"
-#include "colors.h"
 #include "config.h"
+#include "helpers.h"
 #include "engine/screen.h"
 #include "screens/game/components/score.h"
 #include "screens/game/components/shape.h"
@@ -28,7 +28,7 @@ void play(GameScreen *self);
 void rotatePlayer(GameScreen *self);
 void movePlayerLeft(GameScreen *self);
 void movePlayerRight(GameScreen *self);
-void movePlayerDown(GameScreen *self);
+bool movePlayerDown(GameScreen *self);
 bool movePlayer(GameScreen *self, Cell direction);
 void eatPlayer(GameScreen *self);
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
@@ -207,7 +207,25 @@ void applyGravity(GameScreen *self) {
 }
 
 void makePlayerFall(GameScreen *self) {
-  
+  uint32_t now = SDL_GetTicks();
+  if (now < self->nextFall || self->isPlayerFalling) {
+    return;
+  }
+
+  self->isPlayerFalling = true;
+
+  bool ableToMove = movePlayerDown(self);
+
+  if (ableToMove) {
+    self->state = STATE_PLAYING;
+    self->nextFall = now + self->fallRate;
+  } else {
+    self->state = STATE_ON_FLOOR;
+    self->endOfLock = now + FLOOR_LOCK_RATE;
+    self->nextFall = self->endOfLock;
+  }
+
+  self->isPlayerFalling = false;
 }
 
 void makePlayerFallnow(GameScreen *self) {
@@ -219,7 +237,36 @@ void makePlayerFallnow(GameScreen *self) {
   makePlayerFall(self);
 }
 
-void mopTheFloor(GameScreen *self) {}
+void mopTheFloor(GameScreen *self) {
+  uint32_t now = SDL_GetTicks();
+  if (now < self->endOfLock || self->isMoppingFloor) {
+    return;
+  }
+
+  self->isMoppingFloor = true;
+
+  bool ableToMove = movePlayerDown(self);
+
+  if (ableToMove) {
+    self->state = STATE_PLAYING;
+  } else {
+    eatPlayer(self);
+    /*
+      TODO : calculate full rows things
+
+      full_rows = self.opponent.find_full_rows()
+      if full_rows:
+          self.opponent.remove_rows(full_rows=full_rows)
+          self.update_score(len(full_rows))
+    */
+    spawnPlayer(self);
+    if (Shape_overlapsSquares(&self->player, self->opponent)) {
+      self->state = STATE_GAME_OVER;
+    }
+
+    self->isMoppingFloor = false;
+  }
+}
 
 void spawnPlayer(GameScreen *self) {
   arrfree(self->player.squares);
@@ -256,8 +303,27 @@ void togglePaused(GameScreen *self) {
   }
 }
 
-void pause(GameScreen *self) {}
-void play(GameScreen *self) {}
+void pause(GameScreen *self) {
+  const uint32_t now = SDL_GetTicks();
+  if (self->state == STATE_PLAYING) {
+    self->timeRemainingAfterPaused = max((int32_t)(self->nextFall - now), 0);
+  } else if (self->state == STATE_ON_FLOOR) {
+    self->timeRemainingAfterPaused = max((int32_t)(self->endOfLock - now), 0);
+  }
+
+  self->previousState = self->state;
+  self->state = STATE_PAUSED;
+}
+
+void play(GameScreen *self) {
+  const uint32_t now = SDL_GetTicks();
+  if (self->previousState == STATE_PLAYING) {
+    self->nextFall = now + self->timeRemainingAfterPaused;
+  } else if (self->previousState == STATE_ON_FLOOR) {
+    self->endOfLock = now + self->timeRemainingAfterPaused;
+  }
+  self->state = self->previousState;
+}
 
 void rotatePlayer(GameScreen *self) {
   Shape foreshadow = Shape_copy(&self->player);
@@ -281,8 +347,8 @@ void movePlayerRight(GameScreen *self) {
   movePlayer(self, (Cell){.row = 0, .column = 1});
 }
 
-void movePlayerDown(GameScreen *self) {
-  movePlayer(self, (Cell){.row = 1, .column = 0});
+bool movePlayerDown(GameScreen *self) {
+  return movePlayer(self, (Cell){.row = 1, .column = 0});
 }
 
 bool movePlayer(GameScreen *self, Cell direction) {
@@ -311,9 +377,7 @@ void eatPlayer(GameScreen *self) {
 }
 
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent) {
-  // NOLINTBEGIN(readability-implicit-bool-conversion)
   return !Shape_overlapsSquares(player, opponent) && Shape_withinBounds(player);
-  // NOLINTEND(readability-implicit-bool-conversion)
 }
 
 void clearQueue(GameScreen *self) {
