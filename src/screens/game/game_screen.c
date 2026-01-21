@@ -261,6 +261,9 @@ void mopTheFloor(GameScreen *self) {
           self.update_score(len(full_rows))
     */
     spawnPlayer(self);
+    self->state = STATE_PLAYING;
+    self->nextFall = now + self->fallRate;
+
     if (Shape_overlapsSquares(&self->player, self->opponent)) {
       self->state = STATE_GAME_OVER;
     }
@@ -348,7 +351,8 @@ void movePlayerRight(GameScreen *self) {
 }
 
 bool movePlayerDown(GameScreen *self) {
-  return movePlayer(self, (Cell){.row = 1, .column = 0});
+  bool albeToMove = movePlayer(self, (Cell){.row = 1, .column = 0});
+  return albeToMove;
 }
 
 bool movePlayer(GameScreen *self, Cell direction) {
