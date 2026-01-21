@@ -47,12 +47,12 @@ void computeSize(Shape *self) {
   self->width = maxColumn - minColumn + 1;
 }
 
-Shape Shape_copy(const Shape *shape) {
-  Shape copy = *shape;
+Shape Shape_copy(const Shape *self) {
+  Shape copy = *self;
 
   copy.squares = nullptr;
-  for (int i = 0; i < arrlen(shape->squares); i++) {
-    arrput(copy.squares, shape->squares[i]);
+  for (int i = 0; i < arrlen(self->squares); i++) {
+    arrput(copy.squares, self->squares[i]);
   }
 
   return copy;
