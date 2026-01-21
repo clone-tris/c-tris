@@ -101,17 +101,18 @@ bool GameScreen_create(Screen **screen) {
 static ScreenEvent update(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
   if (self->state == STATE_GAME_OVER) {
-    return SCREEN_EVENT_GO_TO_GAME;
+    clearQueue(self);
+    return SCREEN_EVENT_GO_TO_OVER;
   }
 
   int32_t qLen = arrlen(self->commandQueue);
   for (int i = 0; i < qLen; i++) {
     switch (self->commandQueue[i]) {
       case COMMAND_CLOSE:
-        arrfree(self->commandQueue);
+        clearQueue(self);
         return SCREEN_EVENT_CLOSE;
       case COMMAND_RESTART:
-        arrfree(self->commandQueue);
+        clearQueue(self);
         return SCREEN_EVENT_GO_TO_GAME;
       case COMMAND_PAUSE:
         clearQueue(self);
@@ -389,6 +390,7 @@ static void cleanup(Screen *screen) {
   arrfree(self->opponent);
   arrfree(self->player.squares);
   arrfree(self->nextPlayer.squares);
+  arrfree(self->commandQueue);
   cleanGameBrushes();
 }
 
