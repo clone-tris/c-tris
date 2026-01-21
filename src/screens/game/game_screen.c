@@ -263,9 +263,8 @@ void mopTheFloor(GameScreen *self) {
     if (Shape_overlapsSquares(&self->player, self->opponent)) {
       self->state = STATE_GAME_OVER;
     }
-
-    self->isMoppingFloor = false;
   }
+  self->isMoppingFloor = false;
 }
 
 void spawnPlayer(GameScreen *self) {
