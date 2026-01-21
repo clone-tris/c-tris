@@ -31,6 +31,7 @@ void movePlayerRight(GameScreen *self);
 bool movePlayerDown(GameScreen *self);
 bool movePlayer(GameScreen *self, Cell direction);
 void eatPlayer(GameScreen *self);
+int32_t *findFullRows(const Square *opponent);
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
 void clearQueue(GameScreen *self);
 
@@ -377,6 +378,30 @@ void eatPlayer(GameScreen *self) {
     arrput(self->opponent, absolutes[i]);
   }
   arrfree(absolutes);
+}
+
+int32_t *findFullRows(const Square *opponent) {
+  int32_t *fullRows = nullptr;
+  struct {
+    int32_t key;
+    int32_t value;
+  } *population = nullptr;
+  hmdefault(population, 0);
+
+  for (int i = 0; i < arrlen(opponent); i++) {
+    const int32_t squareRow = opponent[i].row;
+    hmput(population, squareRow, hmget(population, squareRow) + 1);
+  }
+
+  for (int i = 0; i < hmlen(population); i++) {
+    if (population[i].value >= PUZZLE_WIDTH) {
+      arrput(fullRows, population[i].key);
+    }
+  }
+
+  hmfree(population);
+
+  return fullRows;
 }
 
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent) {
