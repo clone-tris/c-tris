@@ -18,6 +18,7 @@ typedef struct GameScreen GameScreen;
 void updateScore(GameScreen *self, int32_t linesRemoved);
 bool movePlayer(GameScreen *self, Cell direction);
 void rotatePlayer(GameScreen *self);
+bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
 
 static const ScreenVTable GameScreen_vtable;
 
@@ -116,7 +117,7 @@ void rotatePlayer(GameScreen *self) {
   Shape foreshadow = Shape_copy(&self->player);
   Shape_rotate(&foreshadow);
 
-  bool ableToMove = (bool)(!Shape_overlapsSquares(&foreshadow, self->opponent));
+  bool ableToMove = isLegalPlayerPosition(&foreshadow, self->opponent);
 
   if (ableToMove) {
     arrfree(self->player.squares);
@@ -130,8 +131,7 @@ bool movePlayer(GameScreen *self, const Cell direction) {
   Shape foreshadow = Shape_copy(&self->player);
   Shape_translate(&foreshadow, direction);
 
-  // TODO: add within bounds
-  bool ableToMove = (bool)(!Shape_overlapsSquares(&foreshadow, self->opponent));
+  bool ableToMove = isLegalPlayerPosition(&foreshadow, self->opponent);
 
   if (ableToMove) {
     arrfree(self->player.squares);
@@ -141,6 +141,12 @@ bool movePlayer(GameScreen *self, const Cell direction) {
   }
 
   return ableToMove;
+}
+
+bool isLegalPlayerPosition(const Shape *player, const Square *opponent) {
+  // NOLINTBEGIN(readability-implicit-bool-conversion)
+  return !Shape_overlapsSquares(player, opponent) && Shape_withinBounds(player);
+  // NOLINTEND(readability-implicit-bool-conversion)
 }
 
 static void cleanup(Screen *screen) {

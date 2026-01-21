@@ -9,13 +9,13 @@
 
 void computeSize(Shape *self);
 
-Shape Shape_create(const Cell cell, Square *squares) {
+Shape Shape_create(const Cell cell, const Square *squares) {
   Shape shape = {
     .row = cell.row,
     .column = cell.column,
     .width = 0,
     .height = 0,
-    .squares = squares
+    .squares = (Square *)squares
   };
 
   computeSize(&shape);
@@ -25,7 +25,7 @@ Shape Shape_create(const Cell cell, Square *squares) {
 void computeSize(Shape *self) {
   assert(self);
 
-  int32_t len = arrlen(self->squares);
+  const int32_t len = arrlen(self->squares);
   if (len == 0) {
     return;
   }
@@ -58,7 +58,7 @@ Shape Shape_copy(const Shape *shape) {
   return copy;
 }
 
-Square *Shape_absoluteSquares(Shape *self) {
+Square *Shape_absoluteSquares(const Shape *self) {
   Square *absolutes = nullptr;
   arraddnptr(absolutes, arrlen(self->squares));
 
@@ -79,7 +79,7 @@ void Shape_rotate(Shape *self) {
   Square *squares = nullptr;
 
   for (int i = 0; i < arrlen(self->squares); i++) {
-    Square square = (*self).squares[i];
+    const Square square = (*self).squares[i];
     Square rotated = {
       .row = square.column,
       .column = self->height - square.row - 1,
@@ -92,8 +92,8 @@ void Shape_rotate(Shape *self) {
   computeSize(self);
 }
 
-bool Shape_overlapsSquares(Shape *self, Square *squares) {
-  Square *absolutes = Shape_absoluteSquares(self);
+bool Shape_overlapsSquares(const Shape *self, const Square *squares) {
+  const Square *absolutes = Shape_absoluteSquares(self);
 
   const int32_t aLen = arrlen(absolutes);
   const int32_t bLen = arrlen(squares);
@@ -109,4 +109,19 @@ bool Shape_overlapsSquares(Shape *self, Square *squares) {
   }
   arrfree(absolutes);
   return false;
+}
+
+bool Shape_withinBounds(const Shape *self) {
+  const Square *absolutes = Shape_absoluteSquares(self);
+  const int32_t len = arrlen(absolutes);
+
+  for (int i = 0; i < len; i++) {
+    if (absolutes[i].column < 0 || absolutes[i].column >= PUZZLE_WIDTH ||
+        absolutes[i].row >= PUZZLE_HEIGHT) {
+      arrfree(absolutes);
+      return false;
+    }
+  }
+  arrfree(absolutes);
+  return true;
 }

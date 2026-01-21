@@ -17,9 +17,10 @@ typedef struct Shape {
   Square *squares;
 } Shape;
 
-Shape Shape_create(Cell, Square *);
+Shape Shape_create(Cell, const Square *);
 Shape Shape_copy(const Shape *);
-Square *Shape_absoluteSquares(Shape *);
+Square *Shape_absoluteSquares(const Shape *);
 void Shape_translate(Shape *, Cell);
 void Shape_rotate(Shape *);
-bool Shape_overlapsSquares(Shape *, Square *);
+bool Shape_overlapsSquares(const Shape *, const Square *);
+bool Shape_withinBounds(const Shape *);
