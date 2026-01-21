@@ -80,7 +80,7 @@ bool GameScreen_create(Screen **screen) {
   self->nextPlayer = Tetromino_random();
   self->opponent = nullptr;
   self->isPlayerFalling = false;
-  self->nextFall = SDL_GetTicks();
+  self->nextFall = SDL_GetTicks() + INITIAL_FALL_RATE;
   self->fallRate = INITIAL_FALL_RATE;
   self->endOfLock = 0;
   self->isMoppingFloor = false;
@@ -274,7 +274,6 @@ void mopTheFloor(GameScreen *self) {
 void spawnPlayer(GameScreen *self) {
   arrfree(self->player.squares);
   self->player = Shape_copy(&self->nextPlayer);
-  self->player.row = -self->player.height;
   self->player.column = (PUZZLE_WIDTH - self->player.width) / 2;
   arrfree(self->nextPlayer.squares);
   self->nextPlayer = Tetromino_random();
