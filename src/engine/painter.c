@@ -29,7 +29,6 @@ void drawGuide(const SDL_FRect *rect) {
 }
 
 void drawSquares(const Square *squares, const SDL_Point *ref) {
-  assert(squares);
   int32_t len = arrlen(squares);
   for (int i = 0; i < len; i++) {
     const Square square = squares[i];

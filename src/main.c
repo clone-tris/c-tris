@@ -80,6 +80,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
   AppState *as = (AppState *)appstate;
+  Screen_update(as->screen);
   Screen_draw(as->screen);
   SDL_RenderPresent(App_renderer);
   return SDL_APP_CONTINUE;

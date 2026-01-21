@@ -2,11 +2,19 @@
 
 #include <SDL3/SDL_scancode.h>
 
+typedef enum ScreenEvent {
+  SCREEN_EVENT_NONE,
+  SCREEN_EVENT_CLOSE,
+  SCREEN_EVENT_GO_TO_MENU,
+  SCREEN_EVENT_GO_TO_GAME,
+  SCREEN_EVENT_GO_TO_OVER,
+} ScreenEvent;
+
 typedef struct Screen Screen;
 
 typedef struct ScreenVTable {
   void (*draw)(Screen *);
-  void (*update)(Screen *);
+  ScreenEvent (*update)(Screen *);
   void (*keyDown)(Screen *, SDL_Scancode);
   void (*mouseButtonUp)(Screen *);
   void (*cleanup)(Screen *);

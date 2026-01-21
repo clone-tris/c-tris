@@ -16,12 +16,40 @@
 #include <stdio.h>
 
 typedef struct GameScreen GameScreen;
+void applyGravity(GameScreen *selfj);
+void makePlayerFall(GameScreen *self);
+void makePlayerFallnow(GameScreen *self);
+void mopTheFloor(GameScreen *self);
 void spawnPlayer(GameScreen *self);
 void updateScore(GameScreen *self, int32_t linesRemoved);
-bool movePlayer(GameScreen *self, Cell direction);
+void togglePaused(GameScreen *self);
+void pause(GameScreen *self);
+void play(GameScreen *self);
 void rotatePlayer(GameScreen *self);
-bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
+void movePlayerLeft(GameScreen *self);
+void movePlayerRight(GameScreen *self);
+void movePlayerDown(GameScreen *self);
+bool movePlayer(GameScreen *self, Cell direction);
 void eatPlayer(GameScreen *self);
+bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
+void clearQueue(GameScreen *self);
+
+typedef enum Command {
+  COMMAND_MOVE_LEFT,
+  COMMAND_MOVE_RIGHT,
+  COMMAND_MOVE_DOWN,
+  COMMAND_ROTATE,
+  COMMAND_PAUSE,
+  COMMAND_RESTART,
+  COMMAND_CLOSE,
+} Command;
+
+typedef enum State {
+  STATE_PAUSED,
+  STATE_PLAYING,
+  STATE_ON_FLOOR,
+  STATE_GAME_OVER,
+} State;
 
 static const ScreenVTable GameScreen_vtable;
 
@@ -31,12 +59,15 @@ typedef struct GameScreen {
   Shape nextPlayer;
   Square *opponent;
   Score score;
-  bool isPlayerFalling;
-  uint32_t nextFall;
   uint32_t fallRate;
+  uint32_t nextFall;
   uint32_t endOfLock;
+  bool isPlayerFalling;
   bool isMoppingFloor;
   uint32_t timeRemainingAfterPaused;
+  Command *commandQueue;
+  State state;
+  State previousState;
 } GameScreen;
 
 bool GameScreen_create(Screen **screen) {
@@ -48,22 +79,65 @@ bool GameScreen_create(Screen **screen) {
   self->score = Score_create();
   self->nextPlayer = Tetromino_random();
   self->opponent = nullptr;
-  Square s = (Square){.row = 6, .column = 6, .color = TETROMINO_CYAN};
-  arrput(self->opponent, s);
-  // TODO: remove the above
   self->isPlayerFalling = false;
   self->nextFall = SDL_GetTicks();
   self->fallRate = INITIAL_FALL_RATE;
   self->endOfLock = 0;
   self->isMoppingFloor = false;
   self->timeRemainingAfterPaused = 0;
+  self->commandQueue = nullptr;
+  self->state = STATE_PLAYING;
+  self->previousState = STATE_PLAYING;
 
   //
   spawnPlayer(self);
   //
+
   self->screen.vtable = &GameScreen_vtable;
   *screen = (Screen *)self;
   return true;
+}
+
+static ScreenEvent update(Screen *screen) {
+  GameScreen *self = (GameScreen *)screen;
+  if (self->state == STATE_GAME_OVER) {
+    return SCREEN_EVENT_GO_TO_GAME;
+  }
+
+  int32_t qLen = arrlen(self->commandQueue);
+  for (int i = 0; i < qLen; i++) {
+    switch (self->commandQueue[i]) {
+      case COMMAND_CLOSE:
+        arrfree(self->commandQueue);
+        return SCREEN_EVENT_CLOSE;
+      case COMMAND_RESTART:
+        arrfree(self->commandQueue);
+        return SCREEN_EVENT_GO_TO_GAME;
+      case COMMAND_PAUSE:
+        clearQueue(self);
+        togglePaused(self);
+        return SCREEN_EVENT_NONE;
+      case COMMAND_ROTATE:
+        rotatePlayer(self);
+        break;
+      case COMMAND_MOVE_LEFT:
+        movePlayerLeft(self);
+        break;
+      case COMMAND_MOVE_RIGHT:
+        movePlayerRight(self);
+        break;
+      case COMMAND_MOVE_DOWN:
+        makePlayerFallnow(self);
+        break;
+      default:
+        break;
+    }
+  }
+
+  clearQueue(self);
+  applyGravity(self);
+
+  return SCREEN_EVENT_NONE;
 }
 
 static void draw(Screen *screen) {
@@ -72,38 +146,80 @@ static void draw(Screen *screen) {
   drawSidebar(&self->nextPlayer, &self->score);
 }
 
+// NOLINTBEGIN(readability-function-cognitive-complexity)
 static void keydown(Screen *screen, SDL_Scancode scancode) {
   GameScreen *self = (GameScreen *)screen;
   switch (scancode) {
-    case SDL_SCANCODE_K:
-      updateScore(self, 3);
-      break;
-    case SDL_SCANCODE_J:
-      updateScore(self, 1);
+    case SDL_SCANCODE_Q:
+      arrput(self->commandQueue, COMMAND_CLOSE);
       break;
     case SDL_SCANCODE_R:
-      rotatePlayer(self);
+      arrput(self->commandQueue, COMMAND_RESTART);
       break;
-    case SDL_SCANCODE_E:
-      eatPlayer(self);
-      spawnPlayer(self);
+    case SDL_SCANCODE_P:
+      if (self->state == STATE_PAUSED || self->state == STATE_PLAYING ||
+          self->state == STATE_ON_FLOOR) {
+        arrput(self->commandQueue, COMMAND_PAUSE);
+      }
       break;
+    case SDL_SCANCODE_UP:
     case SDL_SCANCODE_W:
-      movePlayer(self, (Cell){.row = -1, .column = 0});
+    case SDL_SCANCODE_SPACE:
+      if (self->state == STATE_PLAYING || self->state == STATE_ON_FLOOR) {
+        arrput(self->commandQueue, COMMAND_ROTATE);
+      }
       break;
+    case SDL_SCANCODE_LEFT:
     case SDL_SCANCODE_A:
-      movePlayer(self, (Cell){.row = 0, .column = -1});
+      if (self->state == STATE_PLAYING || self->state == STATE_ON_FLOOR) {
+        arrput(self->commandQueue, COMMAND_MOVE_LEFT);
+      }
       break;
-    case SDL_SCANCODE_S:
-      movePlayer(self, (Cell){.row = 1, .column = 0});
-      break;
+    case SDL_SCANCODE_RIGHT:
     case SDL_SCANCODE_D:
-      movePlayer(self, (Cell){.row = 0, .column = 1});
+      if (self->state == STATE_PLAYING || self->state == STATE_ON_FLOOR) {
+        arrput(self->commandQueue, COMMAND_MOVE_RIGHT);
+      }
+      break;
+    case SDL_SCANCODE_DOWN:
+    case SDL_SCANCODE_S:
+      if (self->state == STATE_PLAYING || self->state == STATE_ON_FLOOR) {
+        arrput(self->commandQueue, COMMAND_MOVE_DOWN);
+      }
       break;
     default:
       break;
   }
 }
+// NOLINTEND(readability-function-cognitive-complexity)
+
+void applyGravity(GameScreen *self) {
+  switch (self->state) {
+    case STATE_ON_FLOOR:
+      mopTheFloor(self);
+      break;
+    case STATE_PLAYING:
+      makePlayerFall(self);
+      break;
+    default:
+      break;
+  }
+}
+
+void makePlayerFall(GameScreen *self) {
+  
+}
+
+void makePlayerFallnow(GameScreen *self) {
+  if (self->state != STATE_PLAYING) {
+    return;
+  }
+  self->nextFall = 0;
+  self->score.total += 1;
+  makePlayerFall(self);
+}
+
+void mopTheFloor(GameScreen *self) {}
 
 void spawnPlayer(GameScreen *self) {
   arrfree(self->player.squares);
@@ -132,6 +248,17 @@ void updateScore(GameScreen *self, int32_t linesRemoved) {
   self->score.total = total;
 }
 
+void togglePaused(GameScreen *self) {
+  if (self->state == STATE_PAUSED) {
+    play(self);
+  } else if (self->state == STATE_PLAYING || self->state == STATE_ON_FLOOR) {
+    pause(self);
+  }
+}
+
+void pause(GameScreen *self) {}
+void play(GameScreen *self) {}
+
 void rotatePlayer(GameScreen *self) {
   Shape foreshadow = Shape_copy(&self->player);
   Shape_rotate(&foreshadow);
@@ -144,6 +271,18 @@ void rotatePlayer(GameScreen *self) {
   } else {
     arrfree(foreshadow.squares);
   }
+}
+
+void movePlayerLeft(GameScreen *self) {
+  movePlayer(self, (Cell){.row = 0, .column = -1});
+}
+
+void movePlayerRight(GameScreen *self) {
+  movePlayer(self, (Cell){.row = 0, .column = 1});
+}
+
+void movePlayerDown(GameScreen *self) {
+  movePlayer(self, (Cell){.row = 1, .column = 0});
 }
 
 bool movePlayer(GameScreen *self, Cell direction) {
@@ -177,6 +316,10 @@ bool isLegalPlayerPosition(const Shape *player, const Square *opponent) {
   // NOLINTEND(readability-implicit-bool-conversion)
 }
 
+void clearQueue(GameScreen *self) {
+  arrsetlen(self->commandQueue, 0);
+}
+
 static void cleanup(Screen *screen) {
   printf("Cleaning up GameScreen\n");
   GameScreen *self = (GameScreen *)screen;
@@ -188,7 +331,7 @@ static void cleanup(Screen *screen) {
 
 static const ScreenVTable GameScreen_vtable = {
   .draw = draw,
-  .update = nullptr,
+  .update = update,
   .keyDown = keydown,
   .mouseButtonUp = nullptr,
   .cleanup = cleanup,
