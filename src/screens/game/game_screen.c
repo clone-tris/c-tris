@@ -10,6 +10,7 @@
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_timer.h>
+#include <assert.h>
 #include <stb_ds.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -99,6 +100,7 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
 void updateScore(GameScreen *self, int32_t linesRemoved) {
   int32_t currentLevel = self->score.level;
   int32_t basePoints = POINTS[linesRemoved];
+  assert(linesRemoved >= 0 && linesRemoved <= 4);
   int32_t linesCleared = self->score.linesCleared + linesRemoved;
   int32_t level = (linesCleared / LINES_PER_LEVEL) + 1;
   int32_t points = basePoints * currentLevel;
@@ -127,7 +129,7 @@ void rotatePlayer(GameScreen *self) {
   }
 }
 
-bool movePlayer(GameScreen *self, const Cell direction) {
+bool movePlayer(GameScreen *self, Cell direction) {
   Shape foreshadow = Shape_copy(&self->player);
   Shape_translate(&foreshadow, direction);
 
