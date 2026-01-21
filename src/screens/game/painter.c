@@ -3,6 +3,7 @@
 #include "config.h"
 #include "engine/painter.h"
 #include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -61,16 +62,19 @@ void drawSidebar(const Shape *nextPlayer, const Score *score) {
 
   if (score->level != lastLevel) {
     sprintf(levelText, levelFormat, score->level);
+    SDL_DestroyTexture(levelTexture);
     makeFontTexture(levelText, &levelTexture);
     lastLevel = score->level;
   }
   if (score->linesCleared != lastLinesCleared) {
     sprintf(linesClearedText, linesClearedFormat, score->linesCleared);
+    SDL_DestroyTexture(linesClearedTexture);
     makeFontTexture(linesClearedText, &linesClearedTexture);
     lastLinesCleared = score->linesCleared;
   }
   if (score->total != lastTotal) {
     sprintf(totalText, totalFormat, score->total);
+    SDL_DestroyTexture(totalTexture);
     makeFontTexture(totalText, &totalTexture);
     lastTotal = score->total;
   }

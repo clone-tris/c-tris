@@ -66,7 +66,7 @@ bool makeFontTexture(char *text, SDL_Texture **texture) {
   SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(
     smallFont, text, 0, App_Color(UI_WHITE_TEXT), 0
   );
-  if (!text) {
+  if (!surface) {
     SDL_Log("Couldn't create text: %s\n", SDL_GetError());
     return false;
   }
