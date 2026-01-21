@@ -16,10 +16,12 @@
 #include <stdio.h>
 
 typedef struct GameScreen GameScreen;
+void spawnPlayer(GameScreen *self);
 void updateScore(GameScreen *self, int32_t linesRemoved);
 bool movePlayer(GameScreen *self, Cell direction);
 void rotatePlayer(GameScreen *self);
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
+void eatPlayer(GameScreen *self);
 
 static const ScreenVTable GameScreen_vtable;
 
@@ -44,7 +46,6 @@ bool GameScreen_create(Screen **screen) {
   }
 
   self->score = Score_create();
-  self->player = Tetromino_random();
   self->nextPlayer = Tetromino_random();
   self->opponent = nullptr;
   Square s = (Square){.row = 6, .column = 6, .color = TETROMINO_CYAN};
@@ -56,6 +57,9 @@ bool GameScreen_create(Screen **screen) {
   self->endOfLock = 0;
   self->isMoppingFloor = false;
   self->timeRemainingAfterPaused = 0;
+
+  //
+  spawnPlayer(self);
   //
   self->screen.vtable = &GameScreen_vtable;
   *screen = (Screen *)self;
@@ -80,6 +84,10 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
     case SDL_SCANCODE_R:
       rotatePlayer(self);
       break;
+    case SDL_SCANCODE_E:
+      eatPlayer(self);
+      spawnPlayer(self);
+      break;
     case SDL_SCANCODE_W:
       movePlayer(self, (Cell){.row = -1, .column = 0});
       break;
@@ -95,6 +103,15 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
     default:
       break;
   }
+}
+
+void spawnPlayer(GameScreen *self) {
+  arrfree(self->player.squares);
+  self->player = Shape_copy(&self->nextPlayer);
+  self->player.row = -self->player.height;
+  self->player.column = (PUZZLE_WIDTH - self->player.width) / 2;
+  arrfree(self->nextPlayer.squares);
+  self->nextPlayer = Tetromino_random();
 }
 
 void updateScore(GameScreen *self, int32_t linesRemoved) {
@@ -143,6 +160,15 @@ bool movePlayer(GameScreen *self, Cell direction) {
   }
 
   return ableToMove;
+}
+
+void eatPlayer(GameScreen *self) {
+  const Square *absolutes = Shape_absoluteSquares(&self->player);
+  const int32_t len = arrlen(absolutes);
+  for (int i = 0; i < len; i++) {
+    arrput(self->opponent, absolutes[i]);
+  }
+  arrfree(absolutes);
 }
 
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent) {
