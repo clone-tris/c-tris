@@ -7,7 +7,7 @@
 #include <stb_ds.h>
 #include <stdint.h>
 
-void computeSize(Shape *shape);
+void computeSize(Shape *self);
 
 Shape Shape_create(const Cell cell, Square *squares) {
   Shape shape = {
@@ -22,10 +22,10 @@ Shape Shape_create(const Cell cell, Square *squares) {
   return shape;
 }
 
-void computeSize(Shape *shape) {
-  assert(shape);
+void computeSize(Shape *self) {
+  assert(self);
 
-  int32_t len = arrlen(shape->squares);
+  int32_t len = arrlen(self->squares);
   if (len == 0) {
     return;
   }
@@ -36,15 +36,15 @@ void computeSize(Shape *shape) {
   int32_t maxColumn = 0;
 
   for (int i = 0; i < len; i++) {
-    Square square = shape->squares[i];
+    Square square = self->squares[i];
     maxRow = max(square.row, maxRow);
     minRow = min(square.row, minRow);
     maxColumn = max(square.column, maxColumn);
     minColumn = min(square.column, minColumn);
   }
 
-  shape->height = maxRow - minRow + 1;
-  shape->width = maxColumn - minColumn + 1;
+  self->height = maxRow - minRow + 1;
+  self->width = maxColumn - minColumn + 1;
 }
 
 Shape Shape_copy(const Shape *shape) {
@@ -58,32 +58,45 @@ Shape Shape_copy(const Shape *shape) {
   return copy;
 }
 
-void absoluteSquares(
-  Cell origin, int32_t size, Square *relative, Square *absolute
-) {
-  for (int i = 0; i < size; i++) {
-    absolute[i] = Square_relativeCopy(relative[i], origin);
+void Shape_absoluteSquares(Shape *self, Square *absolute) {
+  const int32_t len = arrlen(self->squares);
+  const Cell origin = {.row = self->row, .column = self->column};
+  for (int i = 0; i < len; i++) {
+    absolute[i] = Square_relativeCopy(self->squares[i], origin);
   }
 }
 
-void Shape_translate(Shape *shape, Cell cell) {
-  shape->row += cell.row;
-  shape->column += cell.column;
+void Shape_translate(Shape *self, Cell cell) {
+  self->row += cell.row;
+  self->column += cell.column;
 }
 
-void Shape_rotate(Shape *shape) {
+void Shape_rotate(Shape *self) {
   Square *squares = nullptr;
 
-  for (int i = 0; i < arrlen(shape->squares); i++) {
-    Square square = (*shape).squares[i];
+  for (int i = 0; i < arrlen(self->squares); i++) {
+    Square square = (*self).squares[i];
     Square rotated = {
       .row = square.column,
-      .column = shape->height - square.row - 1,
+      .column = self->height - square.row - 1,
       .color = square.color
     };
     arrput(squares, rotated);
   }
-  arrfree(shape->squares);
-  shape->squares = squares;
-  computeSize(shape);
+  arrfree(self->squares);
+  self->squares = squares;
+  computeSize(self);
+}
+
+bool squaresCollide(SquaresPair p) {
+  const int32_t aLen = arrlen(p.a);
+  const int32_t bLen = arrlen(p.b);
+  for (int i = 0; i < aLen; i++) {
+    for (int j = 0; j < bLen; j++) {
+      if (p.a[i].row == p.b[j].row && p.a[i].column == p.b[j].column) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

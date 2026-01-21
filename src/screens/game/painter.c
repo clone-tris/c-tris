@@ -22,7 +22,7 @@ static char levelFormat[] = "Level\n%d";
 static char linesClearedFormat[] = "Cleared\n%d";
 static char totalFormat[] = "Total\n%d";
 
-void drawPlayfield(const Shape *player) {
+void drawPlayfield(const Shape *player, const Square *opponent) {
   static const SDL_Point origin = {.x = SIDEBAR_WIDTH, .y = 0};
   static const SDL_FRect rect = {
     .x = (float)origin.x,
@@ -33,6 +33,7 @@ void drawPlayfield(const Shape *player) {
 
   drawGuide(&rect);
   drawShape(player, &origin);
+  drawSquares(opponent, &origin);
 }
 
 void drawSidebar(const Shape *nextPlayer, const Score *score) {

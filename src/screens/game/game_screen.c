@@ -1,8 +1,10 @@
 #include "game_screen.h"
+#include "colors.h"
 #include "config.h"
 #include "engine/screen.h"
 #include "screens/game/components/score.h"
 #include "screens/game/components/shape.h"
+#include "screens/game/components/square.h"
 #include "screens/game/components/tetromino.h"
 #include "screens/game/painter.h"
 #include <SDL3/SDL_scancode.h>
@@ -13,6 +15,7 @@
 #include <stdio.h>
 
 void updateScore(Screen *screen, int32_t linesRemoved);
+bool movePlayer(Screen *screen, Cell direction);
 
 static const ScreenVTable GameScreen_vtable;
 
@@ -20,7 +23,7 @@ typedef struct GameScreen {
   Screen screen;
   Shape player;
   Shape nextPlayer;
-  Shape opponent;
+  Square *opponent;
   Score score;
   bool isPlayerFalling;
   uint32_t nextFall;
@@ -39,9 +42,10 @@ bool GameScreen_create(Screen **screen) {
   self->score = Score_create();
   self->player = Tetromino_random();
   self->nextPlayer = Tetromino_random();
-  self->opponent = Shape_create((Cell){.row = 0, .column = 0}, nullptr);
-  self->opponent.width = PUZZLE_WIDTH;
-  self->opponent.height = PUZZLE_HEIGHT;
+  self->opponent = nullptr;
+  Square s = (Square){.row = 6, .column = 6, .color = TETROMINO_CYAN};
+  arrput(self->opponent, s);
+  // TODO: remove the above
   self->isPlayerFalling = false;
   self->nextFall = SDL_GetTicks();
   self->fallRate = INITIAL_FALL_RATE;
@@ -54,13 +58,13 @@ bool GameScreen_create(Screen **screen) {
   return true;
 }
 
-static void GameScreen_draw(Screen *screen) {
+static void draw(Screen *screen) {
   GameScreen *self = (GameScreen *)screen;
-  drawPlayfield(&self->player);
+  drawPlayfield(&self->player, self->opponent);
   drawSidebar(&self->nextPlayer, &self->score);
 }
 
-static void GameScreen_keydown(Screen *screen, SDL_Scancode scancode) {
+static void keydown(Screen *screen, SDL_Scancode scancode) {
   GameScreen *self = (GameScreen *)screen;
   switch (scancode) {
     case SDL_SCANCODE_K:
@@ -73,13 +77,13 @@ static void GameScreen_keydown(Screen *screen, SDL_Scancode scancode) {
       Shape_rotate(&self->player);
       break;
     case SDL_SCANCODE_A:
-      Shape_translate(&self->player, (Cell){.row = 0, .column = -1});
+      movePlayer(screen, (Cell){.row = 0, .column = -1});
       break;
     case SDL_SCANCODE_S:
-      Shape_translate(&self->player, (Cell){.row = 1, .column = 0});
+      movePlayer(screen, (Cell){.row = 1, .column = 0});
       break;
     case SDL_SCANCODE_D:
-      Shape_translate(&self->player, (Cell){.row = 0, .column = 1});
+      movePlayer(screen, (Cell){.row = 0, .column = 1});
       break;
     default:
       break;
@@ -105,18 +109,41 @@ void updateScore(Screen *screen, int32_t linesRemoved) {
   self->score.total = total;
 }
 
-static void GameScreen_cleanup(Screen *screen) {
+bool movePlayer(Screen *screen, const Cell direction) {
+  GameScreen *self = (GameScreen *)screen;
+  Shape foreshadow = Shape_copy(&self->player);
+  Shape_translate(&foreshadow, direction);
+  Square *absolutes = nullptr;
+  arraddnptr(absolutes, 4);
+  Shape_absoluteSquares(&foreshadow, absolutes);
+
+  // TODO: add within bounds
+  bool ableToMove = (bool)(!squaresCollide((SquaresPair){.a = absolutes,
+                                                         .b = self->opponent}));
+
+  if (ableToMove) {
+    arrfree(self->player.squares);
+    self->player = foreshadow;
+  } else {
+    arrfree(foreshadow.squares);
+  }
+
+  return ableToMove;
+}
+
+static void cleanup(Screen *screen) {
   printf("Cleaning up GameScreen\n");
   GameScreen *self = (GameScreen *)screen;
+  arrfree(self->opponent);
   arrfree(self->player.squares);
   arrfree(self->nextPlayer.squares);
   cleanGameBrushes();
 }
 
 static const ScreenVTable GameScreen_vtable = {
-  .draw = GameScreen_draw,
+  .draw = draw,
   .update = nullptr,
-  .keyDown = GameScreen_keydown,
+  .keyDown = keydown,
   .mouseButtonUp = nullptr,
-  .cleanup = GameScreen_cleanup,
+  .cleanup = cleanup,
 };
