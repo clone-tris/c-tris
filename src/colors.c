@@ -21,6 +21,12 @@ SDL_FColor App_FColor(const uint32_t color) {
   const Uint8 g = (color >> 16) & 0xFF;
   const Uint8 b = (color >> 8) & 0xFF;
   const Uint8 a = color & 0xFF;
-
-  return (SDL_FColor){.r = r, .g = g, .b = b, .a = a};
+  // clang-format off
+  return (SDL_FColor){
+    .r = (float)r / 255.0F,
+    .g = (float)g / 255.0F,
+    .b = (float)b / 255.0F,
+    .a = (float)a / 255.0F
+  };
+  // clang-format on
 }

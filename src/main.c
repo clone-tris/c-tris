@@ -1,3 +1,4 @@
+#include <SDL3/SDL_blendmode.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
@@ -69,6 +70,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     SDL_Log("Couldn't open font: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;
   }
+
+  SDL_SetRenderDrawBlendMode(App_renderer, SDL_BLENDMODE_BLEND);
 
   if (!GameScreen_create(&as->screen)) {
     SDL_Log("Couldn't create Initial Screen");
