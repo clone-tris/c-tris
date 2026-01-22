@@ -136,7 +136,7 @@ void drawSquareAtPoint(SquareAtPoint square) {
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = sideBorder, .position = {.x = x + BW + R, .y = x + BW + R}},
+      {.color = sideBorder, .position = {.x = x + BW + R, .y = y + BW + R}},
       {.color = sideBorder, .position = {.x = x + W, .y = y + BW + R}},
       {.color = sideBorder, .position = {.x = x + W, .y = y + W}},
     },
