@@ -31,6 +31,7 @@ void movePlayerRight(GameScreen *self);
 bool movePlayerDown(GameScreen *self);
 bool movePlayer(GameScreen *self, Cell direction);
 void eatPlayer(GameScreen *self);
+void removeOpponentFullRows(GameScreen *self, const int32_t *fullRows);
 int32_t *findFullRows(const Square *opponent);
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
 void clearQueue(GameScreen *self);
@@ -266,14 +267,13 @@ void mopTheFloor(GameScreen *self) {
     self->state = STATE_PLAYING;
   } else {
     eatPlayer(self);
-    /*
-      TODO : calculate full rows things
-
-      full_rows = self.opponent.find_full_rows()
-      if full_rows:
-          self.opponent.remove_rows(full_rows=full_rows)
-          self.update_score(len(full_rows))
-    */
+    const int32_t *fullRows = findFullRows(self->opponent);
+    const int32_t fullRowsCount = arrlen(fullRows);
+    if (fullRowsCount > 0) {
+      removeOpponentFullRows(self, fullRows);
+      updateScore(self, fullRowsCount);
+    }
+    arrfree(fullRows);
     spawnPlayer(self);
     self->state = STATE_PLAYING;
     self->nextFall = now + self->fallRate;
@@ -391,6 +391,35 @@ void eatPlayer(GameScreen *self) {
     arrput(self->opponent, absolutes[i]);
   }
   arrfree(absolutes);
+}
+
+void removeOpponentFullRows(GameScreen *self, const int32_t *fullRows) {
+  Square *squares = nullptr;
+  for (int i = 0; i < arrlen(self->opponent); i++) {
+    bool rowToRemove = false;
+    Square square = self->opponent[i];
+    for (int f = 0; f < arrlen(fullRows); f++) {
+      if (fullRows[f] == square.row) {
+        rowToRemove = true;
+        break;
+      }
+    }
+    if (rowToRemove) {
+      continue;
+    }
+
+    int32_t rowBeforeShifting = square.row;
+    for (int f = 0; f < arrlen(fullRows); f++) {
+      int32_t fullRow = fullRows[f];
+      if (fullRow > rowBeforeShifting) {
+        square.row += 1;
+      }
+    }
+
+    arrput(squares, square);
+  }
+  arrfree(self->opponent);
+  self->opponent = squares;
 }
 
 int32_t *findFullRows(const Square *opponent) {
