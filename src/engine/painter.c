@@ -7,7 +7,6 @@
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <math.h>
-#include <stdint.h>
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
@@ -34,9 +33,9 @@ typedef struct SquareAtPoint {
   TetrominoColor color;
 } SquareAtPoint;
 
-const float W = SQUARE_WIDTH;
-const float BW = SQUARE_BORDER_WIDTH;
-const float R = W - (BW * 2);
+static constexpr float W = SQUARE_WIDTH;
+static constexpr float BW = SQUARE_BORDER_WIDTH;
+static constexpr float R = W - (BW * 2);
 
 void drawSquareAtPoint(SquareAtPoint square) {
   const float_t x = square.position.x;
@@ -203,7 +202,7 @@ void drawShape(const Shape *shape, const SDL_Point *ref) {
   // clang-format on
 }
 
-bool makeFontTexture(char *text, SDL_Texture **texture) {
+bool makeFontTexture(const char *text, SDL_Texture **texture) {
   SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(
     smallFont, text, 0, App_Color(UI_WHITE_TEXT), 0
   );

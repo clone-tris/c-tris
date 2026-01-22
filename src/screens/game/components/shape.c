@@ -36,7 +36,7 @@ void computeSize(Shape *self) {
   int32_t maxColumn = 0;
 
   for (int i = 0; i < len; i++) {
-    Square square = self->squares[i];
+    const Square square = self->squares[i];
     maxRow = max(square.row, maxRow);
     minRow = min(square.row, minRow);
     maxColumn = max(square.column, maxColumn);
@@ -69,7 +69,7 @@ Square *Shape_absoluteSquares(const Shape *self) {
   return absolutes;
 }
 
-void Shape_translate(Shape *self, Cell cell) {
+void Shape_translate(Shape *self, const Cell cell) {
   self->row += cell.row;
   self->column += cell.column;
 }
@@ -78,8 +78,8 @@ void Shape_rotate(Shape *self) {
   Square *squares = nullptr;
 
   for (int i = 0; i < arrlen(self->squares); i++) {
-    const Square square = (*self).squares[i];
-    Square rotated = {
+    const Square square = self->squares[i];
+    const Square rotated = {
       .row = square.column,
       .column = self->height - square.row - 1,
       .color = square.color

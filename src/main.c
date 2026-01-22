@@ -1,7 +1,6 @@
 #include <SDL3/SDL_blendmode.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
-#include <SDL3/SDL_surface.h>
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //

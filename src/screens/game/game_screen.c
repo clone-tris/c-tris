@@ -376,7 +376,7 @@ bool movePlayer(GameScreen *self, Cell direction) {
   Shape foreshadow = Shape_copy(&self->player);
   Shape_translate(&foreshadow, direction);
 
-  bool ableToMove = isLegalPlayerPosition(&foreshadow, self->opponent);
+  const bool ableToMove = isLegalPlayerPosition(&foreshadow, self->opponent);
 
   if (ableToMove) {
     arrfree(self->player.squares);
@@ -411,9 +411,9 @@ void removeOpponentFullRows(GameScreen *self, const int32_t *fullRows) {
       continue;
     }
 
-    int32_t rowBeforeShifting = square.row;
+    const int32_t rowBeforeShifting = square.row;
     for (int f = 0; f < arrlen(fullRows); f++) {
-      int32_t fullRow = fullRows[f];
+      const int32_t fullRow = fullRows[f];
       if (fullRow > rowBeforeShifting) {
         square.row += 1;
       }
