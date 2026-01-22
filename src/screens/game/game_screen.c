@@ -19,7 +19,7 @@ void applyGravity(GameScreen *self);
 void makePlayerFall(GameScreen *self);
 void makePlayerFallnow(GameScreen *self);
 void mopTheFloor(GameScreen *self);
-void spawnPlayer(GameScreen *self);
+bool spawnPlayer(GameScreen *self);
 void updateScore(GameScreen *self, int32_t linesRemoved);
 void togglePaused(GameScreen *self);
 void pause(GameScreen *self);
@@ -261,24 +261,38 @@ void mopTheFloor(GameScreen *self) {
       updateScore(self, fullRowsCount);
     }
     arrfree(fullRows);
-    spawnPlayer(self);
-    self->state = STATE_PLAYING;
-    self->nextFall = now + self->fallRate;
 
-    if (Shape_overlapsSquares(&self->player, self->opponent)) {
+    if (spawnPlayer(self)) {
+      self->state = STATE_PLAYING;
+      self->nextFall = now + self->fallRate;
+    } else {
       self->state = STATE_GAME_OVER;
     }
   }
   self->isMoppingFloor = false;
 }
 
-void spawnPlayer(GameScreen *self) {
+bool spawnPlayer(GameScreen *self) {
+  Shape foreshadow = Shape_copy(&self->nextPlayer);
+  foreshadow.column = (PUZZLE_WIDTH - foreshadow.width) / 2;
+  foreshadow.row = 0;
+  bool overlaps = Shape_overlapsSquares(&foreshadow, self->opponent);
+  if (overlaps) {
+    foreshadow.row = -1;
+    overlaps = Shape_overlapsSquares(&foreshadow, self->opponent);
+    if (overlaps) {
+      arrfree(foreshadow.squares);
+      return false;
+    }
+  }
+
   arrfree(self->player.squares);
-  self->player = Shape_copy(&self->nextPlayer);
-  self->player.column = (PUZZLE_WIDTH - self->player.width) / 2;
-  self->player.row = 0;
+  self->player = Shape_copy(&foreshadow);
+
   arrfree(self->nextPlayer.squares);
   self->nextPlayer = Tetromino_random();
+
+  return true;
 }
 
 void updateScore(GameScreen *self, int32_t linesRemoved) {
