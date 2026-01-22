@@ -62,9 +62,8 @@ Square *Shape_absoluteSquares(const Shape *self) {
   Square *absolutes = nullptr;
   arraddnptr(absolutes, arrlen(self->squares));
 
-  const int32_t len = arrlen(self->squares);
   const Cell origin = {.row = self->row, .column = self->column};
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < arrlen(self->squares); i++) {
     absolutes[i] = Square_relativeCopy(self->squares[i], origin);
   }
   return absolutes;
@@ -95,11 +94,8 @@ void Shape_rotate(Shape *self) {
 bool Shape_overlapsSquares(const Shape *self, const Square *squares) {
   const Square *absolutes = Shape_absoluteSquares(self);
 
-  const int32_t aLen = arrlen(absolutes);
-  const int32_t bLen = arrlen(squares);
-
-  for (int i = 0; i < aLen; i++) {
-    for (int j = 0; j < bLen; j++) {
+  for (int i = 0; i < arrlen(absolutes); i++) {
+    for (int j = 0; j < arrlen(squares); j++) {
       if (absolutes[i].row == squares[j].row &&
           absolutes[i].column == squares[j].column) {
         arrfree(absolutes);
@@ -113,9 +109,8 @@ bool Shape_overlapsSquares(const Shape *self, const Square *squares) {
 
 bool Shape_withinBounds(const Shape *self) {
   const Square *absolutes = Shape_absoluteSquares(self);
-  const int32_t len = arrlen(absolutes);
 
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < arrlen(absolutes); i++) {
     if (absolutes[i].column < 0 || absolutes[i].column >= PUZZLE_WIDTH ||
         absolutes[i].row >= PUZZLE_HEIGHT) {
       arrfree(absolutes);

@@ -106,8 +106,7 @@ static ScreenEvent update(Screen *screen) {
     return SCREEN_EVENT_GO_TO_OVER;
   }
 
-  int32_t qLen = arrlen(self->commandQueue);
-  for (int i = 0; i < qLen; i++) {
+  for (int i = 0; i < arrlen(self->commandQueue); i++) {
     switch (self->commandQueue[i]) {
       case COMMAND_CLOSE:
         clearQueue(self);
@@ -391,8 +390,7 @@ bool movePlayer(GameScreen *self, Cell direction) {
 
 void eatPlayer(GameScreen *self) {
   const Square *absolutes = Shape_absoluteSquares(&self->player);
-  const int32_t len = arrlen(absolutes);
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < arrlen(absolutes); i++) {
     arrput(self->opponent, absolutes[i]);
   }
   arrfree(absolutes);

@@ -6,7 +6,6 @@
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
-#include <assert.h>
 #include <math.h>
 #include <stdint.h>
 
@@ -176,8 +175,7 @@ void drawSquareAtPoint(SquareAtPoint square) {
 }
 
 void drawSquares(const Square *squares, const SDL_Point *ref) {
-  int32_t len = arrlen(squares);
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < arrlen(squares); i++) {
     const Square square = squares[i];
     // clang-format off
     drawSquareAtPoint(
