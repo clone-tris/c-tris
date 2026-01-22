@@ -28,24 +28,38 @@ void drawGuide(const SDL_FRect *rect) {
   }
 }
 
+typedef struct SquareAtPoint {
+  int32_t x;
+  int32_t y;
+  TetrominoColor color;
+} SquareAtPoint;
+
+void drawSquareAtPoint(SquareAtPoint square) {
+  App_SetRenderDrawColor(App_renderer, square.color);
+  SDL_RenderFillRect(
+    App_renderer,
+    &(SDL_FRect){
+      .w = (float)SQUARE_WIDTH,
+      .h = (float)SQUARE_WIDTH,
+      .x = (float)square.x,
+      .y = (float)square.y,
+    }
+  );
+}
+
 void drawSquares(const Square *squares, const SDL_Point *ref) {
   int32_t len = arrlen(squares);
   for (int i = 0; i < len; i++) {
     const Square square = squares[i];
-    App_SetRenderDrawColor(App_renderer, square.color);
-
-    const int x = ref->x + (square.column * SQUARE_WIDTH);
-    const int y = ref->y + (square.row * SQUARE_WIDTH);
-
-    SDL_RenderFillRect(
-      App_renderer,
-      &(SDL_FRect){
-        .w = (float)SQUARE_WIDTH,
-        .h = (float)SQUARE_WIDTH,
-        .x = (float)x,
-        .y = (float)y,
+    // clang-format off
+    drawSquareAtPoint(
+      (SquareAtPoint){
+        .x = ref->x + (square.column * SQUARE_WIDTH),
+        .y = ref->y + (square.row * SQUARE_WIDTH),
+        .color = square.color
       }
     );
+    // clang-format on
   }
 }
 

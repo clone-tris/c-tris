@@ -15,3 +15,12 @@ SDL_Color App_Color(const uint32_t color) {
 
   return (SDL_Color){.r = r, .g = g, .b = b, .a = a};
 }
+
+SDL_FColor App_FColor(const uint32_t color) {
+  const Uint8 r = (color >> 24) & 0xFF;
+  const Uint8 g = (color >> 16) & 0xFF;
+  const Uint8 b = (color >> 8) & 0xFF;
+  const Uint8 a = color & 0xFF;
+
+  return (SDL_FColor){.r = r, .g = g, .b = b, .a = a};
+}
