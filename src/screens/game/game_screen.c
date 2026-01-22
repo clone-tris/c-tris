@@ -288,6 +288,7 @@ bool spawnPlayer(GameScreen *self) {
 
   arrfree(self->player.squares);
   self->player = Shape_copy(&foreshadow);
+  arrfree(foreshadow.squares);
 
   arrfree(self->nextPlayer.squares);
   self->nextPlayer = Tetromino_random();
