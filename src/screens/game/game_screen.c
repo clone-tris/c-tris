@@ -289,6 +289,7 @@ void spawnPlayer(GameScreen *self) {
   arrfree(self->player.squares);
   self->player = Shape_copy(&self->nextPlayer);
   self->player.column = (PUZZLE_WIDTH - self->player.width) / 2;
+  self->player.row = 0;
   arrfree(self->nextPlayer.squares);
   self->nextPlayer = Tetromino_random();
 }
