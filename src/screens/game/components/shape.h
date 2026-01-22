@@ -17,7 +17,7 @@ typedef struct Shape {
   Square *squares;
 } Shape;
 
-Shape Shape_create(Cell, const Square *);
+Shape Shape_create(Cell, Square *);
 Shape Shape_copy(const Shape *);
 Square *Shape_absoluteSquares(const Shape *);
 void Shape_translate(Shape *, Cell);

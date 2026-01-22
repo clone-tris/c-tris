@@ -9,13 +9,13 @@
 
 void computeSize(Shape *self);
 
-Shape Shape_create(const Cell cell, const Square *squares) {
+Shape Shape_create(const Cell cell, Square *squares) {
   Shape shape = {
     .row = cell.row,
     .column = cell.column,
     .width = 0,
     .height = 0,
-    .squares = (Square *)squares
+    .squares = squares
   };
 
   computeSize(&shape);

@@ -1,6 +1,5 @@
 #include "game_screen.h"
 #include "config.h"
-#include "helpers.h"
 #include "engine/screen.h"
 #include "screens/game/components/score.h"
 #include "screens/game/components/shape.h"
@@ -16,7 +15,7 @@
 #include <stdio.h>
 
 typedef struct GameScreen GameScreen;
-void applyGravity(GameScreen *selfj);
+void applyGravity(GameScreen *self);
 void makePlayerFall(GameScreen *self);
 void makePlayerFallnow(GameScreen *self);
 void mopTheFloor(GameScreen *self);
@@ -149,15 +148,6 @@ static void draw(Screen *screen) {
   drawSidebar(&self->nextPlayer, &self->score);
 }
 
-void debugFullRows(GameScreen *self) {
-  int32_t *fullRows = findFullRows(self->opponent);
-  for (int i = 0; i < arrlen(fullRows); i++) {
-    printf("%d ", fullRows[i]);
-  }
-  printf("\n");
-  arrfree(fullRows);
-}
-
 // NOLINTBEGIN(readability-function-cognitive-complexity)
 static void keydown(Screen *screen, SDL_Scancode scancode) {
   GameScreen *self = (GameScreen *)screen;
@@ -198,9 +188,6 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
       if (self->state == STATE_PLAYING || self->state == STATE_ON_FLOOR) {
         arrput(self->commandQueue, COMMAND_MOVE_DOWN);
       }
-      break;
-    case SDL_SCANCODE_L:
-      debugFullRows(self);
       break;
 
     default:
@@ -267,7 +254,7 @@ void mopTheFloor(GameScreen *self) {
     self->state = STATE_PLAYING;
   } else {
     eatPlayer(self);
-    const int32_t *fullRows = findFullRows(self->opponent);
+    int32_t *fullRows = findFullRows(self->opponent);
     const int32_t fullRowsCount = arrlen(fullRows);
     if (fullRowsCount > 0) {
       removeOpponentFullRows(self, fullRows);
@@ -296,8 +283,8 @@ void spawnPlayer(GameScreen *self) {
 
 void updateScore(GameScreen *self, int32_t linesRemoved) {
   int32_t currentLevel = self->score.level;
-  int32_t basePoints = POINTS[linesRemoved];
   assert(linesRemoved >= 0 && linesRemoved <= 4);
+  int32_t basePoints = POINTS[linesRemoved];
   int32_t linesCleared = self->score.linesCleared + linesRemoved;
   int32_t level = (linesCleared / LINES_PER_LEVEL) + 1;
   int32_t points = basePoints * currentLevel;
@@ -323,9 +310,11 @@ void togglePaused(GameScreen *self) {
 void pause(GameScreen *self) {
   const uint32_t now = SDL_GetTicks();
   if (self->state == STATE_PLAYING) {
-    self->timeRemainingAfterPaused = max((int32_t)(self->nextFall - now), 0);
+    uint32_t remaining = self->nextFall > now ? self->nextFall - now : 0;
+    self->timeRemainingAfterPaused = remaining;
   } else if (self->state == STATE_ON_FLOOR) {
-    self->timeRemainingAfterPaused = max((int32_t)(self->endOfLock - now), 0);
+    uint32_t remaining = self->endOfLock > now ? self->endOfLock - now : 0;
+    self->timeRemainingAfterPaused = remaining;
   }
 
   self->previousState = self->state;
@@ -365,8 +354,8 @@ void movePlayerRight(GameScreen *self) {
 }
 
 bool movePlayerDown(GameScreen *self) {
-  bool albeToMove = movePlayer(self, (Cell){.row = 1, .column = 0});
-  return albeToMove;
+  bool ableToMove = movePlayer(self, (Cell){.row = 1, .column = 0});
+  return ableToMove;
 }
 
 bool movePlayer(GameScreen *self, Cell direction) {
