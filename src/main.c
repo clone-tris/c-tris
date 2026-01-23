@@ -1,6 +1,7 @@
 #include <SDL3/SDL_blendmode.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
+#include <stdio.h>
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //
@@ -82,7 +83,30 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
   AppState *as = (AppState *)appstate;
-  Screen_update(as->screen);
+  ScreenEvent screenEvent = Screen_update(as->screen);
+  switch (screenEvent) {
+    case SCREEN_EVENT_CLOSE:
+      return SDL_APP_SUCCESS;
+    case SCREEN_EVENT_GO_TO_MENU:
+      if (!switchScreen(as, MenuScreen_create)) {
+        return SDL_APP_FAILURE;
+      }
+      break;
+    case SCREEN_EVENT_GO_TO_GAME:
+      if (!switchScreen(as, GameScreen_create)) {
+        return SDL_APP_FAILURE;
+      }
+      break;
+    case SCREEN_EVENT_GO_TO_OVER:
+      // implement game over screen
+      printf("let us pretend this is the game over screen");
+      if (!switchScreen(as, GameScreen_create)) {
+        return SDL_APP_FAILURE;
+      }
+      break;
+    default:
+      break;
+  }
   Screen_draw(as->screen);
   SDL_RenderPresent(App_renderer);
   return SDL_APP_CONTINUE;

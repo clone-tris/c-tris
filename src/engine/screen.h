@@ -25,7 +25,7 @@ typedef struct Screen {
 } Screen;
 
 void Screen_draw(Screen *);
-void Screen_update(Screen *);
+ScreenEvent Screen_update(Screen *);
 void Screen_keyDown(Screen *, SDL_Scancode);
 void Screen_mouseButtonUp(Screen *);
 void Screen_destroy(Screen **);

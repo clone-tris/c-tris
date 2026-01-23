@@ -9,12 +9,13 @@ void Screen_draw(Screen *screen) {
   }
 }
 
-void Screen_update(Screen *screen) {
+ScreenEvent Screen_update(Screen *screen) {
   assert(screen);
   assert(screen->vtable);
   if (screen->vtable->update) {
-    screen->vtable->update(screen);
+    return screen->vtable->update(screen);
   }
+  return SCREEN_EVENT_NONE;
 }
 
 void Screen_keyDown(Screen *screen, SDL_Scancode scancode) {
