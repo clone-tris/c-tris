@@ -116,22 +116,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   AppState *as = (AppState *)appstate;
   if (event->type == SDL_EVENT_KEY_DOWN) {
     Screen_keyDown(as->screen, event->key.scancode);
-    switch (event->key.scancode) {
-      case SDL_SCANCODE_Q:
-        return SDL_APP_SUCCESS;
-      case SDL_SCANCODE_G:
-        if (!switchScreen(as, GameScreen_create)) {
-          return SDL_APP_FAILURE;
-        }
-        break;
-      case SDL_SCANCODE_M:
-        if (!switchScreen(as, MenuScreen_create)) {
-          return SDL_APP_FAILURE;
-        }
-        break;
-      default:
-        return SDL_APP_CONTINUE;
-    }
   }
 
   return SDL_APP_CONTINUE;

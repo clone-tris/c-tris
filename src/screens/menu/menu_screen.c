@@ -23,6 +23,8 @@ bool MenuScreen_create(Screen **screen) {
     return false;
   }
 
+  self->nextStep = SCREEN_EVENT_NONE;
+
   //
   self->screen.vtable = &MenuScreen_vtable;
   *screen = (Screen *)self;
@@ -39,6 +41,11 @@ static void MenuScreen_draw(Screen *screen) {
   };
   drawGuide(&rect);
   drawNSquares(graphic, &(SDL_Point){.x = 0, .y = 0}, 52);
+}
+
+static ScreenEvent update(Screen *screen) {
+  MenuScreen *self = (MenuScreen *)screen;
+  return self->nextStep;
 }
 
 static void MenuScreen_keyDown(Screen *screen, SDL_Scancode scancode) {
@@ -62,7 +69,7 @@ static void MenuScreen_cleanup(Screen *screen) {
 
 static const ScreenVTable MenuScreen_vtable = {
   .draw = MenuScreen_draw,
-  .update = nullptr,
+  .update = update,
   .keyDown = MenuScreen_keyDown,
   .mouseButtonUp = nullptr,
   .cleanup = MenuScreen_cleanup,
