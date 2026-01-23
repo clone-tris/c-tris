@@ -83,7 +83,7 @@ static void mouseButtonUp(Screen *screen, SDL_FPoint mouse) {
 }
 
 static void cleanup(Screen *screen) {
-  printf("Cleaning up GameScreen\n");
+  printf("Cleaning up OverScreen\n");
   OverScreen *self = (OverScreen *)screen;
   SDL_DestroyTexture(self->background);
   SDL_DestroyTexture(self->retryButton.texture);

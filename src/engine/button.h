@@ -1,3 +1,5 @@
+#pragma once
+
 #include "app.h"
 #include <SDL3/SDL_render.h>
 #include <stdint.h>

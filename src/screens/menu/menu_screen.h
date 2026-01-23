@@ -51,4 +51,4 @@ static const Square graphic[] = {
   {14, 12, COLORS[0]},
   {14, 13, COLORS[0]},
 } ;
-// clang-format off
+// clang-format on

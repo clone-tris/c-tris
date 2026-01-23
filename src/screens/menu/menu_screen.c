@@ -42,7 +42,7 @@ static void draw(Screen *screen) {
   static const SDL_FRect rect = {
     .x = 0,
     .y = 0,
-    .w = CANVAS_HEIGHT,
+    .w = CANVAS_WIDTH,
     .h = CANVAS_HEIGHT,
   };
   drawGuide(&rect);
