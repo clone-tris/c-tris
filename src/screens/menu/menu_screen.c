@@ -65,6 +65,7 @@ static void keyDown(Screen *screen, SDL_Scancode scancode) {
     case SDL_SCANCODE_Q:
       self->nextStep = SCREEN_EVENT_CLOSE;
       break;
+
     default:
       break;
   }
