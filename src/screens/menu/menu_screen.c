@@ -13,6 +13,7 @@ static const ScreenVTable MenuScreen_vtable;
 
 typedef struct MenuScreen {
   Screen screen;
+  ScreenEvent nextStep;
 } MenuScreen;
 
 bool MenuScreen_create(Screen **screen) {
@@ -29,7 +30,7 @@ bool MenuScreen_create(Screen **screen) {
 }
 
 static void MenuScreen_draw(Screen *screen) {
-  MenuScreen *self = (MenuScreen *)screen;
+  (void)screen;
   static const SDL_FRect rect = {
     .x = 0,
     .y = 0,
@@ -43,6 +44,12 @@ static void MenuScreen_draw(Screen *screen) {
 static void MenuScreen_keyDown(Screen *screen, SDL_Scancode scancode) {
   MenuScreen *self = (MenuScreen *)screen;
   switch (scancode) {
+    case SDL_SCANCODE_Q:
+      self->nextStep = SCREEN_EVENT_CLOSE;
+      break;
+    case SDL_SCANCODE_S:
+      self->nextStep = SCREEN_EVENT_GO_TO_GAME;
+      break;
     default:
       break;
   }
