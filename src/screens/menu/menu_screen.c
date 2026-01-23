@@ -23,6 +23,8 @@ bool MenuScreen_create(Screen **screen) {
     return false;
   }
 
+  printf("hi from menu screen\n");
+
   self->nextStep = SCREEN_EVENT_NONE;
 
   //

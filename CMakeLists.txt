@@ -81,6 +81,7 @@ add_executable(${PROJECT_NAME}
     src/screens/game/components/tetromino.c
     src/screens/game/components/score.c
     src/screens/menu/menu_screen.c
+    src/screens/over/over_screen.c
 )
 
 

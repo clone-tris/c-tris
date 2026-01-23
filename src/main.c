@@ -1,7 +1,6 @@
 #include <SDL3/SDL_blendmode.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
-#include <stdio.h>
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
 //
@@ -10,6 +9,7 @@
 #include "engine/screen.h"
 #include "screens/game/game_screen.h"
 #include "screens/menu/menu_screen.h"
+#include "screens/over/over_screen.h"
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_main.h>
@@ -98,9 +98,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
       }
       break;
     case SCREEN_EVENT_GO_TO_OVER:
-      // implement game over screen
-      printf("let us pretend this is the game over screen");
-      if (!switchScreen(as, GameScreen_create)) {
+      if (!switchScreen(as, OverScreen_create)) {
         return SDL_APP_FAILURE;
       }
       break;
