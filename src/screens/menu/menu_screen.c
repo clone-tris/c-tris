@@ -9,8 +9,8 @@
 #include <SDL3/SDL_scancode.h>
 #include <stdio.h>
 
-static void MenuScreen_draw(Screen *screen);
-static void MenuScreen_cleanup(Screen *screen);
+static void draw(Screen *screen);
+static void cleanup(Screen *screen);
 static const ScreenVTable MenuScreen_vtable;
 
 typedef struct MenuScreen {
@@ -37,7 +37,7 @@ bool MenuScreen_create(Screen **screen) {
   return true;
 }
 
-static void MenuScreen_draw(Screen *screen) {
+static void draw(Screen *screen) {
   MenuScreen *self = (MenuScreen *)screen;
   static const SDL_FRect rect = {
     .x = 0,
@@ -56,30 +56,41 @@ static ScreenEvent update(Screen *screen) {
   return self->nextStep;
 }
 
-static void MenuScreen_keyDown(Screen *screen, SDL_Scancode scancode) {
+static void keyDown(Screen *screen, SDL_Scancode scancode) {
   MenuScreen *self = (MenuScreen *)screen;
   switch (scancode) {
-    case SDL_SCANCODE_Q:
-      self->nextStep = SCREEN_EVENT_CLOSE;
-      break;
     case SDL_SCANCODE_S:
       self->nextStep = SCREEN_EVENT_GO_TO_GAME;
+      break;
+    case SDL_SCANCODE_Q:
+      self->nextStep = SCREEN_EVENT_CLOSE;
       break;
     default:
       break;
   }
 }
 
-static void MenuScreen_cleanup(Screen *screen) {
+static void mouseButtonUp(Screen *screen, SDL_FPoint mouse) {
+  MenuScreen *self = (MenuScreen *)screen;
+  if (Button_clicked(&self->startButton, mouse)) {
+    self->nextStep = SCREEN_EVENT_GO_TO_GAME;
+  }
+  if (Button_clicked(&self->quitButton, mouse)) {
+    self->nextStep = SCREEN_EVENT_CLOSE;
+  }
+}
+
+static void cleanup(Screen *screen) {
   MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
   SDL_DestroyTexture(self->startButton.texture);
+  SDL_DestroyTexture(self->quitButton.texture);
 }
 
 static const ScreenVTable MenuScreen_vtable = {
-  .draw = MenuScreen_draw,
+  .draw = draw,
   .update = update,
-  .keyDown = MenuScreen_keyDown,
-  .mouseButtonUp = nullptr,
-  .cleanup = MenuScreen_cleanup,
+  .keyDown = keyDown,
+  .mouseButtonUp = mouseButtonUp,
+  .cleanup = cleanup,
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_scancode.h>
 
 typedef enum ScreenEvent {
@@ -16,7 +17,7 @@ typedef struct ScreenVTable {
   void (*draw)(Screen *);
   ScreenEvent (*update)(Screen *);
   void (*keyDown)(Screen *, SDL_Scancode);
-  void (*mouseButtonUp)(Screen *);
+  void (*mouseButtonUp)(Screen *, SDL_FPoint);
   void (*cleanup)(Screen *);
 } ScreenVTable;
 
@@ -27,5 +28,5 @@ typedef struct Screen {
 void Screen_draw(Screen *);
 ScreenEvent Screen_update(Screen *);
 void Screen_keyDown(Screen *, SDL_Scancode);
-void Screen_mouseButtonUp(Screen *);
+void Screen_mouseButtonUp(Screen *, SDL_FPoint);
 void Screen_destroy(Screen **);

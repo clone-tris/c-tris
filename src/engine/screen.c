@@ -1,4 +1,5 @@
 #include "engine/screen.h"
+#include <SDL3/SDL_rect.h>
 #include <assert.h>
 
 void Screen_draw(Screen *screen) {
@@ -26,11 +27,11 @@ void Screen_keyDown(Screen *screen, SDL_Scancode scancode) {
   }
 }
 
-void Screen_mouseButtonUp(Screen *screen) {
+void Screen_mouseButtonUp(Screen *screen, SDL_FPoint point) {
   assert(screen);
   assert(screen->vtable);
   if (screen->vtable->mouseButtonUp) {
-    screen->vtable->mouseButtonUp(screen);
+    screen->vtable->mouseButtonUp(screen, point);
   }
 }
 

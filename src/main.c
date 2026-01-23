@@ -1,4 +1,5 @@
 #include <SDL3/SDL_blendmode.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #define STB_DS_IMPLEMENTATION
@@ -114,6 +115,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   AppState *as = (AppState *)appstate;
   if (event->type == SDL_EVENT_KEY_DOWN) {
     Screen_keyDown(as->screen, event->key.scancode);
+  }
+  if (event->type == SDL_EVENT_MOUSE_BUTTON_UP) {
+    Screen_mouseButtonUp(
+      as->screen, (SDL_FPoint){.x = event->button.x, .y = event->button.y}
+    );
   }
 
   return SDL_APP_CONTINUE;

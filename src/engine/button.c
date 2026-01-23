@@ -72,3 +72,14 @@ void Button_draw(Button *self) {
     }
   );
 }
+
+bool Button_clicked(Button *self, SDL_FPoint mouse) {
+  // clang-format off
+  return (
+    (float)self->x <= mouse.x
+    && (mouse.x <= (float)self->x + (float)self->texture->w)
+    && (float)self->y <= mouse.y
+    && (mouse.y <= (float)self->y + (float)self->texture->h)
+  );
+  // clang-format on
+}
