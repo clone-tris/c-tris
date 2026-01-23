@@ -72,7 +72,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
   SDL_SetRenderDrawBlendMode(App_renderer, SDL_BLENDMODE_BLEND);
 
-  if (!GameScreen_create(&as->screen)) {
+  if (!MenuScreen_create(&as->screen)) {
     SDL_Log("Couldn't create Initial Screen");
     return SDL_APP_FAILURE;
   }

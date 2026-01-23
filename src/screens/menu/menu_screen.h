@@ -1,5 +1,54 @@
 #pragma once
 
 #include "engine/screen.h"
+#include "screens/game/components/square.h"
 
 bool MenuScreen_create(Screen **);
+
+// clang-format off
+static const Square graphic[] = {
+  {1, 2, COLORS[0]},
+  {2, 2, COLORS[0]},
+  {3, 2, COLORS[0]},
+  {3, 3, COLORS[0]},
+  {3, 5, COLORS[1]},
+  {3, 6, COLORS[1]},
+  {3, 7, COLORS[1]},
+  {2, 7, COLORS[1]},
+  {1, 7, COLORS[1]},
+  {1, 6, COLORS[1]},
+  {1, 5, COLORS[1]},
+  {2, 5, COLORS[1]},
+  {2, 9, COLORS[2]},
+  {1, 10, COLORS[2]},
+  {3, 10, COLORS[2]},
+  {3, 11, COLORS[2]},
+  {2, 11, COLORS[2]},
+  {5, 5, COLORS[3]},
+  {6, 5, COLORS[3]},
+  {6, 4, COLORS[3]},
+  {7, 5, COLORS[3]},
+  {8, 4, COLORS[3]},
+  {7, 3, COLORS[3]},
+  {5, 7, COLORS[4]},
+  {7, 7, COLORS[4]},
+  {8, 7, COLORS[4]},
+  {8, 9, COLORS[5]},
+  {7, 9, COLORS[5]},
+  {6, 9, COLORS[5]},
+  {6, 10, COLORS[5]},
+  {6, 11, COLORS[5]},
+  {7, 11, COLORS[5]},
+  {8, 11, COLORS[5]},
+  {10, 8, COLORS[6]},
+  {11, 7, COLORS[6]},
+  {12, 8, COLORS[6]},
+  {11, 9, COLORS[6]},
+  {12, 9, COLORS[6]},
+  {13, 9, COLORS[6]},
+  {14, 8, COLORS[6]},
+  {14, 11, COLORS[0]},
+  {14, 12, COLORS[0]},
+  {14, 13, COLORS[0]},
+} ;
+// clang-format off

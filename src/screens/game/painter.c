@@ -34,7 +34,7 @@ void drawPlayfield(const Shape *player, const Square *opponent) {
 
   drawGuide(&rect);
   drawShape(player, &origin);
-  drawSquares(opponent, &origin);
+  drawArrSquares(opponent, &origin);
 }
 
 void drawSidebar(const Shape *nextPlayer, const Score *score) {

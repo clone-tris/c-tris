@@ -7,6 +7,7 @@
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <math.h>
+#include <stdint.h>
 
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
@@ -173,8 +174,8 @@ void drawSquareAtPoint(SquareAtPoint square) {
   // clang-format on
 }
 
-void drawSquares(const Square *squares, const SDL_Point *ref) {
-  for (int i = 0; i < arrlen(squares); i++) {
+void drawNSquares(const Square *squares, const SDL_Point *ref, int32_t n) {
+  for (int i = 0; i < n; i++) {
     const Square square = squares[i];
     // clang-format off
     drawSquareAtPoint(
@@ -190,9 +191,13 @@ void drawSquares(const Square *squares, const SDL_Point *ref) {
   }
 }
 
+void drawArrSquares(const Square *squares, const SDL_Point *ref) {
+  drawNSquares(squares, ref, arrlen(squares));
+}
+
 void drawShape(const Shape *shape, const SDL_Point *ref) {
   // clang-format off
-  drawSquares(
+  drawArrSquares(
     shape->squares,
     &(SDL_Point){
       .x = ref->x + (shape->column * SQUARE_WIDTH),

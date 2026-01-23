@@ -14,28 +14,6 @@ typedef enum Type {
   I,
 } Type;
 
-uint32_t color(const Type type) {
-  switch (type) {
-    case T:
-      return TETROMINO_PURPLE;
-    case Z:
-      return TETROMINO_RED;
-    case S:
-      return TETROMINO_GREEN;
-    case L:
-      return TETROMINO_ORANGE;
-    case J:
-      return TETROMINO_BLUE;
-    case O:
-      return TETROMINO_YELLOW;
-    case I:
-      return TETROMINO_CYAN;
-    default:
-      assert(type);
-      return SQUARE_DEFAULT;
-  }
-}
-
 static const int GRIDS[][4][2] = {
   {{0, 0}, {0, 1}, {0, 2}, {1, 1}}, // T
   {{0, 0}, {0, 1}, {1, 1}, {1, 2}}, // Z
@@ -47,7 +25,7 @@ static const int GRIDS[][4][2] = {
 };
 
 void makeSquares(Type type, Square **squares) {
-  auto shapeColor = color(type);
+  auto shapeColor = COLORS[type];
   auto grid = GRIDS[type];
   for (int i = 0; i < 4; i++) {
     // clang-format off

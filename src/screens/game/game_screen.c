@@ -74,6 +74,7 @@ typedef struct GameScreen {
 bool GameScreen_create(Screen **screen) {
   GameScreen *self = SDL_calloc(1, sizeof(*self));
   if (!self) {
+    self = nullptr;
     return false;
   }
 
