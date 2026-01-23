@@ -207,9 +207,11 @@ void drawShape(const Shape *shape, const SDL_Point *ref) {
   // clang-format on
 }
 
-bool makeFontTexture(const char *text, SDL_Texture **texture) {
+bool makeFontTexture(
+  const char *text, TTF_Font *font, const uint32_t color, SDL_Texture **texture
+) {
   SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(
-    smallFont, text, 0, App_Color(UI_WHITE_TEXT), 0
+    font, text, 0, App_Color(color), 0
   );
   if (!surface) {
     SDL_Log("Couldn't create text: %s\n", SDL_GetError());

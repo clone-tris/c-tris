@@ -1,5 +1,4 @@
 #include "app.h"
-#include "config.h"
 #include "engine/screen.h"
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
@@ -21,7 +20,6 @@ bool OverScreen_create(Screen **screen) {
     return false;
   }
   //
-  printf("hi from over screen\n");
 
   SDL_Surface *surface = SDL_RenderReadPixels(App_renderer, nullptr);
   self->background = SDL_CreateTextureFromSurface(App_renderer, surface);

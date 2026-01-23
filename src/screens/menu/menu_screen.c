@@ -1,5 +1,7 @@
 #include "menu_screen.h"
+#include "app.h"
 #include "config.h"
+#include "engine/button.h"
 #include "engine/painter.h"
 #include "engine/screen.h"
 #include <SDL3/SDL_rect.h>
@@ -14,6 +16,8 @@ static const ScreenVTable MenuScreen_vtable;
 typedef struct MenuScreen {
   Screen screen;
   ScreenEvent nextStep;
+  Button startButton;
+  Button quitButton;
 } MenuScreen;
 
 bool MenuScreen_create(Screen **screen) {
@@ -23,9 +27,9 @@ bool MenuScreen_create(Screen **screen) {
     return false;
   }
 
-  printf("hi from menu screen\n");
-
   self->nextStep = SCREEN_EVENT_NONE;
+  self->startButton = Button_create("[S]tart", (Cell){.row = 17, .column = 4});
+  self->quitButton = Button_create("[Q]uit", (Cell){.row = 17, .column = 9});
 
   //
   self->screen.vtable = &MenuScreen_vtable;
@@ -34,7 +38,7 @@ bool MenuScreen_create(Screen **screen) {
 }
 
 static void MenuScreen_draw(Screen *screen) {
-  (void)screen;
+  MenuScreen *self = (MenuScreen *)screen;
   static const SDL_FRect rect = {
     .x = 0,
     .y = 0,
@@ -43,6 +47,8 @@ static void MenuScreen_draw(Screen *screen) {
   };
   drawGuide(&rect);
   drawNSquares(graphic, &(SDL_Point){.x = 0, .y = 0}, 52);
+  Button_draw(&self->startButton);
+  Button_draw(&self->quitButton);
 }
 
 static ScreenEvent update(Screen *screen) {
@@ -65,8 +71,9 @@ static void MenuScreen_keyDown(Screen *screen, SDL_Scancode scancode) {
 }
 
 static void MenuScreen_cleanup(Screen *screen) {
+  MenuScreen *self = (MenuScreen *)screen;
   printf("Cleaning up MenuScreen\n");
-  (void)screen;
+  SDL_DestroyTexture(self->startButton.texture);
 }
 
 static const ScreenVTable MenuScreen_vtable = {

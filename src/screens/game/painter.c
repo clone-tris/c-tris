@@ -1,4 +1,5 @@
 #include "screens/game/painter.h"
+#include "app.h"
 #include "colors.h"
 #include "config.h"
 #include "engine/painter.h"
@@ -63,19 +64,21 @@ void drawSidebar(const Shape *nextPlayer, const Score *score) {
   if (score->level != lastLevel) {
     sprintf(levelText, levelFormat, score->level);
     SDL_DestroyTexture(levelTexture);
-    makeFontTexture(levelText, &levelTexture);
+    makeFontTexture(levelText, smallFont, UI_WHITE_TEXT, &levelTexture);
     lastLevel = score->level;
   }
   if (score->linesCleared != lastLinesCleared) {
     sprintf(linesClearedText, linesClearedFormat, score->linesCleared);
     SDL_DestroyTexture(linesClearedTexture);
-    makeFontTexture(linesClearedText, &linesClearedTexture);
+    makeFontTexture(
+      linesClearedText, smallFont, UI_WHITE_TEXT, &linesClearedTexture
+    );
     lastLinesCleared = score->linesCleared;
   }
   if (score->total != lastTotal) {
     sprintf(totalText, totalFormat, score->total);
     SDL_DestroyTexture(totalTexture);
-    makeFontTexture(totalText, &totalTexture);
+    makeFontTexture(totalText, smallFont, UI_WHITE_TEXT, &totalTexture);
     lastTotal = score->total;
   }
 

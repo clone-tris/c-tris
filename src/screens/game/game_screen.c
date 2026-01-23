@@ -78,8 +78,6 @@ bool GameScreen_create(Screen **screen) {
     return false;
   }
 
-  printf("hi from game screen\n");
-
   self->score = Score_create();
   self->nextPlayer = Tetromino_random();
   self->opponent = nullptr;

@@ -64,8 +64,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     return SDL_APP_FAILURE;
   }
 
-  smallFont = TTF_OpenFont("jetbrainsmono.ttf", 14);
-  largeFont = TTF_OpenFont("jetbrainsmono.ttf", 34);
+  smallFont = TTF_OpenFont(FONT_NAME, 14);
+  largeFont = TTF_OpenFont(FONT_NAME, 34);
   if (!smallFont || !largeFont) {
     SDL_Log("Couldn't open font: %s\n", SDL_GetError());
     return SDL_APP_FAILURE;

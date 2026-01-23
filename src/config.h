@@ -21,6 +21,5 @@ static constexpr int32_t FLOOR_LOCK_RATE = 500;
 static constexpr int32_t FALL_RATE_REDUCTION_FACTOR = 3;
 static constexpr int32_t LINES_PER_LEVEL = 10;
 
-static constexpr int32_t BUTTON_PADDING_LEFT = 8;
-static constexpr int32_t BUTTON_PADDING_TOP = 8;
-static const char *FONT_NAME = "jetbrainsmono";
+static constexpr int32_t BUTTON_PADDING_LEFT = 4;
+static const char *FONT_NAME = "jetbrainsmono.ttf";

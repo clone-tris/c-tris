@@ -9,4 +9,4 @@ void drawGuide(const SDL_FRect *);
 void drawShape(const Shape *, const SDL_Point *);
 void drawArrSquares(const Square *, const SDL_Point *);
 void drawNSquares(const Square *, const SDL_Point *, int32_t);
-bool makeFontTexture(char *text, SDL_Texture **texture);
+bool makeFontTexture(const char *, TTF_Font *, uint32_t, SDL_Texture **);
