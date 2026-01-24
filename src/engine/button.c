@@ -3,7 +3,6 @@
 #include "colors.h"
 #include "config.h"
 #include "engine/painter.h"
-#include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <math.h>
@@ -42,8 +41,8 @@ Button Button_create(const char *text, Cell cell) {
     &(SDL_FRect){
       .x = (float)paddingLeft,
       .y = (float)paddingTop,
-      .w = (float)textTexture->w,
-      .h = (float)textTexture->h
+      .w = (float)textWidth,
+      .h = (float)textHeight
     }
   );
   // clang-format on

@@ -1,5 +1,6 @@
 #include "app.h"
 #include "engine/button.h"
+#include "engine/popup.h"
 #include "engine/screen.h"
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
@@ -12,6 +13,7 @@ typedef struct OverScreen {
   Screen screen;
   ScreenEvent nextStep;
   SDL_Texture *background;
+  Popup popup;
   Button retryButton;
   Button menuButton;
   Button quitButton;
@@ -30,6 +32,7 @@ bool OverScreen_create(Screen **screen) {
   SDL_DestroySurface(surface);
 
   self->nextStep = SCREEN_EVENT_NONE;
+  self->popup = Popup_create("Game Over!");
   self->retryButton = Button_create("[R]etry", (Cell){.row = 17, .column = 3});
   self->menuButton = Button_create("[M]enu", (Cell){.row = 17, .column = 7});
   self->quitButton = Button_create("[Q]uit", (Cell){.row = 17, .column = 11});
@@ -45,6 +48,7 @@ static void draw(Screen *screen) {
   Button_draw(&self->retryButton);
   Button_draw(&self->menuButton);
   Button_draw(&self->quitButton);
+  Popup_draw(&self->popup);
 }
 
 static ScreenEvent update(Screen *screen) {
@@ -86,6 +90,7 @@ static void cleanup(Screen *screen) {
   printf("Cleaning up OverScreen\n");
   OverScreen *self = (OverScreen *)screen;
   SDL_DestroyTexture(self->background);
+  SDL_DestroyTexture(self->popup.texture);
   SDL_DestroyTexture(self->retryButton.texture);
   SDL_DestroyTexture(self->menuButton.texture);
   SDL_DestroyTexture(self->quitButton.texture);
