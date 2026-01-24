@@ -73,6 +73,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
   }
 
   SDL_SetRenderDrawBlendMode(App_renderer, SDL_BLENDMODE_BLEND);
+  SDL_SetRenderVSync(App_renderer, 1);
 
   if (!MenuScreen_create(&as->screen)) {
     SDL_Log("Couldn't create Initial Screen");
