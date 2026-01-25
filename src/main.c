@@ -1,19 +1,19 @@
-#include <SDL3/SDL_blendmode.h>
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_rect.h>
-#include <SDL3/SDL_render.h>
 #define STB_DS_IMPLEMENTATION
 #define SDL_MAIN_USE_CALLBACKS 1
-//
+
 #include "app.h"
 #include "config.h"
 #include "engine/screen.h"
 #include "screens/game/game_screen.h"
 #include "screens/menu/menu_screen.h"
 #include "screens/over/over_screen.h"
+#include <SDL3/SDL_blendmode.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stb_ds.h>
 #include <time.h>
