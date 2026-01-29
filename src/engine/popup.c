@@ -44,17 +44,3 @@ Popup Popup_create(const char *text) {
   SDL_DestroyTexture(textTexture);
   return (Popup){.texture = popupTexture};
 }
-
-void Popup_draw(const Popup *self) {
-  SDL_RenderTexture(
-    App_renderer,
-    self->texture,
-    nullptr,
-    &(SDL_FRect){
-      .x = (float)(CANVAS_WIDTH - self->texture->w) / 2,
-      .y = (float)(CANVAS_HEIGHT - self->texture->h) / 2,
-      .w = (float)self->texture->w,
-      .h = (float)self->texture->h,
-    }
-  );
-}

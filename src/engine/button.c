@@ -58,20 +58,6 @@ Button Button_create(const char *text, Cell cell) {
   // clang-format on
 }
 
-void Button_draw(Button *self) {
-  SDL_RenderTexture(
-    App_renderer,
-    self->texture,
-    nullptr,
-    &(SDL_FRect){
-      .x = (float)self->x,
-      .y = (float)self->y,
-      .w = (float)self->texture->w,
-      .h = (float)self->texture->h,
-    }
-  );
-}
-
 bool Button_clicked(Button *self, SDL_FPoint mouse) {
   // clang-format off
   return (

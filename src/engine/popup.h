@@ -7,4 +7,3 @@ typedef struct Popup {
 } Popup;
 
 Popup Popup_create(const char *);
-void Popup_draw(const Popup *);

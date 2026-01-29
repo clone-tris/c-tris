@@ -2,6 +2,8 @@
 #include "colors.h"
 #include "config.h"
 #include "stb_ds.h"
+#include "engine/button.h"
+#include "engine/popup.h"
 #include "screens/game/components/shape.h"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_rect.h>
@@ -205,6 +207,34 @@ void drawShape(const Shape *shape, const SDL_Point *ref) {
     }
   );
   // clang-format on
+}
+
+void drawButton(Button *button) {
+  SDL_RenderTexture(
+    App_renderer,
+    button->texture,
+    nullptr,
+    &(SDL_FRect){
+      .x = (float)button->x,
+      .y = (float)button->y,
+      .w = (float)button->texture->w,
+      .h = (float)button->texture->h,
+    }
+  );
+}
+
+void drawPopup(const Popup *popup) {
+  SDL_RenderTexture(
+    App_renderer,
+    popup->texture,
+    nullptr,
+    &(SDL_FRect){
+      .x = (float)(CANVAS_WIDTH - popup->texture->w) / 2,
+      .y = (float)(CANVAS_HEIGHT - popup->texture->h) / 2,
+      .w = (float)popup->texture->w,
+      .h = (float)popup->texture->h,
+    }
+  );
 }
 
 bool makeFontTexture(

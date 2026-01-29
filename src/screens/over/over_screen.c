@@ -1,5 +1,6 @@
 #include "app.h"
 #include "engine/button.h"
+#include "engine/painter.h"
 #include "engine/popup.h"
 #include "engine/screen.h"
 #include <SDL3/SDL_render.h>
@@ -45,10 +46,10 @@ bool OverScreen_create(Screen **screen) {
 static void draw(Screen *screen) {
   OverScreen *self = (OverScreen *)screen;
   SDL_RenderTexture(App_renderer, self->background, nullptr, nullptr);
-  Button_draw(&self->retryButton);
-  Button_draw(&self->menuButton);
-  Button_draw(&self->quitButton);
-  Popup_draw(&self->popup);
+  drawButton(&self->retryButton);
+  drawButton(&self->menuButton);
+  drawButton(&self->quitButton);
+  drawPopup(&self->popup);
 }
 
 static ScreenEvent update(Screen *screen) {

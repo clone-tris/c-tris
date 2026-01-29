@@ -47,8 +47,8 @@ static void draw(Screen *screen) {
   };
   drawGuide(&rect);
   drawNSquares(graphic, &(SDL_Point){.x = 0, .y = 0}, 52);
-  Button_draw(&self->startButton);
-  Button_draw(&self->quitButton);
+  drawButton(&self->startButton);
+  drawButton(&self->quitButton);
 }
 
 static ScreenEvent update(Screen *screen) {

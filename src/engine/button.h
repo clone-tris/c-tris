@@ -12,5 +12,4 @@ typedef struct Button {
 
 Button Button_create(const char *, Cell);
 
-void Button_draw(Button *);
 bool Button_clicked(Button *, SDL_FPoint);
