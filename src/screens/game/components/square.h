@@ -10,4 +10,4 @@ typedef struct Square {
   TetrominoColor color;
 } Square;
 
-Square Square_relativeCopy(Square, Cell);
+Square Square_relativeCopy(const Square *, Cell);

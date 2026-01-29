@@ -64,7 +64,7 @@ Square *Shape_absoluteSquares(const Shape *self) {
 
   const Cell origin = {.row = self->row, .column = self->column};
   for (int i = 0; i < arrlen(self->squares); i++) {
-    absolutes[i] = Square_relativeCopy(self->squares[i], origin);
+    absolutes[i] = Square_relativeCopy(&self->squares[i], origin);
   }
   return absolutes;
 }
