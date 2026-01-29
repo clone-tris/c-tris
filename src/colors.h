@@ -14,13 +14,13 @@ typedef enum TetrominoColor : uint32_t {
 } TetrominoColor;
 
 static const TetrominoColor COLORS[] = {
-  TETROMINO_PURPLE,
-  TETROMINO_RED,
-  TETROMINO_GREEN,
-  TETROMINO_ORANGE,
-  TETROMINO_BLUE,
-  TETROMINO_YELLOW,
   TETROMINO_CYAN,
+  TETROMINO_YELLOW,
+  TETROMINO_PURPLE,
+  TETROMINO_BLUE,
+  TETROMINO_ORANGE,
+  TETROMINO_GREEN,
+  TETROMINO_RED,
 };
 
 typedef enum SquareColor : uint32_t {
