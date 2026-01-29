@@ -46,7 +46,7 @@ static void draw(Screen *screen) {
     .h = CANVAS_HEIGHT,
   };
   drawGuide(&rect);
-  drawNSquares(graphic, &(SDL_Point){.x = 0, .y = 0}, 52);
+  drawNSquares(graphic, &(SDL_Point){.x = 0, .y = 0}, 43);
   drawButton(&self->startButton);
   drawButton(&self->quitButton);
 }
