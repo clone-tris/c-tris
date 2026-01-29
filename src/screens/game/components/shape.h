@@ -4,11 +4,6 @@
 #include "screens/game/components/square.h"
 #include <stdint.h>
 
-typedef struct SquaresPair {
-  Square *a;
-  Square *b;
-} SquaresPair;
-
 typedef struct Shape {
   int32_t row;
   int32_t column;
