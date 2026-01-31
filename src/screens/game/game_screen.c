@@ -390,11 +390,13 @@ bool movePlayer(GameScreen *self, Cell direction) {
 }
 
 void eatPlayer(GameScreen *self) {
-  const Square *absolutes = Shape_absoluteSquares(&self->player);
-  for (int i = 0; i < arrlen(absolutes); i++) {
-    arrput(self->opponent, absolutes[i]);
+  for (int i = 0; i < arrlen(self->player.squares); i++) {
+    Square absoluteSquare = Square_relativeCopy(
+      &self->player.squares[i],
+      (Cell){.row = self->player.row, .column = self->player.column}
+    );
+    arrput(self->opponent, absoluteSquare);
   }
-  arrfree(absolutes);
 }
 
 void removeOpponentFullRows(GameScreen *self, const int32_t *fullRows) {

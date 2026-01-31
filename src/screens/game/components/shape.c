@@ -58,17 +58,6 @@ Shape Shape_copy(const Shape *self) {
   return copy;
 }
 
-Square *Shape_absoluteSquares(const Shape *self) {
-  Square *absolutes = nullptr;
-  arraddnptr(absolutes, arrlen(self->squares));
-
-  const Cell origin = {.row = self->row, .column = self->column};
-  for (int i = 0; i < arrlen(self->squares); i++) {
-    absolutes[i] = Square_relativeCopy(&self->squares[i], origin);
-  }
-  return absolutes;
-}
-
 void Shape_translate(Shape *self, const Cell cell) {
   self->row += cell.row;
   self->column += cell.column;
@@ -92,31 +81,28 @@ void Shape_rotate(Shape *self) {
 }
 
 bool Shape_overlapsSquares(const Shape *self, const Square *squares) {
-  const Square *absolutes = Shape_absoluteSquares(self);
-
-  for (int i = 0; i < arrlen(absolutes); i++) {
+  for (int i = 0; i < arrlen(self->squares); i++) {
+    int absoluteRow = self->squares[i].row + self->row;
+    int absoluteColumn = self->squares[i].column + self->column;
     for (int j = 0; j < arrlen(squares); j++) {
-      if (absolutes[i].row == squares[j].row &&
-          absolutes[i].column == squares[j].column) {
-        arrfree(absolutes);
+      if (absoluteRow == squares[j].row &&
+          absoluteColumn == squares[j].column) {
         return true;
       }
     }
   }
-  arrfree(absolutes);
   return false;
 }
 
 bool Shape_withinBounds(const Shape *self) {
-  const Square *absolutes = Shape_absoluteSquares(self);
+  for (int i = 0; i < arrlen(self->squares); i++) {
+    int absoluteRow = self->squares[i].row + self->row;
+    int absoluteColumn = self->squares[i].column + self->column;
 
-  for (int i = 0; i < arrlen(absolutes); i++) {
-    if (absolutes[i].column < 0 || absolutes[i].column >= PUZZLE_WIDTH ||
-        absolutes[i].row >= PUZZLE_HEIGHT) {
-      arrfree(absolutes);
+    if (absoluteColumn < 0 || absoluteColumn >= PUZZLE_WIDTH ||
+        absoluteRow >= PUZZLE_HEIGHT) {
       return false;
     }
   }
-  arrfree(absolutes);
   return true;
 }

@@ -36,9 +36,9 @@ typedef struct SquareAtPoint {
   TetrominoColor color;
 } SquareAtPoint;
 
-static constexpr float W = SQUARE_WIDTH;
+static constexpr float SW = SQUARE_WIDTH;
 static constexpr float BW = SQUARE_BORDER_WIDTH;
-static constexpr float R = W - (BW * 2);
+static constexpr float IW = SW - (BW * 2);
 
 void drawSquareAtPoint(SquareAtPoint square) {
   const float_t x = square.position.x;
@@ -49,8 +49,8 @@ void drawSquareAtPoint(SquareAtPoint square) {
   SDL_RenderFillRect(
     App_renderer,
     &(SDL_FRect){
-      .w = (float)W,
-      .h = (float)W,
+      .w = (float)SW,
+      .h = (float)SW,
       .x = x,
       .y = y,
     }
@@ -72,16 +72,16 @@ void drawSquareAtPoint(SquareAtPoint square) {
 
   App_SetRenderDrawColor(App_renderer, SQUARE_BORDER_SIDE);
   SDL_RenderFillRect(
-    App_renderer, &(SDL_FRect){.x = x, .y = y + BW, .w = BW, .h = R}
+    App_renderer, &(SDL_FRect){.x = x, .y = y + BW, .w = BW, .h = IW}
   );
 
   // clang-format off
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = sideBorder, .position = {.x = x, .y = y + BW + R}},
-      {.color = sideBorder, .position = {.x = x + BW, .y = y + BW + R}},
-      {.color = sideBorder, .position = {.x = x, .y = y + W}},
+      {.color = sideBorder, .position = {.x = x, .y = y + BW + IW}},
+      {.color = sideBorder, .position = {.x = x + BW, .y = y + BW + IW}},
+      {.color = sideBorder, .position = {.x = x, .y = y + SW}},
     },
     3, nullptr, 3);
   // clang-format on
@@ -102,16 +102,16 @@ void drawSquareAtPoint(SquareAtPoint square) {
 
   App_SetRenderDrawColor(App_renderer, SQUARE_BORDER_TOP);
   SDL_RenderFillRect(
-    App_renderer, &(SDL_FRect){.x = x + BW, .y = y, .w = R, .h = BW}
+    App_renderer, &(SDL_FRect){.x = x + BW, .y = y, .w = IW, .h = BW}
   );
 
   // clang-format off
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = topBorder, .position = {.x = x + BW + R, .y = y}},
-      {.color = topBorder, .position = {.x = x + W, .y = y }},
-      {.color = topBorder, .position = {.x = x + BW + R, .y = y + BW}},
+      {.color = topBorder, .position = {.x = x + BW + IW, .y = y}},
+      {.color = topBorder, .position = {.x = x + SW, .y = y }},
+      {.color = topBorder, .position = {.x = x + BW + IW, .y = y + BW}},
     },
     3, nullptr, 3);
   // clang-format on
@@ -122,25 +122,25 @@ void drawSquareAtPoint(SquareAtPoint square) {
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = sideBorder, .position = {.x = x + W, .y = y}},
-      {.color = sideBorder, .position = {.x = x + W, .y = y + BW}},
-      {.color = sideBorder, .position = {.x = x + R + BW, .y = y + BW}},
+      {.color = sideBorder, .position = {.x = x + SW, .y = y}},
+      {.color = sideBorder, .position = {.x = x + SW, .y = y + BW}},
+      {.color = sideBorder, .position = {.x = x + IW + BW, .y = y + BW}},
     },
     3, nullptr, 3);
   // clang-format on
 
   App_SetRenderDrawColor(App_renderer, SQUARE_BORDER_SIDE);
   SDL_RenderFillRect(
-    App_renderer, &(SDL_FRect){.x = x + BW + R, .y = y + BW, .w = BW, .h = R}
+    App_renderer, &(SDL_FRect){.x = x + BW + IW, .y = y + BW, .w = BW, .h = IW}
   );
 
   // clang-format off
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = sideBorder, .position = {.x = x + BW + R, .y = y + BW + R}},
-      {.color = sideBorder, .position = {.x = x + W, .y = y + BW + R}},
-      {.color = sideBorder, .position = {.x = x + W, .y = y + W}},
+      {.color = sideBorder, .position = {.x = x + BW + IW, .y = y + BW + IW}},
+      {.color = sideBorder, .position = {.x = x + SW, .y = y + BW + IW}},
+      {.color = sideBorder, .position = {.x = x + SW, .y = y + SW}},
     },
     3, nullptr, 3);
   // clang-format on
@@ -152,25 +152,25 @@ void drawSquareAtPoint(SquareAtPoint square) {
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = bottomBorder, .position = {.x = x + BW + R, .y = y + BW + R}},
-      {.color = bottomBorder, .position = {.x = x + W, .y = y + W}},
-      {.color = bottomBorder, .position = {.x = x + R + BW, .y = y + W}},
+      {.color = bottomBorder, .position = {.x = x + BW + IW, .y = y + BW + IW}},
+      {.color = bottomBorder, .position = {.x = x + SW, .y = y + SW}},
+      {.color = bottomBorder, .position = {.x = x + IW + BW, .y = y + SW}},
     },
     3, nullptr, 3);
   // clang-format on
 
   App_SetRenderDrawColor(App_renderer, SQUARE_BORDER_BOTTOM);
   SDL_RenderFillRect(
-    App_renderer, &(SDL_FRect){.x = x + BW, .y = y + R + BW, .w = R, .h = BW}
+    App_renderer, &(SDL_FRect){.x = x + BW, .y = y + IW + BW, .w = IW, .h = BW}
   );
 
   // clang-format off
   SDL_RenderGeometry(
      App_renderer, nullptr,
      (SDL_Vertex[]) {
-      {.color = bottomBorder, .position = {.x = x, .y = y + W}},
-      {.color = bottomBorder, .position = {.x = x + BW, .y = y + BW + R}},
-      {.color = bottomBorder, .position = {.x = x + BW, .y = y + W}},
+      {.color = bottomBorder, .position = {.x = x, .y = y + SW}},
+      {.color = bottomBorder, .position = {.x = x + BW, .y = y + BW + IW}},
+      {.color = bottomBorder, .position = {.x = x + BW, .y = y + SW}},
     },
     3, nullptr, 3);
   // clang-format on
