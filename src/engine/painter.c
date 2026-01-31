@@ -11,22 +11,26 @@
 #include <math.h>
 #include <stdint.h>
 
+static constexpr int32_t SW = SQUARE_WIDTH;
+static constexpr int32_t BW = SQUARE_BORDER_WIDTH;
+static constexpr int32_t IW = SW - (BW * 2);
+
 void drawGuide(const SDL_FRect *rect) {
   App_SetRenderDrawColor(App_renderer, UI_BACKGROUND);
   SDL_RenderFillRect(App_renderer, rect);
 
   App_SetRenderDrawColor(App_renderer, UI_GUIDE);
 
-  const int rows = (int)(rect->h / (float)SQUARE_WIDTH);
-  const int columns = (int)(rect->w / (float)SQUARE_WIDTH);
+  const int rows = (int)(rect->h / (float)SW);
+  const int columns = (int)(rect->w / (float)SW);
 
   for (int i = 0; i < rows + 1; i++) {
-    const auto lineY = rect->y + (float)(i * SQUARE_WIDTH);
+    const auto lineY = rect->y + (float)(i * SW);
     SDL_RenderLine(App_renderer, rect->x, lineY, rect->x + rect->w, lineY);
   }
 
   for (int i = 0; i < columns + 1; i++) {
-    const auto lineX = rect->x + (float)(i * SQUARE_WIDTH);
+    const auto lineX = rect->x + (float)(i * SW);
     SDL_RenderLine(App_renderer, lineX, rect->y, lineX, rect->y + rect->h);
   }
 }
@@ -35,10 +39,6 @@ typedef struct SquareAtPoint {
   SDL_FPoint position;
   TetrominoColor color;
 } SquareAtPoint;
-
-static constexpr float SW = SQUARE_WIDTH;
-static constexpr float BW = SQUARE_BORDER_WIDTH;
-static constexpr float IW = SW - (BW * 2);
 
 void drawSquareAtPoint(SquareAtPoint square) {
   const float_t x = square.position.x;
@@ -183,8 +183,8 @@ void drawNSquares(const Square *squares, const SDL_Point *ref, int32_t n) {
     drawSquareAtPoint(
       (SquareAtPoint){
       .position = (SDL_FPoint){
-         .x = (float)(ref->x + (square.column * SQUARE_WIDTH)),
-         .y = (float)(ref->y + (square.row * SQUARE_WIDTH)),
+         .x = (float)(ref->x + (square.column * SW)),
+         .y = (float)(ref->y + (square.row * SW)),
        },
       .color = square.color
       }
@@ -202,8 +202,8 @@ void drawShape(const Shape *shape, const SDL_Point *ref) {
   drawArrSquares(
     shape->squares,
     &(SDL_Point){
-      .x = ref->x + (shape->column * SQUARE_WIDTH),
-      .y = ref->y + (shape->row * SQUARE_WIDTH),
+      .x = ref->x + (shape->column * SW),
+      .y = ref->y + (shape->row * SW),
     }
   );
   // clang-format on
