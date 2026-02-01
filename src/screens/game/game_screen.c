@@ -274,8 +274,8 @@ void mopTheFloor(GameScreen *self) {
 
 bool spawnPlayer(GameScreen *self) {
   Shape foreshadow = Shape_copy(&self->nextPlayer);
-  foreshadow.column = (PUZZLE_WIDTH - foreshadow.width) / 2;
   foreshadow.row = 0;
+  foreshadow.column = (PUZZLE_WIDTH - foreshadow.width) / 2;
   bool overlaps = Shape_overlapsSquares(&foreshadow, self->opponent);
   if (overlaps) {
     foreshadow.row = -1;
@@ -287,8 +287,7 @@ bool spawnPlayer(GameScreen *self) {
   }
 
   arrfree(self->player.squares);
-  self->player = Shape_copy(&foreshadow);
-  arrfree(foreshadow.squares);
+  self->player = foreshadow;
 
   arrfree(self->nextPlayer.squares);
   self->nextPlayer = Tetromino_random();
