@@ -2,7 +2,7 @@
 
 #include "engine/screen.h"
 #include "screens/game/components/square.h"
-
+#include "screens/game/components/tetromino.h"
 bool MenuScreen_create(Screen **);
 
 // clang-format off

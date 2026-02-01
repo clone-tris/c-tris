@@ -1,4 +1,4 @@
-#include "colors.h"
+#include "screens/game/components/tetromino.h"
 #include "helpers.h"
 #include "screens/game/components/shape.h"
 #include <assert.h>
