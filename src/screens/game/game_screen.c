@@ -17,7 +17,7 @@
 typedef struct GameScreen GameScreen;
 void applyGravity(GameScreen *self);
 void makePlayerFall(GameScreen *self);
-void makePlayerFallnow(GameScreen *self);
+void makePlayerFallNow(GameScreen *self);
 void mopTheFloor(GameScreen *self);
 bool spawnPlayer(GameScreen *self);
 void updateScore(GameScreen *self, int32_t linesRemoved);
@@ -129,7 +129,7 @@ static ScreenEvent update(Screen *screen) {
         movePlayerRight(self);
         break;
       case COMMAND_MOVE_DOWN:
-        makePlayerFallnow(self);
+        makePlayerFallNow(self);
         break;
       default:
         break;
@@ -231,7 +231,7 @@ void makePlayerFall(GameScreen *self) {
   self->isPlayerFalling = false;
 }
 
-void makePlayerFallnow(GameScreen *self) {
+void makePlayerFallNow(GameScreen *self) {
   if (self->state != STATE_PLAYING) {
     return;
   }
