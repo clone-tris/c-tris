@@ -26,7 +26,7 @@ set(FETCHCONTENT_QUIET FALSE)
 # FetchContent_MakeAvailable(raylib)
 # set_property(DIRECTORY "${raylib_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
-# SDL 
+# SDL
 set(SDL_INSTALL OFF CACHE BOOL "" FORCE)
 set(SDL_SHARED ON CACHE BOOL "" FORCE)
 set(SDL_STATIC OFF CACHE BOOL "" FORCE)
@@ -67,7 +67,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(stb)
 
 # Compilation --------------------------
- 
+
 add_executable(${PROJECT_NAME}
     src/main.c
     src/helpers.c
@@ -86,6 +86,7 @@ add_executable(${PROJECT_NAME}
     src/screens/over/over_screen.c
 )
 
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SDL3::SDL3
