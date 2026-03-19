@@ -7,7 +7,7 @@
 #include <stb_ds.h>
 #include <stdint.h>
 
-void computeSize(Shape *self);
+static void computeSize(Shape *self);
 
 Shape Shape_create(const Cell cell, Square *squares) {
   Shape shape = {
@@ -37,10 +37,10 @@ void computeSize(Shape *self) {
 
   for (int i = 0; i < len; i++) {
     const Square square = self->squares[i];
-    maxRow = max(square.row, maxRow);
-    minRow = min(square.row, minRow);
-    maxColumn = max(square.column, maxColumn);
-    minColumn = min(square.column, minColumn);
+    maxRow = max_i(square.row, maxRow);
+    minRow = min_i(square.row, minRow);
+    maxColumn = max_i(square.column, maxColumn);
+    minColumn = min_i(square.column, minColumn);
   }
 
   self->height = maxRow - minRow + 1;
@@ -85,8 +85,9 @@ bool Shape_overlapsSquares(const Shape *self, const Square *squares) {
     int absoluteRow = self->squares[i].row + self->row;
     int absoluteColumn = self->squares[i].column + self->column;
     for (int j = 0; j < arrlen(squares); j++) {
-      if (absoluteRow == squares[j].row &&
-          absoluteColumn == squares[j].column) {
+      if (
+        absoluteRow == squares[j].row && absoluteColumn == squares[j].column
+      ) {
         return true;
       }
     }
@@ -99,8 +100,10 @@ bool Shape_withinBounds(const Shape *self) {
     int absoluteRow = self->squares[i].row + self->row;
     int absoluteColumn = self->squares[i].column + self->column;
 
-    if (absoluteColumn < 0 || absoluteColumn >= PUZZLE_WIDTH ||
-        absoluteRow >= PUZZLE_HEIGHT) {
+    if (
+      absoluteColumn < 0 || absoluteColumn >= PUZZLE_WIDTH ||
+      absoluteRow >= PUZZLE_HEIGHT
+    ) {
       return false;
     }
   }

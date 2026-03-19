@@ -8,13 +8,13 @@
 #include <stdint.h>
 #include <stdio.h>
 
-int32_t lastLevel = -1;
-int32_t lastLinesCleared = -1;
-int32_t lastTotal = -1;
+static int32_t lastLevel = -1;
+static int32_t lastLinesCleared = -1;
+static int32_t lastTotal = -1;
 
-SDL_Texture *levelTexture = nullptr;
-SDL_Texture *totalTexture = nullptr;
-SDL_Texture *linesClearedTexture = nullptr;
+static SDL_Texture *levelTexture = nullptr;
+static SDL_Texture *totalTexture = nullptr;
+static SDL_Texture *linesClearedTexture = nullptr;
 
 static char levelText[20];
 static char linesClearedText[20];

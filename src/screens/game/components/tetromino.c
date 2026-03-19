@@ -24,7 +24,7 @@ static const int GRIDS[][4][2] = {
   {{0, 0}, {0, 1}, {1, 1}, {1, 2}}, // Z
 };
 
-void makeSquares(Type type, Square **squares) {
+static void makeSquares(Type type, Square **squares) {
   auto shapeColor = COLORS[type];
   auto grid = GRIDS[type];
   for (int i = 0; i < 4; i++) {

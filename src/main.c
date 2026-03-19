@@ -24,7 +24,7 @@ SDL_Renderer *App_renderer = nullptr;
 TTF_Font *smallFont;
 TTF_Font *largeFont;
 
-bool switchScreen(AppState *as, bool (*create)(Screen **)) {
+static bool switchScreen(AppState *as, bool (*create)(Screen **)) {
   Screen_destroy(&as->screen);
   if (!create(&as->screen)) {
     SDL_Log("Couldn't alloate and switch to Screen");

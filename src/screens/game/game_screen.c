@@ -15,25 +15,25 @@
 #include <stdio.h>
 
 typedef struct GameScreen GameScreen;
-void applyGravity(GameScreen *self);
-void makePlayerFall(GameScreen *self);
-void makePlayerFallNow(GameScreen *self);
-void mopTheFloor(GameScreen *self);
-bool spawnPlayer(GameScreen *self);
-void updateScore(GameScreen *self, int32_t linesRemoved);
-void togglePaused(GameScreen *self);
-void pause(GameScreen *self);
-void play(GameScreen *self);
-void rotatePlayer(GameScreen *self);
-void movePlayerLeft(GameScreen *self);
-void movePlayerRight(GameScreen *self);
-bool movePlayerDown(GameScreen *self);
-bool movePlayer(GameScreen *self, Cell direction);
-void eatPlayer(GameScreen *self);
-void removeOpponentFullRows(GameScreen *self, const int32_t *fullRows);
-int32_t *findFullRows(const Square *opponent);
-bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
-void clearQueue(GameScreen *self);
+static void applyGravity(GameScreen *self);
+static void makePlayerFall(GameScreen *self);
+static void makePlayerFallNow(GameScreen *self);
+static void mopTheFloor(GameScreen *self);
+static bool spawnPlayer(GameScreen *self);
+static void updateScore(GameScreen *self, int32_t linesRemoved);
+static void togglePaused(GameScreen *self);
+static void pause(GameScreen *self);
+static void play(GameScreen *self);
+static void rotatePlayer(GameScreen *self);
+static void movePlayerLeft(GameScreen *self);
+static void movePlayerRight(GameScreen *self);
+static bool movePlayerDown(GameScreen *self);
+static bool movePlayer(GameScreen *self, Cell direction);
+static void eatPlayer(GameScreen *self);
+static void removeOpponentFullRows(GameScreen *self, const int32_t *fullRows);
+static int32_t *findFullRows(const Square *opponent);
+static bool isLegalPlayerPosition(const Shape *player, const Square *opponent);
+static void clearQueue(GameScreen *self);
 
 typedef enum Command {
   COMMAND_MOVE_LEFT,
@@ -159,8 +159,10 @@ static void keydown(Screen *screen, SDL_Scancode scancode) {
       arrput(self->commandQueue, COMMAND_RESTART);
       break;
     case SDL_SCANCODE_P:
-      if (self->state == STATE_PAUSED || self->state == STATE_PLAYING ||
-          self->state == STATE_ON_FLOOR) {
+      if (
+        self->state == STATE_PAUSED || self->state == STATE_PLAYING ||
+        self->state == STATE_ON_FLOOR
+      ) {
         arrput(self->commandQueue, COMMAND_PAUSE);
       }
       break;
