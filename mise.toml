@@ -9,9 +9,11 @@ run = 'cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_
 [tasks.build]
 quiet = true
 run = ["cmake --build build", "./build/Debug/c-tris"]
+run_windows = ["cmake --build build", '.\build\Debug\c-tris.exe']
 
 [tasks.run]
 run = "./build/Debug/c-tris"
+run_windows = '.\build\Debug\c-tris.exe'
 
 [tasks.tidy]
 description = "Run ClangTidy on all source files"
