@@ -455,7 +455,7 @@ int32_t *findFullRows(const Square *opponent) {
 }
 
 bool isLegalPlayerPosition(const Shape *player, const Square *opponent) {
-  return !Shape_overlapsSquares(player, opponent) && Shape_withinBounds(player);
+  return Shape_withinBounds(player) && !Shape_overlapsSquares(player, opponent);
 }
 
 void clearQueue(GameScreen *self) {

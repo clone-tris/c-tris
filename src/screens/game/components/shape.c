@@ -96,16 +96,6 @@ bool Shape_overlapsSquares(const Shape *self, const Square *squares) {
 }
 
 bool Shape_withinBounds(const Shape *self) {
-  for (int i = 0; i < arrlen(self->squares); i++) {
-    int absoluteRow = self->squares[i].row + self->row;
-    int absoluteColumn = self->squares[i].column + self->column;
-
-    if (
-      absoluteColumn < 0 || absoluteColumn >= PUZZLE_WIDTH ||
-      absoluteRow >= PUZZLE_HEIGHT
-    ) {
-      return false;
-    }
-  }
-  return true;
+  return self->column >= 0 && (self->column + self->width) <= PUZZLE_WIDTH &&
+    (self->row + self->height) <= PUZZLE_HEIGHT;
 }
