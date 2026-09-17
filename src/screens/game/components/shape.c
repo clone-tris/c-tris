@@ -9,6 +9,7 @@
 
 static void computeSize(Shape *self);
 
+// TODO always 4 squares shouldn't need a pointer.
 Shape Shape_create(const Cell cell, Square *squares) {
   Shape shape = {
     .row = cell.row,
